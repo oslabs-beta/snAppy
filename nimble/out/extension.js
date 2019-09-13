@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
+const vscode_uri_1 = require("vscode-uri");
 const path = require('path');
 function activate(context) {
     console.log('Congratulations, your extension "nimble" is now active!');
@@ -9,6 +10,21 @@ function activate(context) {
             enableScripts: true,
         });
         panel.webview.html = getWebviewContent();
+        function deleteFile(uri) {
+            console.log('deleting?');
+            let theURI = vscode_uri_1.URI.file(uri);
+            vscode.workspace.fs.delete(theURI);
+        }
+        let savedURI = '/Users/courtneykwong/Documents/Codesmith/Projects/samples/vscExt/helloworld/src/delete.html';
+        //this is an api function that speaks from ext to webview/recieving and doing sonething after
+        panel.webview.onDidReceiveMessage(message => {
+            switch (message.command) {
+                case 'alert':
+                    deleteFile(savedURI);
+                    vscode.window.showInformationMessage(message.text);
+                    vscode.window.showInformationMessage('is it really tho');
+            }
+        });
     });
     context.subscriptions.push(startCommand);
 }
@@ -23,9 +39,24 @@ function getWebviewContent() {
 		<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src vscode-resource: https:; script-src 'nonce-${nonce}';">
 		<title>Nimble</title>
 	</head>
+
 	<body>
+	<h2>The Button Element</h2>
+	<button id='test'>Use</button>
+	
 	<script nonce="${nonce}">
+
 	const vscode = acquireVsCodeApi();
+
+	const commandHandler = () => {
+		console.log('IM HERE')
+		vscode.postMessage({
+			command: 'alert',
+			text: 'its working!'
+		})
+	}
+	document.querySelector('#test').addEventListener('click', commandHandler);
+
 	</script>
 	</body>
 	</html>`;
