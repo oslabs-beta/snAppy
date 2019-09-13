@@ -15,7 +15,7 @@ function activate(context) {
             let theURI = vscode_uri_1.URI.file(uri);
             vscode.workspace.fs.delete(theURI);
         }
-        let savedURI = '/Users/courtneykwong/Documents/Codesmith/Projects/samples/vscExt/helloworld/src/delete.html';
+        let savedURI = '/Users/courtneykwong/Documents/Codesmith/Projects/soloproject/delete/delete.js';
         //this is an api function that speaks from ext to webview/recieving and doing sonething after
         panel.webview.onDidReceiveMessage(message => {
             switch (message.command) {
@@ -43,7 +43,7 @@ function getWebviewContent() {
 	<body>
 	<h2>The Button Element</h2>
 	<button id='test'>Use</button>
-	
+
 	<script nonce="${nonce}">
 
 	const vscode = acquireVsCodeApi();

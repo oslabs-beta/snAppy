@@ -16,7 +16,7 @@ export function activate(context: vscode.ExtensionContext) {
 		let theURI = URI.file(uri)
 		vscode.workspace.fs.delete(theURI)
 	}
-	let savedURI = '/Users/courtneykwong/Documents/Codesmith/Projects/samples/vscExt/helloworld/src/delete.html'
+	let savedURI = '/Users/courtneykwong/Documents/Codesmith/Projects/soloproject/delete/delete.js'
 	//this is an api function that speaks from ext to webview/recieving and doing sonething after
 	panel.webview.onDidReceiveMessage(
 		message => {
@@ -25,7 +25,6 @@ export function activate(context: vscode.ExtensionContext) {
 					deleteFile(savedURI) 
 					vscode.window.showInformationMessage(message.text)
 					vscode.window.showInformationMessage('is it really tho')
-
 			}
 		}
 	)
@@ -47,7 +46,7 @@ function getWebviewContent() {
 	<body>
 	<h2>The Button Element</h2>
 	<button id='test'>Use</button>
-	
+
 	<script nonce="${nonce}">
 
 	const vscode = acquireVsCodeApi();
