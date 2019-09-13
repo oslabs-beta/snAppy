@@ -10,17 +10,26 @@ function activate(context) {
             enableScripts: true,
         });
         panel.webview.html = getWebviewContent();
-        function deleteFile(uri) {
-            console.log('deleting?');
-            let theURI = vscode_uri_1.URI.file(uri);
-            vscode.workspace.fs.delete(theURI);
+        function readFile(read, write) {
+            console.log('reading?');
+            let URIto = vscode_uri_1.URI.file(write);
+            let URIfrom = vscode_uri_1.URI.file(read);
+            vscode.workspace.fs.readFile(URIfrom)
+                .then(res => {
+                // console.log(res.toString())
+                vscode.workspace.fs.writeFile(URIto, res)
+                    .then(data => console.log(data))
+                    .then(undefined, error => console.log('writing error:', error));
+            })
+                .then(undefined, err => console.log('reading error', err));
         }
-        let savedURI = '/Users/courtneykwong/Documents/Codesmith/Projects/soloproject/delete/delete.js';
+        let readURI = '/Users/courtneykwong/Documents/Codesmith/Projects/samples/vscExt/helloworld/src/sampleTest.html';
+        let writeURI = '/Users/courtneykwong/Documents/Codesmith/Projects/samples/vscExt/helloworld/src/new.html';
         //this is an api function that speaks from ext to webview/recieving and doing sonething after
         panel.webview.onDidReceiveMessage(message => {
             switch (message.command) {
                 case 'alert':
-                    deleteFile(savedURI);
+                    readFile(readURI, writeURI);
                     vscode.window.showInformationMessage(message.text);
                     vscode.window.showInformationMessage('is it really tho');
             }
