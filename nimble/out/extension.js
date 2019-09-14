@@ -26,6 +26,7 @@ function getWebviewContent(context) {
 	</head>
 
 	<body>
+	<div id="root"></div>
 		${loadScript(context, 'out/nimble.js')}
 	</body>
 	</html>`;
