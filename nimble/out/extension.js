@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 const vscode_uri_1 = require("vscode-uri");
+// import { TextEncoder } from 'util';
 const path = require('path');
 function activate(context) {
     console.log('Congratulations, your extension "nimble" is now active!');

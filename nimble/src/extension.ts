@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import {URI} from 'vscode-uri';
-import { TextEncoder } from 'util';
+// import { TextEncoder } from 'util';
 const path = require('path');
 
 export function activate(context: vscode.ExtensionContext) {
