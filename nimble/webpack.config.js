@@ -3,7 +3,7 @@ const tsImportPlugin = require('ts-import-plugin');
 
 module.exports = {
     entry: {
-        nimble: './src/index.tsx'
+        nimble: './src/views/index.tsx'
     },
     output: {
         path: path.resolve(__dirname, 'out'),
