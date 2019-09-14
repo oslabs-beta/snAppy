@@ -16,8 +16,8 @@ export function activate(context: ExtensionContext) {
 		const panel = window.createWebviewPanel('nimble', 'Nimble', ViewColumn.Beside, 
 		{
 			enableScripts: true,
-			retainContextWhenHidden: true,
-            localResourceRoots: [ Uri.file(path.join(context.extensionPath, 'out')) ]
+			// retainContextWhenHidden: true,
+            // localResourceRoots: [ Uri.file(path.join(context.extensionPath, 'out')) ]
 		});
 	panel.webview.html = getWebviewContent(context);
 	});
@@ -34,9 +34,7 @@ function getWebviewContent(context: ExtensionContext) {
 	</head>
 
 	<body>
-		<div id="root"></div>
-		<p>Hello Jackie</p>
-		${loadScript(context, 'out.js')}
+		${loadScript(context, 'out/nimble.js')}
 	</body>
 	</html>`
 }

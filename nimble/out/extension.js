@@ -2,9 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // import * as vscode from 'vscode';
 const vscode_1 = require("vscode");
-// const path = require('path');
-//this is the new code we copied from aliens
-const path = require("path");
 function loadScript(context, path) {
     return `<script src="${vscode_1.Uri.file(context.asAbsolutePath(path)).with({ scheme: 'vscode-resource' }).toString()}"></script>`;
 }
@@ -13,8 +10,6 @@ function activate(context) {
     let startCommand = vscode_1.commands.registerCommand('extension.startNimble', () => {
         const panel = vscode_1.window.createWebviewPanel('nimble', 'Nimble', vscode_1.ViewColumn.Beside, {
             enableScripts: true,
-            retainContextWhenHidden: true,
-            localResourceRoots: [vscode_1.Uri.file(path.join(context.extensionPath, 'out'))]
         });
         panel.webview.html = getWebviewContent(context);
     });
@@ -31,9 +26,7 @@ function getWebviewContent(context) {
 	</head>
 
 	<body>
-		<div id="root"></div>
-		<p>Hello Jackie</p>
-		${loadScript(context, 'out.js')}
+		${loadScript(context, 'out/nimble.js')}
 	</body>
 	</html>`;
 }
