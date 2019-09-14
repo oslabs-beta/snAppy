@@ -13,6 +13,7 @@
     "react-dom": "^16.9.0",
     "style-loader": "^1.0.0",
     "ts-loader": "^6.1.0",
+    "tslint": "^5.20.0",
     "utf8": "^3.0.0",
     "vscode-uri": "^2.0.3",
     "webpack": "^4.40.2",
