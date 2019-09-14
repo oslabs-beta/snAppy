@@ -42,7 +42,7 @@ function getWebviewContent(context: ExtensionContext) {
 		const vscode = acquireVsCodeApi();
 		</script>
 	</body>
-	</html>`
+	</html>`;
 }
 
 function getNonce() {
