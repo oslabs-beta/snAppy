@@ -1,12 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const vscode = require("vscode");
-const path = require('path');
+// import * as vscode from 'vscode';
+const vscode_1 = require("vscode");
+// const path = require('path');
+//this is the new code we copied from aliens
+const path = require("path");
+function loadScript(context, path) {
+    return `<script src="${vscode_1.Uri.file(context.asAbsolutePath(path)).with({ scheme: 'vscode-resource' }).toString()}"></script>`;
+}
 function activate(context) {
     console.log('Congratulations, your extension "nimble" is now active!');
-    let startCommand = vscode.commands.registerCommand('extension.startNimble', () => {
-        const panel = vscode.window.createWebviewPanel('nimble', 'Nimble', vscode.ViewColumn.Beside, {
+    let startCommand = vscode_1.commands.registerCommand('extension.startNimble', () => {
+        const panel = vscode_1.window.createWebviewPanel('nimble', 'Nimble', vscode_1.ViewColumn.Beside, {
             enableScripts: true,
+            retainContextWhenHidden: true,
+            localResourceRoots: [vscode_1.Uri.file(path.join(context.extensionPath, 'out'))]
         });
         panel.webview.html = getWebviewContent();
     });
@@ -24,9 +32,11 @@ function getWebviewContent() {
 		<title>Nimble</title>
 	</head>
 	<body>
-	<script nonce="${nonce}">
-	const vscode = acquireVsCodeApi();
-	</script>
+		<div id="root"></div>
+		${loadScript(context, 'out/vendor.js')}
+		<script nonce="${nonce}">
+		const vscode = acquireVsCodeApi();
+		</script>
 	</body>
 	</html>`;
 }
