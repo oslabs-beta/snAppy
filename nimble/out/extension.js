@@ -16,12 +16,12 @@ function activate(context) {
             retainContextWhenHidden: true,
             localResourceRoots: [vscode_1.Uri.file(path.join(context.extensionPath, 'out'))]
         });
-        panel.webview.html = getWebviewContent();
+        panel.webview.html = getWebviewContent(context);
     });
     context.subscriptions.push(startCommand);
 }
 exports.activate = activate;
-function getWebviewContent() {
+function getWebviewContent(context) {
     const nonce = getNonce();
     return `<!DOCTYPE html>
 	<html lang="en">
@@ -33,6 +33,7 @@ function getWebviewContent() {
 	</head>
 	<body>
 		<div id="root"></div>
+		<p>Hello Jackie</p>
 		${loadScript(context, 'out/vendor.js')}
 		<script nonce="${nonce}">
 		const vscode = acquireVsCodeApi();

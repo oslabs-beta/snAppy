@@ -27,7 +27,8 @@
 		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
 		"pretest": "npm run compile",
-		"test": "node ./out/test/runTest.js"
+		"test": "node ./out/test/runTest.js",
+		"build": "webpack"
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.1",
@@ -48,6 +49,7 @@
 	"dependencies": {
 		"react": "^16.9.0",
 		"react-dom": "^16.9.0",
+		"ts-import-plugin": "^1.6.1",
 		"utf8": "^3.0.0",
 		"vscode-uri": "^2.0.3",
 		"webpack": "^4.40.2",

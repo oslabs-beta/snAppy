@@ -19,12 +19,12 @@ export function activate(context: ExtensionContext) {
 			retainContextWhenHidden: true,
             localResourceRoots: [ Uri.file(path.join(context.extensionPath, 'out')) ]
 		});
-	panel.webview.html = getWebviewContent();
+	panel.webview.html = getWebviewContent(context);
 	});
 	context.subscriptions.push(startCommand);
 }
 
-function getWebviewContent() {
+function getWebviewContent(context: ExtensionContext) {
 	const nonce = getNonce();
 	return `<!DOCTYPE html>
 	<html lang="en">
@@ -36,6 +36,7 @@ function getWebviewContent() {
 	</head>
 	<body>
 		<div id="root"></div>
+		<p>Hello Jackie</p>
 		${loadScript(context, 'out/vendor.js')}
 		<script nonce="${nonce}">
 		const vscode = acquireVsCodeApi();
