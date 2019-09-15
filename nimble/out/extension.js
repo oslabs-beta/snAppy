@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // import * as vscode from 'vscode';
 const vscode_1 = require("vscode");
+//node docs;
 const { exec } = require('child_process');
 function loadScript(context, path) {
     return `<script src="${vscode_1.Uri.file(context.asAbsolutePath(path)).with({ scheme: 'vscode-resource' }).toString()}"></script>`;
@@ -16,12 +17,12 @@ function activate(context) {
                 case 'stats':
                     console.log('analyzing bundle at:', __dirname);
                     /*this is how you would access the current user's uri/workspace.
-                        the developer's workspace would have to be open in the same vscode window (next to our ext);
+                        note: the developer's workspace would have to be open in the same vscode window (next to our ext), otherwise it'd be undefined - refer to vscode api>workspace
                         it returns an array with it's first element being an object: {
                             uri: {
                                 fsPath:
-                                external:
-                                path:
+                                external: this includes the scheme;
+                                path: we would use this**
                                 scheme:
                             },
                             name:,
