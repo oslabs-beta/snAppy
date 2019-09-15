@@ -56,14 +56,14 @@ function getWebviewContent(context: ExtensionContext) {
 }
 
 //webpack config functions: 
-function createWebpackConfig(entry: string[], mod: any) {
+function createWebpackConfig(entry: any, mod: any) {
 	const moduleExports:any = {};
 	moduleExports.entry = {
 		main: entry,
 	};
 	moduleExports.output = {
 		filename: 'bundle.js',
-		path: workspace.workspaceFile[0].path
+		path: 'workspace.workspaceFile[0].path'
 	};
 	moduleExports.resolve = {
         extensions: ['.js', '.ts', '.tsx', '.json']
@@ -83,7 +83,7 @@ function createModule(modules: any) {
 	}
 	if (modules.jsx) {
 		module.rules.push({
-			test: '/\.jsx?/', 
+			test: '/\.(js|jsx)$/', 
 			exclude: '/node_modules/',
 			use: [{
 				loader: 'babel-loader',
