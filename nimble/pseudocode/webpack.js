@@ -7,3 +7,38 @@
         why: so that any one user will be able to use this tool because we won't depend/assume that they have webpack (in the event they don't have it bundled, or using another bundler); added bonus: we bundle it for them!
     
 */
+
+/*webpack generator:
+    based on front-end checklist: 
+*/
+
+const createWebpackConfig = (modules) => {
+    const moduleExports = {};
+    moduleExports.mode = `mode they've selected: development || production`;
+    moduleExports.entry = {
+        nameOfWhatTheyInputInForm: `their uri (either by input form, or by our automation using vscode.workspace.workFolders)`
+    }
+    moduleExports.output = {
+        path: `uri to output to, given in input form`
+    }
+    moduleExports.module = modules;
+}
+/*create obj for module configs:
+    front-end: checklist should include -> modules they wish to include and rules form --> test, use, exclude, etc. 
+*/
+const createModule = (takesInArgsFromFEOptions) => {
+    //rules for loaders, parsers, etc:
+    const module = {
+        rules = []
+    }
+    const ruleObj = {
+        test: `string input from f/e`,
+        use: [`strings(loaders) from f/e`] || {
+            loader: `string from f/e`,
+            options: {
+            presets: [`presets from f/e`],
+          },
+        },  
+    }
+    return module;
+}
