@@ -2,14 +2,17 @@
 
 /*webpack generator:
     based on front-end checklist, we can convert their inputs/buttons as an obj: 
+    THOUGHTS HERE:  BUTTONS WITH OUR CHOICES, MIGHT BE EASIER BECAUSE WE CAN HAVE THE FORMAT THE WAY WE WANT, so instead of input form, we would just have buttons to check off and compile it into an array;
+        - for example: if we have on our front end 
+            "please select loaders": O css O .jsx --> this can compile and send to backend as test : ['/\.css$/i', /\.(js|jsx)$/]... etc. 
         inputNeeded: {
-            mode: (1)input form,
+            mode: buttons, 
             entry: (1-2)input forms - name, optional: URI, or we can automate this;
             output: (1-2)input forms - name, optional: URI, or we can automate this;
         }
         rulesOfModuleNeeded: {
-            test: input form
-            use: (1) input form - array of loaders || (4 optional)input forms - loader, options, presets, exclude
+            test: buttons
+            use: buttons
         }
 */
 
@@ -45,6 +48,7 @@ const createModule = (takesInArgsFromFEOptions) => {
           },
         },  
     }
+    rules.push(ruleObj)
     return module;
 }
 
