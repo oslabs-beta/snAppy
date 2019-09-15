@@ -15,9 +15,23 @@ function activate(context) {
             switch (message.command) {
                 case 'stats':
                     console.log('analyzing bundle at:', __dirname);
-                    //this is how you would access the current user's uri/workspace.  
+                    /*this is how you would access the current user's uri/workspace.
+                        the developer's workspace would have to be open in the same vscode window (next to our ext);
+                        it returns an array with it's first element being an object: {
+                            uri: {
+                                fsPath:
+                                external:
+                                path:
+                                scheme:
+                            },
+                            name:,
+                            index:
+                        }
+                    */
                     console.log(vscode_1.workspace.workspaceFolders);
-                    //this runs a script automatically when you run this file. 
+                    /*this runs a script automatically when you run this file.
+                        node module (look at docs) - you pass in: command/script, current working directory
+                    */
                     exec('npx webpack --profile --json > compilation-stats.json', { cwd: __dirname });
             }
         });
