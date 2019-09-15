@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // import * as vscode from 'vscode';
 const vscode_1 = require("vscode");
+const { exec } = require('child_process');
 function loadScript(context, path) {
     return `<script src="${vscode_1.Uri.file(context.asAbsolutePath(path)).with({ scheme: 'vscode-resource' }).toString()}"></script>`;
 }
@@ -10,10 +11,17 @@ function activate(context) {
     let startCommand = vscode_1.commands.registerCommand('extension.startNimble', () => {
         const panel = vscode_1.window.createWebviewPanel('nimble', 'Nimble', vscode_1.ViewColumn.Beside, { enableScripts: true, });
         panel.webview.html = getWebviewContent(context);
+        // function createFile(uri: any, content: any, options: object);
+        /*should look like this: /Users/courtneykwong/Documents/Codesmith/Projects/CJOR/nimble
+        */
+        // function createURI(scheme: 'file', authority: string, path: string);
         panel.webview.onDidReceiveMessage(message => {
             switch (message.command) {
                 case 'stats':
                     console.log('analyzing bundle');
+                    //this is how you would access the 
+                    console.log(vscode_1.workspace.workspaceFolders);
+                // createFile()
             }
         });
     });

@@ -1,8 +1,6 @@
 // import * as vscode from 'vscode';
-import { ExtensionContext, commands, window, ViewColumn, Uri } from 'vscode';
-import {URI} from 'vscode-uri';
-// const path = require('path');
-//this is the new code we copied from aliens
+import { ExtensionContext, commands, window, ViewColumn, Uri, workspace } from 'vscode';
+const {exec} = require('child_process');
 import * as path from 'path';
 
 function loadScript(context: ExtensionContext, path: string) {
@@ -16,10 +14,19 @@ export function activate(context: ExtensionContext) {
 		const panel = window.createWebviewPanel('nimble', 'Nimble', ViewColumn.Beside, {enableScripts: true,});
 		panel.webview.html = getWebviewContent(context);
 		
+		// function createFile(uri: any, content: any, options: object);
+	
+		/*should look like this: /Users/courtneykwong/Documents/Codesmith/Projects/CJOR/nimble
+		*/
+		// function createURI(scheme: 'file', authority: string, path: string);
+
 		panel.webview.onDidReceiveMessage(message => {
 				switch(message.command) {
 					case 'stats':
 						console.log('analyzing bundle');
+						//this is how you would access the 
+						console.log(workspace.workspaceFolders);
+						// createFile()
 				}
 		});
 	
