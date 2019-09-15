@@ -9,33 +9,17 @@ function loadScript(context: ExtensionContext, path: string) {
 export function activate(context: ExtensionContext) {
 	console.log('Congratulations, your extension "nimble" is now active!');
 	let startCommand = commands.registerCommand('extension.startNimble', () => {
-		
 		const panel = window.createWebviewPanel('nimble', 'Nimble', ViewColumn.Beside, {enableScripts: true,});
-		panel.webview.html = getWebviewContent(context);
-		
+		panel.webview.html = getWebviewContent(context);	
 		panel.webview.onDidReceiveMessage(message => {
 				switch(message.command) {
-					case 'stats':
-						console.log('analyzing bundle at:', __dirname);
-						/*this is how you would access the current user's uri/workspace.  
-							note: the developer's workspace would have to be open in the same vscode window (next to our ext), otherwise it'd be undefined - refer to vscode api>workspace
-							it returns an array with it's first element being an object: {
-								uri: {
-									fsPath:  
-									external: this includes the scheme;
-									path: we would use this**
-									scheme:
-								},
-								name:,
-								index:
-							}
-						*/
-						console.log(workspace.workspaceFolders);
-
+					case 'entry':
+						console.log('getting entry point');
+					case 'module':
+						console.log('getting module');
+					
 				}
 		});
-	
-	
 	});
 	context.subscriptions.push(startCommand);
 }
@@ -60,5 +44,6 @@ function getWebviewContent(context: ExtensionContext) {
 	</html>`;
 }
 
+//webpack config functions: 
 
 export function deactivate() {}

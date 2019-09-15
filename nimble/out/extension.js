@@ -12,22 +12,10 @@ function activate(context) {
         panel.webview.html = getWebviewContent(context);
         panel.webview.onDidReceiveMessage(message => {
             switch (message.command) {
-                case 'stats':
-                    console.log('analyzing bundle at:', __dirname);
-                    /*this is how you would access the current user's uri/workspace.
-                        note: the developer's workspace would have to be open in the same vscode window (next to our ext), otherwise it'd be undefined - refer to vscode api>workspace
-                        it returns an array with it's first element being an object: {
-                            uri: {
-                                fsPath:
-                                external: this includes the scheme;
-                                path: we would use this**
-                                scheme:
-                            },
-                            name:,
-                            index:
-                        }
-                    */
-                    console.log(vscode_1.workspace.workspaceFolders);
+                case 'entry':
+                    console.log('getting entry point');
+                case 'module':
+                    console.log('getting module');
             }
         });
     });
@@ -53,6 +41,7 @@ function getWebviewContent(context) {
 	</body>
 	</html>`;
 }
+//webpack config functions: 
 function deactivate() { }
 exports.deactivate = deactivate;
 //# sourceMappingURL=extension.js.map
