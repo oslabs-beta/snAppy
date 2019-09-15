@@ -1,5 +1,6 @@
 // import * as vscode from 'vscode';
 import { ExtensionContext, commands, window, ViewColumn, Uri, workspace } from 'vscode';
+//node docs;
 const {exec} = require('child_process');
 import * as path from 'path';
 
@@ -19,12 +20,12 @@ export function activate(context: ExtensionContext) {
 					case 'stats':
 						console.log('analyzing bundle at:', __dirname);
 						/*this is how you would access the current user's uri/workspace.  
-							the developer's workspace would have to be open in the same vscode window (next to our ext);
+							note: the developer's workspace would have to be open in the same vscode window (next to our ext), otherwise it'd be undefined - refer to vscode api>workspace
 							it returns an array with it's first element being an object: {
 								uri: {
-									fsPath:
-									external:
-									path:
+									fsPath:  
+									external: this includes the scheme;
+									path: we would use this**
 									scheme:
 								},
 								name:,
