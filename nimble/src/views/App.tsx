@@ -4,7 +4,10 @@ export default class App extends React.Component {
     render() {
         return (
             <div>
-                <h2>Hello World</h2>
+                <form>
+                    <label>URI:</label>
+                    <input type="text"/>
+                </form>
             </div>
         );
     }

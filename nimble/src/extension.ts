@@ -3,7 +3,7 @@ import { ExtensionContext, commands, window, ViewColumn, Uri } from 'vscode';
 import {URI} from 'vscode-uri';
 // const path = require('path');
 //this is the new code we copied from aliens
-import * as path from 'path';
+// import * as path from 'path';
 
 function loadScript(context: ExtensionContext, path: string) {
     return `<script src="${Uri.file(context.asAbsolutePath(path)).with({ scheme: 'vscode-resource'}).toString()}"></script>`;
