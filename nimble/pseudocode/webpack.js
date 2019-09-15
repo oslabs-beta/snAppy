@@ -21,8 +21,10 @@
         }
 */
 
-const createWebpackConfig = (modules) => {
+const createWebpackConfig = (input, modules) => {
     const moduleExports = {};
+    //parse thru the object input (from front-end to fill below)
+
     moduleExports.mode = `mode they've selected: development || production`;
     moduleExports.entry = {
         nameOfWhatTheyInputInForm: `their uri (either by input form, or by our automation using vscode.workspace.workFolders)`
@@ -38,7 +40,7 @@ const createWebpackConfig = (modules) => {
     front-end: checklist should include -> modules they wish to include and rules form --> test, use, exclude, etc. 
 */
 const createModule = (takesInArgsFromFEOptions) => {
-    //rules for loaders, parsers, etc:
+    //rules for loaders, parsers, etc: parse thru the object (from front-end to fill below)
     const module = {
         rules = []
     }
@@ -54,6 +56,8 @@ const createModule = (takesInArgsFromFEOptions) => {
     return module;
 }
 
+//together, to execute the config customization:
+createWebpackConfig(inputNeeded, rulesOfModuleNeeded);
 
 /*
 We can use vscode.workspace API to read/write their workspace and give them this config file;
