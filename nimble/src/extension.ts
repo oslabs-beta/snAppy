@@ -2,6 +2,7 @@
 import { ExtensionContext, commands, window, ViewColumn, Uri, workspace } from 'vscode';
 import * as path from 'path';
 import { string, any } from 'prop-types';
+const {exec} = require('child_process');
 
 function loadScript(context: ExtensionContext, path: string) {
     return `<script src="${Uri.file(context.asAbsolutePath(path)).with({ scheme: 'vscode-resource'}).toString()}"></script>`;
@@ -14,23 +15,29 @@ export function activate(context: ExtensionContext) {
 		panel.webview.html = getWebviewContent(context);	
 		
 		//check types: front-end should be sending these types back;
-		let entryState: string[];
 		let moduleState:any = {};
 
 		panel.webview.onDidReceiveMessage(message => {
 				switch(message.command) {
-					case 'entry':
-						console.log('getting entry point');
-						//there will only be one entry point
-						entryState.push(message.entry);
-					case 'module':
-						console.log('getting module');
-						//copy obj to moduleState.
+					case 'config':
+						console.log('getting input and configuring webpack');
 						moduleState = {
-							...message.module
+							...message.field
 						};
+						let moduleObj = createModule(moduleState.module);
+						let webpackConfigObject = createWebpackConfig(moduleState.entry, moduleObj);
+						/*search workspaceFolder, iterate and search for 'webpack.config.js'
+							if (exists) rename File to old.config.js
+							createFile(URI, buffered(webpackConfigObj))
+								.then(res => {
+									exec('node ../functionalities/chidprocess.ts)
+								})
+							
+						*/
 				}
 		});
+
+
 	});
 	context.subscriptions.push(startCommand);
 }
@@ -56,6 +63,7 @@ function getWebviewContent(context: ExtensionContext) {
 }
 
 //webpack config functions: 
+//entry moduleState.entry:
 function createWebpackConfig(entry: any, mod: any) {
 	const moduleExports:any = {};
 	moduleExports.entry = {
@@ -72,6 +80,7 @@ function createWebpackConfig(entry: any, mod: any) {
     return moduleExports;
 }
 
+//mod: moduleState.mod
 function createModule(modules: any) {
 	const module: any = {};
 	module.rules = [];
@@ -90,16 +99,9 @@ function createModule(modules: any) {
 				options: {presets: ['@babel/preset-env', '@babel/preset-react']}
 			}]
 		});
-
 	}
+	//if statement for modules.tsx
 	return module;
 }
-
-let module1 = (createModule({
-	css: true,
-	jsx: true
-}));
-
-console.log(createWebpackConfig('./index.js', module1));
 
 export function deactivate() {}

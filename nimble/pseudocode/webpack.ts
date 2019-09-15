@@ -34,7 +34,7 @@ function createWebpackConfig(entry: any, mod: any) {
 	console.log(moduleExports.output);
 	console.log(moduleExports.resolve);
 	console.log(moduleExports.module.rules);
-
+	console.log(moduleExports)
     return moduleExports;
 }
 
@@ -61,9 +61,14 @@ function createModule(modules: any) {
 	return module;
 }
 
-let module1 = (createModule({
-	css: true,
-	jsx: true
-}));
+const moduState = {
+	entry: './path',
+	module: {
+		css: true,
+		jsx: false
+	}
+};
 
-console.log(createWebpackConfig('./index.js', module1));
+let modulz = createModule(moduState.module)
+console.log(modulz)
+console.log(createWebpackConfig(moduState.entry, modulz));
