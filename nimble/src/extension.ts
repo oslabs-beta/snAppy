@@ -14,19 +14,15 @@ export function activate(context: ExtensionContext) {
 		const panel = window.createWebviewPanel('nimble', 'Nimble', ViewColumn.Beside, {enableScripts: true,});
 		panel.webview.html = getWebviewContent(context);
 		
-		// function createFile(uri: any, content: any, options: object);
-	
-		/*should look like this: /Users/courtneykwong/Documents/Codesmith/Projects/CJOR/nimble
-		*/
-		// function createURI(scheme: 'file', authority: string, path: string);
-
 		panel.webview.onDidReceiveMessage(message => {
 				switch(message.command) {
 					case 'stats':
-						console.log('analyzing bundle');
-						//this is how you would access the 
+						console.log('analyzing bundle at:', __dirname);
+						//this is how you would access the current user's uri/workspace.  
 						console.log(workspace.workspaceFolders);
-						// createFile()
+						//this runs a script automatically when you run this file. 
+						exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname});
+
 				}
 		});
 	
