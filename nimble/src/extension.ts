@@ -1,7 +1,5 @@
 // import * as vscode from 'vscode';
 import { ExtensionContext, commands, window, ViewColumn, Uri, workspace } from 'vscode';
-//node docs;
-const {exec} = require('child_process');
 import * as path from 'path';
 
 function loadScript(context: ExtensionContext, path: string) {
@@ -33,10 +31,6 @@ export function activate(context: ExtensionContext) {
 							}
 						*/
 						console.log(workspace.workspaceFolders);
-						/*this runs a script automatically when you run this file. 
-							node module (look at docs) - you pass in: command/script, current working directory
-						*/
-						exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname});
 
 				}
 		});

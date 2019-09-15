@@ -54,6 +54,7 @@ const createModule = (takesInArgsFromFEOptions) => {
 
 //together, to execute the config customization:
 createWebpackConfig(inputNeeded, rulesOfModuleNeeded);
+    //writeFile("") - mame: webpack.config.js
 
 /*
 We can use vscode.workspace API to read/write their workspace and give them this config file;

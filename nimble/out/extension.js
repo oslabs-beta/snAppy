@@ -2,8 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // import * as vscode from 'vscode';
 const vscode_1 = require("vscode");
-//node docs;
-const { exec } = require('child_process');
 function loadScript(context, path) {
     return `<script src="${vscode_1.Uri.file(context.asAbsolutePath(path)).with({ scheme: 'vscode-resource' }).toString()}"></script>`;
 }
@@ -30,10 +28,6 @@ function activate(context) {
                         }
                     */
                     console.log(vscode_1.workspace.workspaceFolders);
-                    /*this runs a script automatically when you run this file.
-                        node module (look at docs) - you pass in: command/script, current working directory
-                    */
-                    exec('npx webpack --profile --json > compilation-stats.json', { cwd: __dirname });
             }
         });
     });
