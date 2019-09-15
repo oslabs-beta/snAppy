@@ -15,7 +15,7 @@ export function activate(context: ExtensionContext) {
 		
 		//check types: front-end should be sending these types back;
 		let entryState: string[];
-		let moduleState: string[];
+		let moduleState:any = {};
 
 		panel.webview.onDidReceiveMessage(message => {
 				switch(message.command) {
@@ -25,8 +25,10 @@ export function activate(context: ExtensionContext) {
 						entryState.push(message.entry);
 					case 'module':
 						console.log('getting module');
-						//there are multiple modules in array
-						message.module.forEach((mod: string) => moduleState.push(mod));
+						//copy obj to moduleState.
+						moduleState = {
+							...message.module
+						};
 				}
 		});
 	});
@@ -63,19 +65,41 @@ function createWebpackConfig(entry: string[], mod: any) {
 		filename: 'bundle.js',
 		path: workspace.workspaceFile[0].path
 	};
+	moduleExports.resolve = {
+        extensions: ['.js', '.ts', '.tsx', '.json']
+	};
 	moduleExports.module = mod;
     return moduleExports;
 }
 
-function createModule(modules:string[]) {
+function createModule(modules: any) {
 	const module: any = {};
 	module.rules = [];
-	const ruleObj: any = {};
+	if (modules.css) {
+		module.rules.push({
+			test: '/\.css$/i',
+			use: ['style-loader', 'css-loader']
+		});
+	}
+	if (modules.jsx) {
+		module.rules.push({
+			test: '/\.jsx?/', 
+			exclude: '/node_modules/',
+			use: [{
+				loader: 'babel-loader',
+				options: {presets: ['@babel/preset-env', '@babel/preset-react']}
+			}]
+		});
 
+	}
+	return module;
 }
 
-function createRuleLoaders(modules:string[]) {
-	const rules: string[] = [];
-	
-}
+let module1 = (createModule({
+	css: true,
+	jsx: true
+}));
+
+console.log(createWebpackConfig('./index.js', module1));
+
 export function deactivate() {}
