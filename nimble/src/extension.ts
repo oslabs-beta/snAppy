@@ -13,13 +13,17 @@ export function activate(context: ExtensionContext) {
 	console.log('Congratulations, your extension "nimble" is now active!');
 	let startCommand = commands.registerCommand('extension.startNimble', () => {
 		
-		const panel = window.createWebviewPanel('nimble', 'Nimble', ViewColumn.Beside, 
-		{
-			enableScripts: true,
-			// retainContextWhenHidden: true,
-            // localResourceRoots: [ Uri.file(path.join(context.extensionPath, 'out')) ]
+		const panel = window.createWebviewPanel('nimble', 'Nimble', ViewColumn.Beside, {enableScripts: true,});
+		panel.webview.html = getWebviewContent(context);
+		
+		panel.webview.onDidReceiveMessage(message => {
+				switch(message.command) {
+					case 'stats':
+						console.log('analyzing bundle');
+				}
 		});
-	panel.webview.html = getWebviewContent(context);
+	
+	
 	});
 	context.subscriptions.push(startCommand);
 }
@@ -36,9 +40,12 @@ function getWebviewContent(context: ExtensionContext) {
 
 	<body>
 	<div id="root"></div>
+		<script>
+		const vscode = acquireVsCodeApi();
+		</script>
 		${loadScript(context, 'out/nimble.js')}
 	</body>
-	</html>`
+	</html>`;
 }
 
 

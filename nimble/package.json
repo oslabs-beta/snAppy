@@ -30,7 +30,8 @@
 		"watch": "tsc -watch -p ./",
 		"pretest": "npm run compile",
 		"test": "node ./out/test/runTest.js",
-		"build": "webpack"
+		"build": "webpack",
+		"stats": "webpack --profile --json > compilation-stats.json"
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.1",
