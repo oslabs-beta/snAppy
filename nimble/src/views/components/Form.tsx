@@ -112,7 +112,7 @@ export default class Form extends React.Component<{ test: any, runFunc: any},Sta
         event.preventDefault();
         // this.props.runFunc();
         
-        console.log('inside func')
+        console.log('inside onSubmitFunc')
         this.props.test();
 
         const messageObjectToExtension: any = {
