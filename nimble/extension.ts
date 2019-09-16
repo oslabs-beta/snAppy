@@ -83,26 +83,39 @@ function createModule(modules: any) {
 	module.rules = [];
 	if (modules.css) {
 		module.rules.push({
-			test: '/\.css$/i',
+			test: /\.css$/i,
 			use: ['style-loader', 'css-loader']
 		});
 	}
 	if (modules.jsx) {
 		module.rules.push({
-			test: '/\.(js|jsx)$/', 
-			exclude: '/node_modules/',
+			test: /\.(js|jsx)$/, 
 			use: [{
 				loader: 'babel-loader',
 				options: {presets: ['@babel/preset-env', '@babel/preset-react']}
-			}]
+			}],
+			exclude: '/node_modules/'
 		});
 	}
 	//if statement for modules.tsx
 	if (module.tsx) {
-		module.rules.push()
+		module.rules.push({
+			test: /\.tsx?$/,
+			use: ['ts-loader'],
+			exclude: /node_modules/
+		  });
 	}
 	if (module.less) {
-		module.rules.push()
+		module.rules.push({
+			test: /\.less$/,
+			loader: 'less-loader', // compiles Less to CSS
+		  });
+	}
+	if (module.sass) {
+		module.rules.push({
+			test: /\.s[ac]ss$/i,
+			use: ['style-loader', 'css-loader', 'sass-loader'],
+		  });
 	}
 	return module;
 }
