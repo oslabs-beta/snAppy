@@ -14,6 +14,9 @@ export default class App extends React.Component {
         //This is the function that onlick of the submit button, will send the state to the extension.ts file
         const runWebpackGetStats = () => vscode.postMessage;
         const testFunc = () => console.log('hello there')
+
+        //backend will send progress update
+        //have an array here that renders the status messages
         
         return (
             <div>
