@@ -16,20 +16,24 @@ export function activate(context: ExtensionContext) {
 		panel.webview.html = getWebviewContent(context);
 		
 		panel.webview.onDidReceiveMessage(message => {
+			console.log('fffffuck this',message.command)
 			let moduleState: any;
 				switch(message.command) {
 					case 'config':
 						console.log('getting input and configuring webpack');
+						console.log('message', message.module)
 						moduleState = {
-							...message.field
+							...message.module
 						};
-						let moduleObj = createModule(moduleState.module);
-						let webpackConfigObject = createWebpackConfig(moduleState.entry, moduleObj);
-						console.log(JSON.stringify(webpackConfigObject));
+						// let moduleObj = createModule(moduleState.module);
+						// let webpackConfigObject = createWebpackConfig(moduleState.entry, moduleObj);
+						//console.log(JSON.stringify(webpackConfigObject));
 							/*write webpackConfigObject to path: __dirname (refers to where the extension is installed)
 								.then(res => exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname});
 							*/
-				}
+					case 'stats' :
+						console.log('getting stats')
+						}
 		});
 	
 	

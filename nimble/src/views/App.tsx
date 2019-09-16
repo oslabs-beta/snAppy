@@ -1,28 +1,33 @@
 import * as React from 'react';
 import Form from './components/Form';
 
-//interface set for class; set type to void because function does not return a value;
+// interface set for class; set type to void because function does not return a value;
 interface Vscode {
     postMessage(message: any): void;
 }
 // declare function acquireVsCodeApi(): vscode;
 declare const vscode: Vscode;
+const runStats = (task : string) => () => {
+    console.log('inside runStats',task);
+    return vscode.postMessage({command : task})
+}
 
 export default class App extends React.Component {
     render() {
         
         //This is the function that onlick of the submit button, will send the state to the extension.ts file
-        const runWebpackGetStats = () => vscode.postMessage;
+        const runWebpackGetStats = ()=> (message : any) => vscode.postMessage(message);
         const testFunc = () => console.log('hello there')
-
         //backend will send progress update
         //have an array here that renders the status messages
         
+        console.log('hello olga')
         return (
-            <div>
+            <div> 
                  {/* will import in the form component here */}
-                 <Form runFunc={runWebpackGetStats} test={testFunc}  />
-                {/* <button onClick={runWebpackGetStats}>click</button> */}
+                 <Form test={testFunc} runFunc={runWebpackGetStats}  />
+                <button onClick={runStats('stats')}>click</button>
+
             </div>
         );
     }

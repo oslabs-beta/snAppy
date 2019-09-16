@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // import * as vscode from 'vscode';
 const vscode_1 = require("vscode");
+//node docs;
 const { exec } = require('child_process');
 function loadScript(context, path) {
     return `<script src="${vscode_1.Uri.file(context.asAbsolutePath(path)).with({ scheme: 'vscode-resource' }).toString()}"></script>`;
@@ -12,19 +13,22 @@ function activate(context) {
     let startCommand = vscode_1.commands.registerCommand('extension.startNimble', () => {
         const panel = vscode_1.window.createWebviewPanel('nimble', 'Nimble', vscode_1.ViewColumn.Beside, { enableScripts: true, });
         panel.webview.html = getWebviewContent(context);
-        //check types: front-end should be sending these types back;
-        let moduleState = {};
         panel.webview.onDidReceiveMessage(message => {
+            console.log('fffffuck this', message.command);
+            let moduleState;
             switch (message.command) {
                 case 'config':
                     console.log('getting input and configuring webpack');
-                    moduleState = Object.assign({}, message.field);
-                    let moduleObj = createModule(moduleState.module);
-                    let webpackConfigObject = createWebpackConfig(moduleState.entry, moduleObj);
-                    console.log(JSON.stringify(webpackConfigObject));
+                    console.log('message', message.module);
+                    moduleState = Object.assign({}, message.module);
+                // let moduleObj = createModule(moduleState.module);
+                // let webpackConfigObject = createWebpackConfig(moduleState.entry, moduleObj);
+                //console.log(JSON.stringify(webpackConfigObject));
                 /*write webpackConfigObject to path: __dirname (refers to where the extension is installed)
                     .then(res => exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname});
                 */
+                case 'stats':
+                    console.log('getting stats');
             }
         });
     });
