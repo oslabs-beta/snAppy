@@ -2,14 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // import * as vscode from 'vscode';
 const vscode_1 = require("vscode");
-<<<<<<< HEAD
-// const path = require('path');
-//this is the new code we copied from aliens
-// import * as path from 'path';
-=======
 //node docs;
 const { exec } = require('child_process');
->>>>>>> dev
 function loadScript(context, path) {
     return `<script src="${vscode_1.Uri.file(context.asAbsolutePath(path)).with({ scheme: 'vscode-resource' }).toString()}"></script>`;
 }

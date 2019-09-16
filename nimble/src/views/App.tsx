@@ -8,16 +8,17 @@ interface Vscode {
 // declare function acquireVsCodeApi(): vscode;
 declare const vscode: Vscode;
 
-//This is the function that onlick of the submit button, will send the state to the extension.ts file
-const runStats = (task: string) => () => vscode.postMessage({command: task});
-
 export default class App extends React.Component {
     render() {
+        
+        //This is the function that onlick of the submit button, will send the state to the extension.ts file
+        const runWebpackGetStats = (task: string) => () => vscode.postMessage;
+        
         return (
             <div>
                  {/* will import in the form component here */}
-                 <Form runStats={runStats}/>
-                <button onClick={runStats('stats')}>click</button>
+                 <Form runFunc={runWebpackGetStats} />
+                {/* <button onClick={runWebpackGetStats}>click</button> */}
             </div>
         );
     }
