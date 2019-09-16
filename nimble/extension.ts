@@ -10,34 +10,25 @@ function loadScript(context: ExtensionContext, path: string) {
 
 export function activate(context: ExtensionContext) {
 	console.log('Congratulations, your extension "nimble" is now active!');
-	let startCommand = commands.registerCommand('extension.startNimble', () => {
-		
+	// exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname});
+		let startCommand = commands.registerCommand('extension.startNimble', () => {
 		const panel = window.createWebviewPanel('nimble', 'Nimble', ViewColumn.Beside, {enableScripts: true,});
 		panel.webview.html = getWebviewContent(context);
 		
 		panel.webview.onDidReceiveMessage(message => {
+			let moduleState: any;
 				switch(message.command) {
-					case 'stats':
-						console.log('analyzing bundle at:', __dirname);
-						/*this is how you would access the current user's uri/workspace.  
-							note: the developer's workspace would have to be open in the same vscode window (next to our ext), otherwise it'd be undefined - refer to vscode api>workspace
-							it returns an array with it's first element being an object: {
-								uri: {
-									fsPath:  
-									external: this includes the scheme;
-									path: we would use this**
-									scheme:
-								},
-								name:,
-								index:
-							}
-						*/
-						console.log(workspace.workspaceFolders);
-						/*this runs a script automatically when you run this file. 
-							node module (look at docs) - you pass in: command/script, current working directory
-						*/
-						exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname});
-
+					case 'config':
+						console.log('getting input and configuring webpack');
+						moduleState = {
+							...message.field
+						};
+						let moduleObj = createModule(moduleState.module);
+						let webpackConfigObject = createWebpackConfig(moduleState.entry, moduleObj);
+						console.log(JSON.stringify(webpackConfigObject));
+							/*write webpackConfigObject to path: __dirname (refers to where the extension is installed)
+								.then(res => exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname});
+							*/
 				}
 		});
 	
@@ -66,5 +57,65 @@ function getWebviewContent(context: ExtensionContext) {
 	</html>`;
 }
 
+// webpack config functions: 
+// entry - moduleState.entry:
+function createWebpackConfig(entry: any, mod: any) {
+	const moduleExports:any = {};
+	moduleExports.entry = {
+		main: entry,
+	};
+	moduleExports.output = {
+		filename: 'bundle.js',
+		path: 'path'
+	};
+	moduleExports.resolve = {
+        extensions: ['.js', '.ts', '.tsx', '.json']
+	};
+	moduleExports.module = mod;
+    return moduleExports;
+}
+
+// mod: moduleState.mod
+function createModule(modules: any) {
+	const module: any = {};
+	module.rules = [];
+	if (modules.css) {
+		module.rules.push({
+			test: /\.css$/i,
+			use: ['style-loader', 'css-loader']
+		});
+	}
+	if (modules.jsx) {
+		module.rules.push({
+			test: /\.(js|jsx)$/, 
+			use: [{
+				loader: 'babel-loader',
+				options: {presets: ['@babel/preset-env', '@babel/preset-react']}
+			}],
+			exclude: '/node_modules/'
+		});
+	}
+	//if statement for modules.tsx
+	if (module.tsx) {
+		module.rules.push({
+			test: /\.tsx?$/,
+			use: ['ts-loader'],
+			exclude: /node_modules/
+		  });
+	}
+	if (module.less) {
+		module.rules.push({
+			test: /\.less$/,
+			loader: 'less-loader', // compiles Less to CSS
+		  });
+	}
+	if (module.sass) {
+		module.rules.push({
+			test: /\.s[ac]ss$/i,
+			use: ['style-loader', 'css-loader', 'sass-loader'],
+		  });
+	}
+	return module;
+}
 
 export function deactivate() {}
