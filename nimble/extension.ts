@@ -9,8 +9,9 @@ function loadScript(context: ExtensionContext, path: string) {
 }
 
 export function activate(context: ExtensionContext) {
-	console.log('Congratulations, your extension "nimble" is now active!');
-	let startCommand = commands.registerCommand('extension.startNimble', () => {
+	console.log('Congratulations, your extension "nimble" is now active!', __dirname);
+	exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname});
+		let startCommand = commands.registerCommand('extension.startNimble', () => {
 		const panel = window.createWebviewPanel('nimble', 'Nimble', ViewColumn.Beside, {enableScripts: true,});
 		panel.webview.html = getWebviewContent(context);	
 		
@@ -19,13 +20,13 @@ export function activate(context: ExtensionContext) {
 
 		panel.webview.onDidReceiveMessage(message => {
 				switch(message.command) {
-					case 'config':
-						console.log('getting input and configuring webpack');
-						moduleState = {
-							...message.field
-						};
-						let moduleObj = createModule(moduleState.module);
-						let webpackConfigObject = createWebpackConfig(moduleState.entry, moduleObj);
+					// case 'config':
+					// 	console.log('getting input and configuring webpack');
+					// 	moduleState = {
+					// 		...message.field
+					// 	};
+					// 	let moduleObj = createModule(moduleState.module);
+					// 	let webpackConfigObject = createWebpackConfig(moduleState.entry, moduleObj);
 						/*search workspaceFolder, iterate and search for 'webpack.config.js'
 							if (exists) rename File to old.config.js
 							createFile(URI, buffered(webpackConfigObj))
@@ -64,44 +65,44 @@ function getWebviewContent(context: ExtensionContext) {
 
 //webpack config functions: 
 //entry moduleState.entry:
-function createWebpackConfig(entry: any, mod: any) {
-	const moduleExports:any = {};
-	moduleExports.entry = {
-		main: entry,
-	};
-	moduleExports.output = {
-		filename: 'bundle.js',
-		path: 'workspace.workspaceFile[0].path'
-	};
-	moduleExports.resolve = {
-        extensions: ['.js', '.ts', '.tsx', '.json']
-	};
-	moduleExports.module = mod;
-    return moduleExports;
-}
+// function createWebpackConfig(entry: any, mod: any) {
+// 	const moduleExports:any = {};
+// 	moduleExports.entry = {
+// 		main: entry,
+// 	};
+// 	moduleExports.output = {
+// 		filename: 'bundle.js',
+// 		path: 'workspace.workspaceFile[0].path'
+// 	};
+// 	moduleExports.resolve = {
+//         extensions: ['.js', '.ts', '.tsx', '.json']
+// 	};
+// 	moduleExports.module = mod;
+//     return moduleExports;
+// }
 
 //mod: moduleState.mod
-function createModule(modules: any) {
-	const module: any = {};
-	module.rules = [];
-	if (modules.css) {
-		module.rules.push({
-			test: '/\.css$/i',
-			use: ['style-loader', 'css-loader']
-		});
-	}
-	if (modules.jsx) {
-		module.rules.push({
-			test: '/\.(js|jsx)$/', 
-			exclude: '/node_modules/',
-			use: [{
-				loader: 'babel-loader',
-				options: {presets: ['@babel/preset-env', '@babel/preset-react']}
-			}]
-		});
-	}
-	//if statement for modules.tsx
-	return module;
-}
+// function createModule(modules: any) {
+// 	const module: any = {};
+// 	module.rules = [];
+// 	if (modules.css) {
+// 		module.rules.push({
+// 			test: '/\.css$/i',
+// 			use: ['style-loader', 'css-loader']
+// 		});
+// 	}
+// 	if (modules.jsx) {
+// 		module.rules.push({
+// 			test: '/\.(js|jsx)$/', 
+// 			exclude: '/node_modules/',
+// 			use: [{
+// 				loader: 'babel-loader',
+// 				options: {presets: ['@babel/preset-env', '@babel/preset-react']}
+// 			}]
+// 		});
+// 	}
+// 	//if statement for modules.tsx
+// 	return module;
+// }
 
 export function deactivate() {}
