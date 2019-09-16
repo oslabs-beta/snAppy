@@ -10,7 +10,7 @@ interface State {
     
 }
 
-export default class Form extends React.Component<{ runFunc:any },State> {
+export default class Form extends React.Component<{ runFunc:any , test: any},State> {
 
     constructor(props: any) {
         super(props);
@@ -29,6 +29,7 @@ export default class Form extends React.Component<{ runFunc:any },State> {
         this.jsxHandler = this.jsxHandler.bind(this);
         this.sassHandler = this.sassHandler.bind(this);
         this.tsxHandler = this.tsxHandler.bind(this);
+        this.onSubmitForm = this.onSubmitForm.bind(this);
     }
 
     entryHandler(event: any) {
@@ -109,8 +110,21 @@ export default class Form extends React.Component<{ runFunc:any },State> {
 
     onSubmitForm(event: any) {
         event.preventDefault();
+        // this.props.runFunc();
 
+        const messageObjectToExtension: any = {
+            command: 'config',
+            entry: this.state.entryPoint,
+            module: {
+                css: this.state.css,
+                jsx: this.state.jsx,
+                tsx: this.state.tsx,
+                less: this.state.less,
+                sass: this.state.sass
+            }
+        }
 
+        this.props.runFunc(messageObjectToExtension);
     }
 
 

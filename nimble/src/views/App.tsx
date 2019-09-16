@@ -12,12 +12,13 @@ export default class App extends React.Component {
     render() {
         
         //This is the function that onlick of the submit button, will send the state to the extension.ts file
-        const runWebpackGetStats = (task: string) => () => vscode.postMessage;
+        const runWebpackGetStats = () => vscode.postMessage;
+        const testFunc = () => console.log('hello there')
         
         return (
             <div>
                  {/* will import in the form component here */}
-                 <Form runFunc={runWebpackGetStats} />
+                 <Form runFunc={runWebpackGetStats} test={testFunc}  />
                 {/* <button onClick={runWebpackGetStats}>click</button> */}
             </div>
         );
@@ -35,7 +36,7 @@ export default class App extends React.Component {
     //will have a true or false flag
 
 /*object = {
-    Command: 'Config',
+    Command: 'config',
     Field: {
         entry: 'string',
         module: {
