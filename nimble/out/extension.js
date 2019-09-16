@@ -4,6 +4,88 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const vscode_1 = require("vscode");
 //node docs;
 const { exec } = require('child_process');
+// let webpackConfig :any = {
+//     entry: {
+//         aliens: './src/view/index.tsx'
+//     },
+//     output: {
+//         path: path.resolve(__dirname, 'out'),
+//         filename: "[name].js"
+//     },
+//     optimization: {
+//         splitChunks: {
+//             cacheGroups: {
+//                 vendor: {
+//                     test: /node_modules/,
+//                     chunks: "initial",
+//                     name: "vendor",
+//                     priority: 10,
+//                     enforce: true
+//                 }
+//             }
+//         }
+//     },
+//     devtool: 'eval-source-map',
+//     resolve: {
+//         extensions: ['.js', '.ts', '.tsx', '.json']
+//     },
+//     module: {
+//         rules: [
+//             {
+//                 test: /\.(ts|tsx)$/,
+//                 loader: 'ts-loader',
+//                 options: {
+//                     getCustomTransformers: () => ({
+//                         before: [ tsImportPlugin({
+//                           libraryName: 'antd',
+//                           libraryDirectory: 'es',
+//                           style: true,
+//                         }) ]
+//                      })
+//                 }
+//             },
+//             {
+//                 test: /\.less$/,
+//                 use: [
+//                     {
+//                         loader: 'style-loader'
+//                     },
+//                     {
+//                         loader: 'css-loader',
+//                         options: {
+//                             importLoaders: 1,
+//                             sourceMap: true
+//                         }
+//                     },
+//                     {
+//                         loader: 'less-loader',
+//                         options: {
+//                             javascriptEnabled: true,
+//                             sourceMap: true,
+//                             modifyVars: {
+//                                 '@body-background': 'var(--background-color)',
+//                             }
+//                         }
+//                     }
+//                 ]
+//             },
+//             {
+//                 test: /\.css$/,
+//                 use: [
+//                     {
+//                         loader: 'style-loader'
+//                     },
+//                     {
+//                         loader: 'css-loader'
+//                     }
+//                 ]
+//             }
+//         ]
+//     },
+//     performance: {
+//         hints: false
+//     }
+// }
 function loadScript(context, path) {
     return `<script src="${vscode_1.Uri.file(context.asAbsolutePath(path)).with({ scheme: 'vscode-resource' }).toString()}"></script>`;
 }
@@ -14,7 +96,7 @@ function activate(context) {
         const panel = vscode_1.window.createWebviewPanel('nimble', 'Nimble', vscode_1.ViewColumn.Beside, { enableScripts: true, });
         panel.webview.html = getWebviewContent(context);
         panel.webview.onDidReceiveMessage(message => {
-            console.log('fffffuck this', message.command);
+            console.log(message.command);
             let moduleState;
             switch (message.command) {
                 case 'config':
@@ -24,6 +106,12 @@ function activate(context) {
                 // let moduleObj = createModule(moduleState.module);
                 // let webpackConfigObject = createWebpackConfig(moduleState.entry, moduleObj);
                 //console.log(JSON.stringify(webpackConfigObject));
+                //converting the object created using function with inputs from front end
+                //Uint8Array.from - will convert object to to Uint8 array so we can write to a file
+                //let Uint8Obj= Uint8Array.from(webpackConfig)
+                //console.log('uint8', Uint8Obj);
+                //using workspace.writeFile (path, Uint8 array)
+                //workspace.fs.writeFile(__dirname, Uint8Obj)
                 /*write webpackConfigObject to path: __dirname (refers to where the extension is installed)
                     .then(res => exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname});
                 */

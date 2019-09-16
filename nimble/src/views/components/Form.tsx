@@ -10,7 +10,7 @@ interface State {
     
 }
 
-export default class Form extends React.Component<{ test: any, runFunc: any},State> {
+export default class Form extends React.Component<{ runFunc: any},State> {
 
     constructor(props: any) {
         super(props);
@@ -113,8 +113,7 @@ export default class Form extends React.Component<{ test: any, runFunc: any},Sta
         // this.props.runFunc();
         
         console.log('inside func')
-        this.props.test();
-
+       
         const messageObjectToExtension: any = {
             command: 'config',
             entry: this.state.entryPoint,
