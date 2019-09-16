@@ -1,8 +1,8 @@
 // import * as vscode from 'vscode';
 import { ExtensionContext, commands, window, ViewColumn, Uri, workspace } from 'vscode';
-import * as path from 'path';
-import { string, any } from 'prop-types';
+//node docs;
 const {exec} = require('child_process');
+import * as path from 'path';
 
 function loadScript(context: ExtensionContext, path: string) {
     return `<script src="${Uri.file(context.asAbsolutePath(path)).with({ scheme: 'vscode-resource'}).toString()}"></script>`;
@@ -13,12 +13,10 @@ export function activate(context: ExtensionContext) {
 	// exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname});
 		let startCommand = commands.registerCommand('extension.startNimble', () => {
 		const panel = window.createWebviewPanel('nimble', 'Nimble', ViewColumn.Beside, {enableScripts: true,});
-		panel.webview.html = getWebviewContent(context);	
+		panel.webview.html = getWebviewContent(context);
 		
-		//check types: front-end should be sending these types back;
-		let moduleState:any = {};
-
 		panel.webview.onDidReceiveMessage(message => {
+			let moduleState: any;
 				switch(message.command) {
 					case 'config':
 						console.log('getting input and configuring webpack');
@@ -33,8 +31,8 @@ export function activate(context: ExtensionContext) {
 							*/
 				}
 		});
-
-
+	
+	
 	});
 	context.subscriptions.push(startCommand);
 }
