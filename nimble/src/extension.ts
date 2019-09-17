@@ -1,8 +1,10 @@
 // import * as vscode from 'vscode';
 import { ExtensionContext, commands, window, ViewColumn, Uri, workspace } from 'vscode';
+import {URI} from 'vscode-uri'
 //node docs;
 const {exec} = require('child_process');
 import * as path from 'path';
+const fs = require('fs');
 
 function loadScript(context: ExtensionContext, path: string) {
     return `<script src="${Uri.file(context.asAbsolutePath(path)).with({ scheme: 'vscode-resource'}).toString()}"></script>`;
@@ -15,28 +17,29 @@ export function activate(context: ExtensionContext) {
 		const panel = window.createWebviewPanel('nimble', 'Nimble', ViewColumn.Beside, {enableScripts: true,});
 		panel.webview.html = getWebviewContent(context);
 		
-		panel.webview.onDidReceiveMessage(message => {
-			console.log('fffffuck this',message.command)
+		panel.webview.onDidReceiveMessage((message: any) => {
+			console.log('message obj from front end is: ', message);
 			let moduleState: any;
 				switch(message.command) {
 					case 'config':
-						console.log('getting input and configuring webpack');
-						console.log('message', message.module)
+						// console.log('getting input and configuring webpack');
+						console.log('message module is:', message.module);
 						moduleState = {
 							...message.module
 						};
-						// let moduleObj = createModule(moduleState.module);
-						// let webpackConfigObject = createWebpackConfig(moduleState.entry, moduleObj);
-						//console.log(JSON.stringify(webpackConfigObject));
-							/*write webpackConfigObject to path: __dirname (refers to where the extension is installed)
-								.then(res => exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname});
-							*/
+						console.log('module State is: ', moduleState);
+						let moduleObj = createModule(moduleState);
+						let webpackConfigObject = createWebpackConfig(message.entry, moduleObj);
+						console.log("this is webpackConfigObject :", JSON.stringify(webpackConfigObject));
+						// let writeUri =`${__dirname}/webpack.config.js`
+						// workspace.fs.writeFile(URI.file(writeUri), webpackConfigObject);
+							// write webpackConfigObject to path: __dirname (refers to where the extension is installed)
+								// .then(res => exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname});
+							
 					case 'stats' :
 						console.log('getting stats')
 						}
 		});
-	
-	
 	});
 	context.subscriptions.push(startCommand);
 }
@@ -62,7 +65,7 @@ function getWebviewContent(context: ExtensionContext) {
 }
 
 // webpack config functions: 
-// entry - moduleState.entry:
+// entry - message.entry:
 function createWebpackConfig(entry: any, mod: any) {
 	const moduleExports:any = {};
 	moduleExports.entry = {
@@ -85,9 +88,12 @@ function createModule(modules: any) {
 	module.rules = [];
 	if (modules.css) {
 		module.rules.push({
+			//keeping regex in string form so that we can pass it to another file
+			//we are thinking to convert the string back to a regexpression right before injecting this code into another file
 			test: /\.css$/i,
 			use: ['style-loader', 'css-loader']
 		});
+		console.log("test key value from module.css obj is", module.rules[0].test);
 	}
 	if (modules.jsx) {
 		module.rules.push({
@@ -100,20 +106,20 @@ function createModule(modules: any) {
 		});
 	}
 	//if statement for modules.tsx
-	if (module.tsx) {
+	if (modules.tsx) {
 		module.rules.push({
 			test: /\.tsx?$/,
 			use: ['ts-loader'],
-			exclude: /node_modules/
+			exclude: '/node_modules/'
 		  });
 	}
-	if (module.less) {
+	if (modules.less) {
 		module.rules.push({
 			test: /\.less$/,
 			loader: 'less-loader', // compiles Less to CSS
 		  });
 	}
-	if (module.sass) {
+	if (modules.sass) {
 		module.rules.push({
 			test: /\.s[ac]ss$/i,
 			use: ['style-loader', 'css-loader', 'sass-loader'],

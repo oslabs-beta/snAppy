@@ -7,10 +7,10 @@ interface Vscode {
 }
 // declare function acquireVsCodeApi(): vscode;
 declare const vscode: Vscode;
-const runStats = (task : string) => () => {
-    console.log('inside runStats',task);
-    return vscode.postMessage({command : task});
-}
+// const runStats = (task : string) => () => {
+//     console.log('inside runStats',task);
+//     return vscode.postMessage({command : task});
+// }
 
 export default class App extends React.Component {
     render() {
@@ -20,16 +20,14 @@ export default class App extends React.Component {
             console.log ("runWebpackGetStats working");
             return vscode.postMessage(message);
         }
-        const testFunc = () => console.log('hello there');
         //backend will send progress update
         //have an array here that renders the status messages
-        
-        console.log('hello olga');
+
         return (
             <div> 
                  {/* will import in the form component here */}
-                 <Form test={testFunc} runFunc={runWebpackGetStats}  />
-                <button onClick={runStats('stats')}>click</button>
+                 <Form runFunc={runWebpackGetStats}  />
+                {/* <button onClick={runStats('stats')}>click</button> */}
 
             </div>
         );

@@ -1,6 +1,7 @@
 const path = require('path');
 const tsImportPlugin = require('ts-import-plugin');
 
+
 module.exports = {
     /*if we bundle the developer's app, we would ask them for their entry and output:
         name: 'their/uri' 
