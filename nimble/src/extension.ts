@@ -48,19 +48,25 @@ export function activate(context: ExtensionContext) {
           //converting the object created using function with inputs from front end
           //Uint8Array.from - will convert object to to Uint8 array so we can write to a file
           let readUri =
-            "/Users/lola/Documents/codesmith/unit-6SB-simon/webpack.config.js";
-          //the webpack.config file need to be in the root directory but can have a different
-          //name as long as specified when using the webpack command
-            let writeUri =
-            "/Users/lola/Documents/codesmith/CJOR/nimble/storage.config.js";
+            "/Users/courtneykwong/Documents/Codesmith/Projects/soloproject/webpack.config.js";
+          /*the webpack.config file need to be in the root directory but can have a different
+          name as long as specified when using the webpack command
+          write the webpack.config.js into out (__dirname) because childprocess is running in dirr name and webpack is being executed in dirname -> if you don't pass in any arguments, it assumes the file iswebpack.config.js and will be looking for it in the same directory; another way: pass in path to th webpack to whatever config you want to use.s
+        */
+          let writeUri =`${__dirname}/webpack.config.js`;
           workspace.fs.readFile(URI.file(readUri))
             .then(res => {
-              console.log('read',res)
+              console.log('read',res);
             return workspace.fs.writeFile(URI.file(writeUri), res)
               .then(res =>{
-                console.log('write',res)
-                return exec('npx webpack --config storage.config.js', {cwd: __dirname})
-              })
+                console.log('write',res);
+                //exec docs: optional parameter that can show err; stdout: shows detail err in the console;
+                return exec('npx webpack', {cwd: __dirname}, (err : Error, stdout: string)=>{
+                  console.log('Error in exec: ', err);
+                  console.log(stdout);
+                });
+              });
+              
           });
         //using workspace.writeFile (path, Uint8 array)
 
