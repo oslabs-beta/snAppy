@@ -19,7 +19,8 @@
 				"command": "extension.startNimble",
 				"title": "Nimble",
 				"category": "Start Nimble"
-			}		]
+			}
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
@@ -50,6 +51,7 @@
 	},
 	"dependencies": {
 		"@babel/core": "^7.6.0",
+		"@babel/preset-env": "^7.6.0",
 		"@babel/preset-react": "^7.0.0",
 		"babel": "^6.23.0",
 		"babel-core": "^6.26.3",
