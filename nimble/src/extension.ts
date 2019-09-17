@@ -48,7 +48,7 @@ export function activate(context: ExtensionContext) {
           //converting the object created using function with inputs from front end
           //Uint8Array.from - will convert object to to Uint8 array so we can write to a file
           let readUri =
-            "/Users/lola/Documents/codesmith/aliens-vscode/webpack.config.js";
+            "/Users/lola/Documents/codesmith/unit-6SB-simon/webpack.config.js";
           //the webpack.config file need to be in the root directory but can have a different
           //name as long as specified when using the webpack command
             let writeUri =

@@ -19,8 +19,7 @@
 				"command": "extension.startNimble",
 				"title": "Nimble",
 				"category": "Start Nimble"
-			}
-		]
+			}		]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
@@ -50,6 +49,13 @@
 		"vscode-test": "^1.2.0"
 	},
 	"dependencies": {
+		"@babel/core": "^7.6.0",
+		"@babel/preset-react": "^7.0.0",
+		"babel": "^6.23.0",
+		"babel-core": "^6.26.3",
+		"babel-loader": "^8.0.6",
+		"babel-preset-es2015": "^6.24.1",
+		"babel-preset-react": "^6.24.1",
 		"npm-run-all": "^4.1.5",
 		"react": "^16.9.0",
 		"react-dom": "^16.9.0",
