@@ -1,11 +1,10 @@
 // import * as vscode from 'vscode';
 import {
-  ExtensionContext, commands, window, ViewColumn, Uri, workspace,
-} from 'vscode';
+  ExtensionContext, commands, window, ViewColumn, Uri, workspace,} from 'vscode';
 import { URI } from 'vscode-uri';
 // node docs;
 const { exec } = require('child_process');
-const fs = require('fs');
+// const fs = require('fs');
 const util = require('util');
 
 
@@ -36,10 +35,8 @@ export function activate(context: ExtensionContext) {
           const writeUri = `${__dirname}/webpack.config.js`;
 
           workspace.fs.writeFile(URI.file(writeUri), new Uint8Array(Buffer.from(
-            `const path = require('path');            
-      
-module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8',
-          )))
+            `const path = require('path');
+            module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8',))) //this is the end of writefile
             .then(res => {
               return exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname}, (err : Error, stdout: string)=>{
                 console.log('Error in exec: ', err);
@@ -49,6 +46,25 @@ module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8',
 
         case 'stats':
           // console.log('getting stats');
+
+        
+        case 'dynamic':
+          //this is where we start the dynamic load functionality
+
+          //Big ALGO: traversing the files to find import statements
+          
+          //1. Write a function that takes a path as a parameter
+            //the path is the entry point given by the user
+
+            //2. read the file using fs.readFile and save the whole file as a string
+            //3. use the Esprima parser to convert the file string into an object
+              //pass in the stringified file into the esprima function as an argument
+              //return the object with the file contents
+            //4. look into object to find import or require statments (callee identifier name)
+
+
+          //SECOND PART: If an import or require statement is found
+            //1. run the dynamic import transformation function here (run it immediately )
       }
     });
   });
