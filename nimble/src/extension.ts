@@ -28,18 +28,24 @@ export function activate(context: ExtensionContext) {
 						};
 						// console.log('module State is: ', moduleState);
 						let moduleObj = createModule(moduleState);
-						let utilModuleObj = util.inspect(moduleObj);
+						// let utilModuleObj = util.inspect(moduleObj);
 						//originally wanted to json parse this object A
-						//let A = utilModuleObj
+						// let A = utilModuleObj
 
-						let webpackConfigObject = createWebpackConfig(message.entry, utilModuleObj);
+						// let thisPageURI = URI.file('/Users/jackie/Documents/Codesmith/production-project-sept-2019/Nimble/CJOR/nimble/src/extension.ts');
+
+						// let webpackConfigObject: any = createWebpackConfig(message.entry, utilModuleObj)
+						let webpackConfigObject: any = createWebpackConfig(message.entry, moduleObj)
+
+						// .then(res => workspace.fs.readFile(thisPageURI))
+						// .then(data => console.log('dataaaa', data.toString()));
 						
 						console.log("this is webpackConfigObject :", webpackConfigObject);
 
 
 						let writeUri =`${__dirname}/webpack.config.js`;
 
-						workspace.fs.writeFile(URI.file(writeUri), new Uint8Array(Buffer.from(util.inspect(webpackConfigObject), 'utf-8')))
+						workspace.fs.writeFile(URI.file(writeUri), new Uint8Array(Buffer.from(util.inspect(webpackConfigObject,{depth: null}), 'utf-8')))
 						.then(res => console.log('yayy'));
 
 						console.log('dirname',__dirname);
