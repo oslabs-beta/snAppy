@@ -12,35 +12,30 @@ function loadScript(context, path) {
 }
 function activate(context) {
     console.log('Congratulations, your extension "nimble" is now active!');
-    // exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname});
     const startCommand = vscode_1.commands.registerCommand('extension.startNimble', () => {
         const panel = vscode_1.window.createWebviewPanel('nimble', 'Nimble', vscode_1.ViewColumn.Beside, { enableScripts: true });
         panel.webview.html = getWebviewContent(context);
         panel.webview.onDidReceiveMessage((message) => {
-            console.log('message obj from front end is: ', message);
             let moduleState;
             switch (message.command) {
                 case 'config':
                     moduleState = Object.assign({}, message.module);
-                    // console.log('module State is: ', moduleState);
                     const moduleObj = createModule(moduleState);
-                    // let utilModuleObj = util.inspect(moduleObj);
-                    // originally wanted to json parse this object A
-                    // let A = utilModuleObj
-                    // let thisPageURI = URI.file('/Users/jackie/Documents/Codesmith/production-project-sept-2019/Nimble/CJOR/nimble/src/extension.ts');
-                    // let webpackConfigObject: any = createWebpackConfig(message.entry, utilModuleObj)
-                    const webpackConfigObject = createWebpackConfig(`${vscode_1.workspace.workspaceFolders[0].uri + message.entry}`, moduleObj);
-                    // .then(res => workspace.fs.readFile(thisPageURI))
-                    // .then(data => console.log('dataaaa', data.toString()));
-                    console.log('this is webpackConfigObject :', webpackConfigObject);
+                    console.log(vscode_1.workspace.workspaceFolders ? vscode_1.workspace.workspaceFolders[0] : '/', 'message.entry:', message.entry);
+                    const webpackConfigObject = createWebpackConfig(`${(vscode_1.workspace.workspaceFolders ? vscode_1.workspace.workspaceFolders[0].uri.path : '/') + message.entry}`, moduleObj);
+                    // console.log('this is webpackConfigObject :', webpackConfigObject);
                     const writeUri = `${__dirname}/webpack.config.js`;
                     vscode_1.workspace.fs.writeFile(vscode_uri_1.URI.file(writeUri), new Uint8Array(Buffer.from(`const path = require('path');            
-            
-            module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8')))
-                        .then(res => console.log('yayy'));
-                    console.log('dirname', __dirname);
+      
+module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8')))
+                        .then(res => {
+                        return exec('npx webpack --profile --json > compilation-stats.json', { cwd: __dirname }, (err, stdout) => {
+                            console.log('Error in exec: ', err);
+                            console.log(stdout);
+                        });
+                    });
                 case 'stats':
-                    console.log('getting stats');
+                // console.log('getting stats');
             }
         });
     });
@@ -75,10 +70,10 @@ function createWebpackConfig(entry, mod) {
     };
     moduleExports.output = {
         filename: 'bundle.js',
-        path: 'path',
+        path: `${(vscode_1.workspace.workspaceFolders ? vscode_1.workspace.workspaceFolders[0].uri.path : '/') + '/dist'}`,
     };
     moduleExports.resolve = {
-        extensions: ['.js', '.ts', '.tsx', '.json'],
+        extensions: ['.jsx', '.js', '.ts', '.tsx', '.json'],
     };
     moduleExports.module = mod;
     return moduleExports;
