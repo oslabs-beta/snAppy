@@ -2,9 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // import * as vscode from 'vscode';
 const vscode_1 = require("vscode");
+const vscode_uri_1 = require("vscode-uri");
 //node docs;
 const { exec } = require('child_process');
 const fs = require('fs');
+const util = require('util');
 function loadScript(context, path) {
     return `<script src="${vscode_1.Uri.file(context.asAbsolutePath(path)).with({ scheme: 'vscode-resource' }).toString()}"></script>`;
 }
@@ -19,17 +21,18 @@ function activate(context) {
             let moduleState;
             switch (message.command) {
                 case 'config':
-                    // console.log('getting input and configuring webpack');
-                    console.log('message module is:', message.module);
                     moduleState = Object.assign({}, message.module);
-                    console.log('module State is: ', moduleState);
+                    // console.log('module State is: ', moduleState);
                     let moduleObj = createModule(moduleState);
-                    let webpackConfigObject = createWebpackConfig(message.entry, moduleObj);
-                    console.log("this is webpackConfigObject :", JSON.stringify(webpackConfigObject));
-                // let writeUri =`${__dirname}/webpack.config.js`
-                // workspace.fs.writeFile(URI.file(writeUri), webpackConfigObject);
-                // write webpackConfigObject to path: __dirname (refers to where the extension is installed)
-                // .then(res => exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname});
+                    let utilModuleObj = util.inspect(moduleObj);
+                    //originally wanted to json parse this object A
+                    //let A = utilModuleObj
+                    let webpackConfigObject = createWebpackConfig(message.entry, utilModuleObj);
+                    console.log("this is webpackConfigObject :", webpackConfigObject);
+                    let writeUri = `${__dirname}/webpack.config.js`;
+                    vscode_1.workspace.fs.writeFile(vscode_uri_1.URI.file(writeUri), new Uint8Array(Buffer.from(util.inspect(webpackConfigObject), 'utf-8')))
+                        .then(res => console.log('yayy'));
+                    console.log('dirname', __dirname);
                 case 'stats':
                     console.log('getting stats');
             }
@@ -85,7 +88,7 @@ function createModule(modules) {
             test: /\.css$/i,
             use: ['style-loader', 'css-loader']
         });
-        console.log("test key value from module.css obj is", module.rules[0].test);
+        // console.log("test key value from module.css obj is", module.rules[0].test);
     }
     if (modules.jsx) {
         module.rules.push({
