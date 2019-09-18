@@ -24,7 +24,7 @@ export default class App extends React.Component {
         //have an array here that renders the status messages
 
         return (
-            <div> 
+            <div id='mainApp'> 
                  {/* will import in the form component here */}
                  <Form runFunc={runWebpackGetStats}  />
                 {/* <button onClick={runStats('stats')}>click</button> */}

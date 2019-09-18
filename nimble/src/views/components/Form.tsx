@@ -1,4 +1,5 @@
 import * as React from 'react';
+import '../../style/styles.css';
 
 interface State {
     entryPoint: string,
