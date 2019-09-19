@@ -32,8 +32,12 @@ function activate(context) {
 module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8')))
                         .then(res => {
                         return exec('npx webpack --profile --json > compilation-stats.json', { cwd: __dirname }, (err, stdout) => {
-                            console.log('Error in exec: ', err);
-                            console.log(stdout);
+                            // console.log('Error in exec: ', err);
+                            // console.log(stdout);
+                            vscode_1.workspace.fs.readFile(vscode_uri_1.URI.file('/Users/courtneykwong/Documents/prod/CJOR/nimble/out/compilation-stats.json'))
+                                .then(res => {
+                                panel.webview.postMessage({ command: 'stats', field: res.toString() });
+                            });
                         });
                     });
                 case 'optimize':
