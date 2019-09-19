@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Form from './components/Form';
+import '../style/styles.css';
 import Assets from './components/Assets';
 
 // interface set for class; set type to void because function does not return a value;
@@ -54,7 +55,9 @@ export default class App extends React.Component<{},State> {
         // }
         // console.log(this.state)
         return (
-            <div> 
+            <div id='mainApp'> 
+                <h1 id='logoText'>snAppy</h1>
+                <br/><br/>
                  {/* will import in the form component here */}
                  <Form runFunc={runWebpackGetStats}  />
                  <Assets recievedMessage={this.state.recievedMessage} messageField={this.state.messageField}/>
