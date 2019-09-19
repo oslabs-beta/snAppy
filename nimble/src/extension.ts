@@ -49,6 +49,27 @@ module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8',
               });
             });
         case 'optimize':
+          //this is where we start the dynamic load functionality
+
+          //Big ALGO: traversing the files to find import statements
+          function traverseAndDynamicallyImport() {
+            //1. Write a function that takes a path as a parameter
+              //the path is the entry point given by the user
+  
+              //2. read the file using fs.readFile and save the whole file as a string
+              //3. use the Esprima parser to convert the file string into an object
+                //pass in the stringified file into the esprima function as an argument
+                //return the object with the file contents
+              //4. look into object to find import or require statments (callee identifier name)
+  
+  
+            //SECOND PART: If an import or require statement is found
+              //1. run the dynamic import transformation function here (run it immediately )
+            
+          }
+
+
+
           // console.log('optimizing: parsing thru files and performing opt fx()');
           /*
             jackie and rachel's parsing algo for folders => ./path that requires opt();
