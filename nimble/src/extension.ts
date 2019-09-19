@@ -50,13 +50,16 @@ module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8',
             jackie and rachel's parsing algo for folders => ./path that requires opt();
             assuming: the returned files are importing components in an obj
               const toParseObj = {
-                component: {
-                    routers: T,
-                    libraries: F,
-                    events: F
+                    path: path.resolve(__dirname, value),
+                    routers: T,   BrowserRouter as Router, Route, Link, Redirect,
+                    libraries: T, any imports that's NOT a path or react redux
+                    component: {
+                      name: 'Weekly',
+                      value: './path'
+                      }
+                    }
                   }
                 }
-              }
           */
               /*
               create uri from component path given from (importDeclaration.source.value) --> 

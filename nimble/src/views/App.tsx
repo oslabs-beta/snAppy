@@ -19,10 +19,9 @@ export default class App extends React.Component {
         const runWebpackGetStats = (message : any) => {
             console.log ("runWebpackGetStats working");
             return vscode.postMessage(message);
-        }
+        };
         //backend will send progress update
         //have an array here that renders the status messages
-
         return (
             <div> 
                  {/* will import in the form component here */}

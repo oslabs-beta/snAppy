@@ -7,6 +7,7 @@ const vscode_uri_1 = require("vscode-uri");
 const { exec } = require('child_process');
 const fs = require('fs');
 const util = require('util');
+const esprima = require('esprima');
 function loadScript(context, path) {
     return `<script src="${vscode_1.Uri.file(context.asAbsolutePath(path)).with({ scheme: 'vscode-resource' }).toString()}"></script>`;
 }
@@ -18,10 +19,11 @@ function activate(context) {
         panel.webview.onDidReceiveMessage((message) => {
             let moduleState;
             switch (message.command) {
+                //button: config, build and get stats of app:
                 case 'config':
                     moduleState = Object.assign({}, message.module);
                     const moduleObj = createModule(moduleState);
-                    console.log(vscode_1.workspace.workspaceFolders ? vscode_1.workspace.workspaceFolders[0] : '/', 'message.entry:', message.entry);
+                    // console.log(workspace.workspaceFolders? workspace.workspaceFolders[0]: '/', 'message.entry:', message.entry);
                     const webpackConfigObject = createWebpackConfig(`${(vscode_1.workspace.workspaceFolders ? vscode_1.workspace.workspaceFolders[0].uri.path : '/') + message.entry}`, moduleObj);
                     // console.log('this is webpackConfigObject :', webpackConfigObject);
                     const writeUri = `${__dirname}/webpack.config.js`;
@@ -34,8 +36,30 @@ module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8')
                             console.log(stdout);
                         });
                     });
-                case 'stats':
-                // console.log('getting stats');
+                case 'optimize':
+                // console.log('optimizing: parsing thru files and performing opt fx()');
+                /*
+                  jackie and rachel's parsing algo for folders => ./path that requires opt();
+                  assuming: the returned files are importing components in an obj
+                    const toParseObj = {
+                          path: path.resolve(__dirname, value),
+                          routers: T,   BrowserRouter as Router, Route, Link, Redirect,
+                          libraries: T, any imports that's NOT a path or react redux
+                          component: {
+                            name: 'Weekly',
+                            value: './path'
+                            }
+                          }
+                        }
+                      }
+                */
+                /*
+                create uri from component path given from (importDeclaration.source.value) -->
+                workspace.fs.readFile(path.resolve(__dirname, (importDeclaration.source.value)))
+                  .then(res => {
+                    optimize(res.toString());
+                  })
+                */
             }
         });
     });
@@ -122,6 +146,23 @@ function createModule(modules) {
         });
     }
     return module;
+}
+//assuming we have an obj stringified, we can now parse thru using ast;
+function optimize(parse) {
+    //if it imports browserrouter...
+    // if (parse.router) reactRouterDynamicImport(res);
+    //if lodash...moments, w/e
+    // if (parse.library)libraryDynamicImport(res);
+    //if eventListeners,
+    // if (parse.events) eventListenersDynamicImport(res);
+}
+function reactRouterDynamicImport(res) {
+    esprima.parseScript(res); //this will return the ast
+    //parse: 
+}
+function libraryDynamicImport(res) {
+}
+function eventListenersDynamicImport(res) {
 }
 function deactivate() { }
 exports.deactivate = deactivate;
