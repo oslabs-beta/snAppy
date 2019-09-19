@@ -24,8 +24,7 @@ export function activate(context: ExtensionContext) {
     
     panel.webview.onDidReceiveMessage((message: any) => {
       
-      let entryPointPath: any;
-      entryPointPath = message.entry;
+      let entryPointPath: any = message.entry;
       let moduleState: any;
       console.log('this is the message.entry: ', message.entry);
       switch (message.command) {
@@ -55,43 +54,8 @@ export function activate(context: ExtensionContext) {
             });
         case 'optimize':
           //this is where we start the dynamic load functionality
-
-          //Big ALGO: traversing the files to find import statements
-
-          //1. Write a function that takes a path as a parameter
-            //the initial path is the entry point given by the user (later on, in the recursive call we will cal this function using the path of the imported components)
-            //2. read the file using fs.readFile and save the whole file as a string
-            //3. use the Esprima parser to convert the file string into an object
-              //pass in the stringified file into the esprima function as an argument
-              //return the object with the file contents
-            //4. look into object to find import or require statments (callee identifier name)
-
-
-          //SECOND PART: If an import or require statement is found
-            //1. run the dynamic import transformation function here (run it immediately )
-          //-------------------------ACTUAL START OF ALGO HERE-----------------------------------
+          traverseAndDynamicallyImport(entryPointPath);
           
-
-          function traverseAndDynamicallyImport(entryPath: string) {
-            //read the file
-            let readURI: string = entryPath;//userfolderpath/src/client/index.js
-            workspace.fs.readFile(path.resolve(__dirname, entryPath))
-            .then(res => console.log());
-            /*
-            create uri from component path given from (importDeclaration.source.value) --> 
-            workspace.fs.readFile(path.resolve(__dirname, (importDeclaration.source.value)))
-              .then(res => {
-                optimize(res.toString());
-              })
-            */
-
-
-
-
-          }
-
-
-
           // console.log('optimizing: parsing thru files and performing opt fx()');
           /*
             jackie and rachel's parsing algo for folders => ./path that requires opt();
@@ -120,6 +84,48 @@ export function activate(context: ExtensionContext) {
   });
   context.subscriptions.push(startCommand);
 }
+
+//Big ALGO: traversing the files to find import statements
+
+          //1. Write a function that takes a path as a parameter
+            //the initial path is the entry point given by the user (later on, in the recursive call we will cal this function using the path of the imported components)
+            //2. read the file using fs.readFile and save the whole file as a string
+            //3. use the Esprima parser to convert the file string into an object
+              //pass in the stringified file into the esprima function as an argument
+              //return the object with the file contents
+            //4. look into object to find import or require statments (callee identifier name)
+
+
+          //SECOND PART: If an import or require statement is found
+            //1. run the dynamic import transformation function here (run it immediately )
+          //-------------------------ACTUAL START OF ALGO HERE-----------------------------------
+          
+
+function traverseAndDynamicallyImport(entryPath: string) {
+      //read the file
+      let readURI: any = URI.file(entryPath);//userfolderpath/src/client/index.js
+      workspace.fs.readFile(readURI)
+      .then(res => console.log(esprima.parseScript(res.toString()))); //should return the object
+      // .then(res => console.log(res.toString())); 
+      //look into the obj to find import/require statement
+
+      //as we hit the import statement
+      //if it is (....child component), then store the path to child component in an array
+      //iterate through the array and recursively call traverse function with each element 
+      //change entryPointPath= new path (the child component path)
+      //otherwise (if it is regular statement), change to dynamic import statement   
+             
+  }
+
+function parseAST(astObj: any) {
+  //this must loop through nested objects
+
+  //look through the body
+  //find Expression Statement
+  //find Variable Declarations with callee.name === 'require'
+}
+
+
 
 function getWebviewContent(context: ExtensionContext) {
   return `<!DOCTYPE html>

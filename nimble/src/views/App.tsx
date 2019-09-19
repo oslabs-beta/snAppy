@@ -20,13 +20,19 @@ interface Asset {
 interface State {
     recievedMessage: boolean;
     messageField?: Asset[];
+    algoMessage: any;
 }
+
 export default class App extends React.Component<{},State> {
     constructor(props: any) {
         super(props);
         this.state= {
             recievedMessage: false,
-            messageField: undefined
+            messageField: undefined,
+            algoMessage: {
+                command: 'optimize',
+                entry: '/Users/MacBong/Desktop/production/CJOR/nimble/out/extension.js',
+            }
         };
     }
     render() {
@@ -35,6 +41,10 @@ export default class App extends React.Component<{},State> {
         const runWebpackGetStats = (message : any) => {
             console.log ("bundling working");
             return vscode.postMessage(message);
+        };
+        const algoTester = (message : any) => ()=> {
+            return vscode.postMessage(message);
+
         };
         //backend will send progress update
         //have an array here that renders the status messages
@@ -58,6 +68,7 @@ export default class App extends React.Component<{},State> {
                  {/* will import in the form component here */}
                  <Form runFunc={runWebpackGetStats}  />
                  <Assets recievedMessage={this.state.recievedMessage} messageField={this.state.messageField}/>
+                 <button onClick={algoTester(this.state.algoMessage)}>Test Big Algo</button>
             </div>
         );
     }
