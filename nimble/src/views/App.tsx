@@ -1,36 +1,67 @@
 import * as React from 'react';
 import Form from './components/Form';
+import Assets from './components/Assets';
 
 // interface set for class; set type to void because function does not return a value;
 interface Vscode {
     postMessage(message: any): void;
 }
-// declare function acquireVsCodeApi(): vscode;
-declare const vscode: Vscode;
-// const runStats = (task : string) => () => {
-//     console.log('inside runStats',task);
-//     return vscode.postMessage({command : task});
-// }
 
-export default class App extends React.Component {
+declare const vscode: Vscode;
+
+
+interface Asset {
+    name: string;
+    size: number;
+    chunks: number[];
+    chunkNames: string[];
+}
+
+interface State {
+    recievedMessage: boolean;
+    messageField?: Asset[];
+}
+export default class App extends React.Component<{},State> {
+    constructor(props: any) {
+        super(props);
+        this.state= {
+            recievedMessage: false,
+            messageField: undefined
+        };
+    }
     render() {
         
         //This is the function that onlick of the submit button, will send the state to the extension.ts file
         const runWebpackGetStats = (message : any) => {
-            console.log ("runWebpackGetStats working");
+            console.log ("bundling working");
             return vscode.postMessage(message);
         };
         //backend will send progress update
         //have an array here that renders the status messages
+        window.addEventListener('message', event => {
+            // console.log(event.data)
+            const message: any = (event.data);
+            console.log(JSON.parse(message.field));
+            let assetObj: Asset[] = JSON.parse(message.field).assets;
+            console.log('message recieved', assetObj);
+            this.setState ({
+                recievedMessage: true,
+                messageField: assetObj
+            }); 
+        });
+        // if (this.state.recievedMessage) {
+
+        // }
+        // console.log(this.state)
         return (
             <div> 
                  {/* will import in the form component here */}
                  <Form runFunc={runWebpackGetStats}  />
-                {/* <button onClick={runStats('stats')}>click</button> */}
-
+                 <Assets recievedMessage={this.state.recievedMessage} messageField={this.state.messageField}/>
             </div>
         );
     }
+    
 }
 
 
