@@ -8,6 +8,7 @@ const { exec } = require('child_process');
 const fs = require('fs');
 const util = require('util');
 const esprima = require('esprima');
+const path = require('path');
 function loadScript(context, path) {
     return `<script src="${vscode_1.Uri.file(context.asAbsolutePath(path)).with({ scheme: 'vscode-resource' }).toString()}"></script>`;
 }
@@ -17,7 +18,10 @@ function activate(context) {
         const panel = vscode_1.window.createWebviewPanel('nimble', 'Nimble', vscode_1.ViewColumn.Beside, { enableScripts: true });
         panel.webview.html = getWebviewContent(context);
         panel.webview.onDidReceiveMessage((message) => {
+            let entryPointPath;
+            entryPointPath = message.entry;
             let moduleState;
+            console.log('this is the message.entry: ', message.entry);
             switch (message.command) {
                 //button: config, build and get stats of app:
                 case 'config':
@@ -27,9 +31,8 @@ function activate(context) {
                     const webpackConfigObject = createWebpackConfig(`${(vscode_1.workspace.workspaceFolders ? vscode_1.workspace.workspaceFolders[0].uri.path : '/') + message.entry}`, moduleObj);
                     // console.log('this is webpackConfigObject :', webpackConfigObject);
                     const writeUri = `${__dirname}/webpack.config.js`;
-                    vscode_1.workspace.fs.writeFile(vscode_uri_1.URI.file(writeUri), new Uint8Array(Buffer.from(`const path = require('path');            
-      
-module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8')))
+                    vscode_1.workspace.fs.writeFile(vscode_uri_1.URI.file(writeUri), new Uint8Array(Buffer.from(`const path = require('path');
+              module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8')))
                         .then(res => {
                         return exec('npx webpack --profile --json > compilation-stats.json', { cwd: __dirname }, (err, stdout) => {
                             // console.log('Error in exec: ', err);
@@ -41,6 +44,31 @@ module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8')
                         });
                     });
                 case 'optimize':
+                    //this is where we start the dynamic load functionality
+                    //Big ALGO: traversing the files to find import statements
+                    //1. Write a function that takes a path as a parameter
+                    //the initial path is the entry point given by the user (later on, in the recursive call we will cal this function using the path of the imported components)
+                    //2. read the file using fs.readFile and save the whole file as a string
+                    //3. use the Esprima parser to convert the file string into an object
+                    //pass in the stringified file into the esprima function as an argument
+                    //return the object with the file contents
+                    //4. look into object to find import or require statments (callee identifier name)
+                    //SECOND PART: If an import or require statement is found
+                    //1. run the dynamic import transformation function here (run it immediately )
+                    //-------------------------ACTUAL START OF ALGO HERE-----------------------------------
+                    function traverseAndDynamicallyImport(entryPath) {
+                        //read the file
+                        let readURI = entryPath; //userfolderpath/src/client/index.js
+                        vscode_1.workspace.fs.readFile(path.resolve(__dirname, entryPath))
+                            .then(res => console.log());
+                        /*
+                        create uri from component path given from (importDeclaration.source.value) -->
+                        workspace.fs.readFile(path.resolve(__dirname, (importDeclaration.source.value)))
+                          .then(res => {
+                            optimize(res.toString());
+                          })
+                        */
+                    }
                 // console.log('optimizing: parsing thru files and performing opt fx()');
                 /*
                   jackie and rachel's parsing algo for folders => ./path that requires opt();

@@ -3,11 +3,13 @@ import {
   ExtensionContext, commands, window, ViewColumn, Uri, workspace,
 } from 'vscode';
 import { URI } from 'vscode-uri';
+import { string } from 'prop-types';
 // node docs;
 const { exec } = require('child_process');
 const fs = require('fs');
 const util = require('util');
 const esprima = require('esprima');
+const path = require('path');
 
 
 function loadScript(context: ExtensionContext, path: string) {
@@ -19,9 +21,13 @@ export function activate(context: ExtensionContext) {
   const startCommand = commands.registerCommand('extension.startNimble', () => {
     const panel = window.createWebviewPanel('nimble', 'Nimble', ViewColumn.Beside, { enableScripts: true });
     panel.webview.html = getWebviewContent(context);
-
+    
     panel.webview.onDidReceiveMessage((message: any) => {
+      
+      let entryPointPath: any;
+      entryPointPath = message.entry;
       let moduleState: any;
+      console.log('this is the message.entry: ', message.entry);
       switch (message.command) {
         //button: config, build and get stats of app:
         case 'config':
@@ -34,9 +40,8 @@ export function activate(context: ExtensionContext) {
           // console.log('this is webpackConfigObject :', webpackConfigObject);
           const writeUri = `${__dirname}/webpack.config.js`;
           workspace.fs.writeFile(URI.file(writeUri), new Uint8Array(Buffer.from(
-            `const path = require('path');            
-      
-module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8',
+            `const path = require('path');
+              module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8',
           )))
             .then(res => {
               return exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname}, (err : Error, stdout: string)=>{
@@ -52,20 +57,37 @@ module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8',
           //this is where we start the dynamic load functionality
 
           //Big ALGO: traversing the files to find import statements
-          function traverseAndDynamicallyImport() {
-            //1. Write a function that takes a path as a parameter
-              //the path is the entry point given by the user
-  
-              //2. read the file using fs.readFile and save the whole file as a string
-              //3. use the Esprima parser to convert the file string into an object
-                //pass in the stringified file into the esprima function as an argument
-                //return the object with the file contents
-              //4. look into object to find import or require statments (callee identifier name)
-  
-  
-            //SECOND PART: If an import or require statement is found
-              //1. run the dynamic import transformation function here (run it immediately )
-            
+
+          //1. Write a function that takes a path as a parameter
+            //the initial path is the entry point given by the user (later on, in the recursive call we will cal this function using the path of the imported components)
+            //2. read the file using fs.readFile and save the whole file as a string
+            //3. use the Esprima parser to convert the file string into an object
+              //pass in the stringified file into the esprima function as an argument
+              //return the object with the file contents
+            //4. look into object to find import or require statments (callee identifier name)
+
+
+          //SECOND PART: If an import or require statement is found
+            //1. run the dynamic import transformation function here (run it immediately )
+          //-------------------------ACTUAL START OF ALGO HERE-----------------------------------
+          
+
+          function traverseAndDynamicallyImport(entryPath: string) {
+            //read the file
+            let readURI: string = entryPath;//userfolderpath/src/client/index.js
+            workspace.fs.readFile(path.resolve(__dirname, entryPath))
+            .then(res => console.log());
+            /*
+            create uri from component path given from (importDeclaration.source.value) --> 
+            workspace.fs.readFile(path.resolve(__dirname, (importDeclaration.source.value)))
+              .then(res => {
+                optimize(res.toString());
+              })
+            */
+
+
+
+
           }
 
 
