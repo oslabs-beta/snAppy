@@ -7,6 +7,7 @@ import { URI } from 'vscode-uri';
 const { exec } = require('child_process');
 const fs = require('fs');
 const util = require('util');
+const esprima = require('esprima');
 
 
 function loadScript(context: ExtensionContext, path: string) {
@@ -22,19 +23,16 @@ export function activate(context: ExtensionContext) {
     panel.webview.onDidReceiveMessage((message: any) => {
       let moduleState: any;
       switch (message.command) {
+        //button: config, build and get stats of app:
         case 'config':
           moduleState = {
             ...message.module,
           };
           const moduleObj = createModule(moduleState);
-
-          console.log(workspace.workspaceFolders? workspace.workspaceFolders[0]: '/', 'message.entry:', message.entry);
+          // console.log(workspace.workspaceFolders? workspace.workspaceFolders[0]: '/', 'message.entry:', message.entry);
           const webpackConfigObject: any = createWebpackConfig(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + message.entry}`, moduleObj);
           // console.log('this is webpackConfigObject :', webpackConfigObject);
-
-
           const writeUri = `${__dirname}/webpack.config.js`;
-
           workspace.fs.writeFile(URI.file(writeUri), new Uint8Array(Buffer.from(
             `const path = require('path');            
       
@@ -46,9 +44,30 @@ module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8',
                 console.log(stdout);
               });
             });
-
-        case 'stats':
-          // console.log('getting stats');
+        case 'optimize':
+          // console.log('optimizing: parsing thru files and performing opt fx()');
+          /*
+            jackie and rachel's parsing algo for folders => ./path that requires opt();
+            assuming: the returned files are importing components in an obj
+              const toParseObj = {
+                    path: path.resolve(__dirname, value),
+                    routers: T,   BrowserRouter as Router, Route, Link, Redirect,
+                    libraries: T, any imports that's NOT a path or react redux
+                    component: {
+                      name: 'Weekly',
+                      value: './path'
+                      }
+                    }
+                  }
+                }
+          */
+              /*
+              create uri from component path given from (importDeclaration.source.value) --> 
+              workspace.fs.readFile(path.resolve(__dirname, (importDeclaration.source.value)))
+                .then(res => {
+                  optimize(res.toString());
+                })
+              */
       }
     });
   });
@@ -139,4 +158,24 @@ function createModule(modules: any) {
   return module;
 }
 
+//assuming we have an obj stringified, we can now parse thru using ast;
+
+function optimize(parse: any) {
+  //if it imports browserrouter...
+    // if (parse.router) reactRouterDynamicImport(res);
+  //if lodash...moments, w/e
+    // if (parse.library)libraryDynamicImport(res);
+  //if eventListeners,
+    // if (parse.events) eventListenersDynamicImport(res);
+}
+function reactRouterDynamicImport(res: string) {
+  esprima.parseScript(res); //this will return the ast
+  //parse: 
+}
+
+function libraryDynamicImport(res:string) {
+
+}
+function eventListenersDynamicImport(res:string) {
+}
 export function deactivate() {}

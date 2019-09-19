@@ -152,7 +152,7 @@ export default class Form extends React.Component<{ runFunc: any},State> {
                     <input type='checkbox' value="tsx" onChange={this.tsxHandler}/>
                     <label>ts/tsx</label>
                     <br/>
-                    <input type='submit' value='Start Optimization!'/>
+                    <input type='submit' value='Bundle!'/>
                 </form>
 
             </div>
