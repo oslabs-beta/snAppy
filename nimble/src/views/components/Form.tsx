@@ -136,7 +136,7 @@ export default class Form extends React.Component<{ runFunc: any},State> {
         return(
             <div>
                 <form onSubmit={this.onSubmitForm}>
-                    <label>Entry Point: </label>
+                    <label id='firstFormLabel'>Entry Point: </label>
                     <input type='text' value={state.entryPoint} onChange={this.entryHandler}/>
 
                     <br/>
