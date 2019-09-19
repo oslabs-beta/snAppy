@@ -134,26 +134,29 @@ export default class Form extends React.Component<{ runFunc: any},State> {
     render() {
         const state = this.state;
         return(
-            <div>
+            <div id='formDiv'>
                 <form onSubmit={this.onSubmitForm}>
                     <label id='firstFormLabel'>Entry Point: </label>
                     <input type='text' value={state.entryPoint} onChange={this.entryHandler}/>
 
                     <br/>
-                    <label>Modules: </label><br/>
-                    
-                    <input type='checkbox' value="css" onChange={this.cssHandler}/>
-                    <label>css</label>
-                    <input type='checkbox' value="jsx" onChange={this.jsxHandler}/>
-                    <label>jsx/js</label>
-                    <input type='checkbox' value="less" onChange={this.lessHandler}/>
-                    <label>less</label>
-                    <input type='checkbox' value="sass" onChange={this.sassHandler}/>
-                    <label>sass</label>
-                    <input type='checkbox' value="tsx" onChange={this.tsxHandler}/>
-                    <label>ts/tsx</label>
                     <br/>
-                    <input type='submit' value='Start Optimization!'/>
+                    <label id='firstFormLabel'>Modules: </label><br/><br/>
+                    <div id='optionsDiv'>
+                        <input type='checkbox' value="css" onChange={this.cssHandler}/>
+                        <label id='WPoptionLabel'>css</label>
+                        <input type='checkbox' value="jsx" onChange={this.jsxHandler}/>
+                        <label id='WPoptionLabel'>jsx/js</label>
+                        <input type='checkbox' value="less" onChange={this.lessHandler}/>
+                        <label id='WPoptionLabel'>less</label>
+                        <input type='checkbox' value="sass" onChange={this.sassHandler}/>
+                        <label id='WPoptionLabel'>sass</label>
+                        <input type='checkbox' value="tsx" onChange={this.tsxHandler}/>
+                        <label id='WPoptionLabel'>ts/tsx</label>
+                        <br/><br/>
+                    </div>
+                        <input id='submitButton'type='submit' value='Start Optimization!'/>
+                    
                 </form>
 
             </div>

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Form from './components/Form';
+import '../style/styles.css';
 
 // interface set for class; set type to void because function does not return a value;
 interface Vscode {
@@ -25,8 +26,10 @@ export default class App extends React.Component {
 
         return (
             <div id='mainApp'> 
+                <h1 id='logoText'>snAppy</h1>
+                <br/><br/>
                  {/* will import in the form component here */}
-                 <Form runFunc={runWebpackGetStats}  />
+                 <Form runFunc={runWebpackGetStats} />
                 {/* <button onClick={runStats('stats')}>click</button> */}
 
             </div>
