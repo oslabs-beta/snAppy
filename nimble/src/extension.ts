@@ -42,7 +42,7 @@ module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8',
               return exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname}, (err : Error, stdout: string)=>{
                 // console.log('Error in exec: ', err);
                 // console.log(stdout);
-                workspace.fs.readFile(URI.file('/Users/courtneykwong/Documents/prod/CJOR/nimble/out/compilation-stats.json'))
+                workspace.fs.readFile(URI.file(`${__dirname}/compilation-stats.json`))
                   .then(res => {
                     panel.webview.postMessage({command: 'stats', field: res.toString()});
                   });
