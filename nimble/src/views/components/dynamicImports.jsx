@@ -104,4 +104,4 @@ const object = {
   },
 }
 
-console.log(createDynamicInjection(object))
+//console.log(createDynamicInjection(object))
