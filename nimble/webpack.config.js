@@ -8,7 +8,7 @@ module.exports = {
         path: 'dirname/uri which we can also do by ourselves via the workspace.workspaceFolder (refer to ext.ts)
     */
     entry: {
-        nimble: './src/views/index.tsx'
+        snappy: './src/views/index.tsx'
     },
     output: {
         path: path.resolve(__dirname, 'out'),

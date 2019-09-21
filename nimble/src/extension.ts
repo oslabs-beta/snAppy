@@ -15,9 +15,9 @@ function loadScript(context: ExtensionContext, path: string) {
 }
 
 export function activate(context: ExtensionContext) {
-  console.log('Congratulations, your extension "nimble" is now active!');
-  const startCommand = commands.registerCommand('extension.startNimble', () => {
-    const panel = window.createWebviewPanel('nimble', 'snAppy!', ViewColumn.Beside, { enableScripts: true });
+  console.log('Congratulations, your extension "snAppy" is now active!');
+  const startCommand = commands.registerCommand('extension.startSnappy', () => {
+    const panel = window.createWebviewPanel('snAppy', 'snAppy!', ViewColumn.Beside, { enableScripts: true });
     panel.webview.html = getWebviewContent(context);
 
     panel.webview.onDidReceiveMessage((message: any) => {
@@ -43,7 +43,7 @@ module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8',
               return exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname}, (err : Error, stdout: string)=>{
                 // console.log('Error in exec: ', err);
                 // console.log(stdout);
-                workspace.fs.readFile(URI.file('/Users/courtneykwong/Documents/prod/CJOR/nimble/out/compilation-stats.json'))
+                workspace.fs.readFile(URI.file(`${__dirname}/compilation-stats.json`))
                   .then(res => {
                     panel.webview.postMessage({command: 'stats', field: res.toString()});
                   });
@@ -86,7 +86,7 @@ function getWebviewContent(context: ExtensionContext) {
 		<meta charset="UTF-8">
 		<meta http-equiv="Content-Security-Policy">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Nimble</title>
+		<title>Snappy</title>
 	</head>
 
 	<body>
@@ -94,7 +94,7 @@ function getWebviewContent(context: ExtensionContext) {
 		<script>
 		const vscode = acquireVsCodeApi();
 		</script>
-		${loadScript(context, 'out/nimble.js')}
+		${loadScript(context, 'out/snappy.js')}
 	</body>
 	</html>`;
 }
