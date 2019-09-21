@@ -105,9 +105,9 @@ function traverseAndDynamicallyImport(entryPath: string) {
       //read the file
       let readURI: any = URI.file(entryPath);//userfolderpath/src/client/index.js
       workspace.fs.readFile(readURI)
-      .then(res => console.log(esprima.parseScript(res.toString()))); //should return the object
-      // .then(res => console.log(res.toString())); 
-      //look into the obj to find import/require statement
+      .then((res: any) => {
+        console.log(esprima.parseScript(res.toString()), {tolerance: true}); //should return th
+      });//look into the obj to find import/require statement
 
       //as we hit the import statement
       //if it is (....child component), then store the path to child component in an array
