@@ -1,6 +1,6 @@
 {
-	"name": "nimble",
-	"displayName": "Nimble",
+	"name": "snappy",
+	"displayName": "snAppy",
 	"description": "Front-end Optimization",
 	"version": "0.0.1",
 	"engines": {
@@ -10,15 +10,15 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.startNimble"
+		"onCommand:extension.startSnappy"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.startNimble",
-				"title": "Nimble",
-				"category": "Start Nimble"
+				"command": "extension.startSnappy",
+				"title": "snAppy",
+				"category": "Start snApping"
 			}
 		]
 	},

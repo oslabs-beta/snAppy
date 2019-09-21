@@ -12,9 +12,9 @@ function loadScript(context, path) {
     return `<script src="${vscode_1.Uri.file(context.asAbsolutePath(path)).with({ scheme: 'vscode-resource' }).toString()}"></script>`;
 }
 function activate(context) {
-    console.log('Congratulations, your extension "nimble" is now active!');
-    const startCommand = vscode_1.commands.registerCommand('extension.startNimble', () => {
-        const panel = vscode_1.window.createWebviewPanel('nimble', 'Nimble', vscode_1.ViewColumn.Beside, { enableScripts: true });
+    console.log('Congratulations, your extension "snAppy" is now active!');
+    const startCommand = vscode_1.commands.registerCommand('extension.startSnappy', () => {
+        const panel = vscode_1.window.createWebviewPanel('snAppy', 'snAppy!', vscode_1.ViewColumn.Beside, { enableScripts: true });
         panel.webview.html = getWebviewContent(context);
         panel.webview.onDidReceiveMessage((message) => {
             let moduleState;
@@ -31,6 +31,7 @@ function activate(context) {
       
 module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8')))
                         .then(res => {
+                        vscode_1.window.showInformationMessage('Bundling...');
                         return exec('npx webpack --profile --json > compilation-stats.json', { cwd: __dirname }, (err, stdout) => {
                             // console.log('Error in exec: ', err);
                             // console.log(stdout);
@@ -77,7 +78,7 @@ function getWebviewContent(context) {
 		<meta charset="UTF-8">
 		<meta http-equiv="Content-Security-Policy">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Nimble</title>
+		<title>Snappy</title>
 	</head>
 
 	<body>
@@ -85,7 +86,7 @@ function getWebviewContent(context) {
 		<script>
 		const vscode = acquireVsCodeApi();
 		</script>
-		${loadScript(context, 'out/nimble.js')}
+		${loadScript(context, 'out/snappy.js')}
 	</body>
 	</html>`;
 }

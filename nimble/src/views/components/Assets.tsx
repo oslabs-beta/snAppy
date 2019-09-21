@@ -25,7 +25,7 @@ export default class Assets extends React.Component<Props,{}> {
         if(recievedMessage && messageField){
             return(<>
             <h4>Bundled Asset(s):  Size</h4>
-            {messageField.map((asset:Asset)=><div>{`${asset.name}: ${asset.size} KiB`}</div>)}
+            {messageField.map((asset:Asset)=><div >{`${asset.name}: ${asset.size} KiB`}</div>)}
             <button>Remove Dupes</button>
             <button>Lazy-load</button>
             <button>Export Files</button>
