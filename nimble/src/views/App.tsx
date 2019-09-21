@@ -31,7 +31,7 @@ export default class App extends React.Component<{},State> {
             messageField: undefined,
             algoMessage: {
                 command: 'optimize',
-                entry: '/Users/MacBong/Desktop/production/CJOR/nimble/out/extension.js',
+                entry: '/Users/MacBong/Desktop/production/CJOR/nimble/out/src/views/components/test.js',
             }
         };
     }
