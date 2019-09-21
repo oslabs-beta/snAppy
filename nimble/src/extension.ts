@@ -17,7 +17,7 @@ function loadScript(context: ExtensionContext, path: string) {
 export function activate(context: ExtensionContext) {
   console.log('Congratulations, your extension "nimble" is now active!');
   const startCommand = commands.registerCommand('extension.startNimble', () => {
-    const panel = window.createWebviewPanel('nimble', 'Nimble', ViewColumn.Beside, { enableScripts: true });
+    const panel = window.createWebviewPanel('nimble', 'snAppy!', ViewColumn.Beside, { enableScripts: true });
     panel.webview.html = getWebviewContent(context);
 
     panel.webview.onDidReceiveMessage((message: any) => {
@@ -39,6 +39,7 @@ export function activate(context: ExtensionContext) {
 module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8',
           )))
             .then(res => {
+              window.showInformationMessage('Bundling...');
               return exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname}, (err : Error, stdout: string)=>{
                 // console.log('Error in exec: ', err);
                 // console.log(stdout);

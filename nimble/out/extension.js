@@ -14,7 +14,7 @@ function loadScript(context, path) {
 function activate(context) {
     console.log('Congratulations, your extension "nimble" is now active!');
     const startCommand = vscode_1.commands.registerCommand('extension.startNimble', () => {
-        const panel = vscode_1.window.createWebviewPanel('nimble', 'Nimble', vscode_1.ViewColumn.Beside, { enableScripts: true });
+        const panel = vscode_1.window.createWebviewPanel('nimble', 'snAppy!', vscode_1.ViewColumn.Beside, { enableScripts: true });
         panel.webview.html = getWebviewContent(context);
         panel.webview.onDidReceiveMessage((message) => {
             let moduleState;
@@ -31,6 +31,7 @@ function activate(context) {
       
 module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8')))
                         .then(res => {
+                        vscode_1.window.showInformationMessage('Bundling...');
                         return exec('npx webpack --profile --json > compilation-stats.json', { cwd: __dirname }, (err, stdout) => {
                             // console.log('Error in exec: ', err);
                             // console.log(stdout);

@@ -1,6 +1,6 @@
 {
 	"name": "nimble",
-	"displayName": "Nimble",
+	"displayName": "snAppy",
 	"description": "Front-end Optimization",
 	"version": "0.0.1",
 	"engines": {
@@ -17,8 +17,8 @@
 		"commands": [
 			{
 				"command": "extension.startNimble",
-				"title": "Nimble",
-				"category": "Start Nimble"
+				"title": "snAppy",
+				"category": "Start snApping"
 			}
 		]
 	},
