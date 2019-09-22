@@ -98,4 +98,4 @@ export default class App extends React.Component<{},State> {
 //if true react Route to the component with visualizations
 //so react router need to wrapped inside an componenetDidMount inside of the app class snd sdd event listener which listens to the message from the backed when bundling is finished
 //and this will setState bundle: true
-//in the render () add a conidtional (this.state.bundled) : comp =<visualization/> ? componet =<
+//in the render () add a conidtional (this.state.bundled) : comp =<visualization/> ? componet
