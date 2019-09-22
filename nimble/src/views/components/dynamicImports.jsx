@@ -66,7 +66,7 @@ let injection = `class DynamicImport extends Component {
 //inside of the outside func there will be a function that injects a string literal with values from the object into string declaration of new instance of DynamicImports class
 function newInstance(name, path) {
   return `const ${name} = (props) => (
-  <DynamicImport load= {() => import(/*${name}-chunk*/ '${path}')}>{
+  <DynamicImport load= {() => import(/*wepbackChunkName: "${name}-chunk"*/ '${path}')}>{
     (Component) => Component === null 
     ? <p>Loading..</p>
     : <Component {...props}/>
