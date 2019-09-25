@@ -85,69 +85,20 @@ const object = {
   Main: {
     name: 'Main',
     path: './Main',
-    range: [1, 2]
   },
   App: {
     name: 'App',
     path: './App',
-    range: [3, 6]
   },  
   Entry: {
     name: 'Entry',
     path: './Entry',
-    range: [7, 9]
   },  
   Last: {
     name: 'Last',
     path: './Last',
-    range: [10, 13]
   },
 }
-
-// class DynamicImport extends Component { 
-//   state = { 
-//     component: null 
-//   } 
-//   componentDidMount() { 
-//     this.props.load() 
-//       .then((component) => { 
-//         this.setState(()=> ({ 
-//           component : component.default ? component.default : component 
-//         })) 
-//     }) 
-//   } 
-//   render () { 
-//     return this.props.children(this.state.component) 
-//   } 
-// } 
-
-// const Mantra = (props) => ( 
-//   <DynamicImport load= {() => import(/*webpackChunkName: "Mantra-chunk"*/ './MantraContainer')}>{ 
-//     (Component) => Component === null  
-//     ? <p>Loading..</p> 
-//     : <Component {...props}/>
-//   }</DynamicImport> 
-// ) 
-// const Entry = (props) => ( 
-//   <DynamicImport load= {() => import(/*webpackChunkName: "Entry-chunk"*/ './EntryContainer')}>{ 
-//     (Component) => Component === null  
-//     ? <p>Loading..</p> 
-//     : <Component {...props}/>
-//   }</DynamicImport> 
-// ) 
-// const Login = (props) => ( 
-//   <DynamicImport load= {() => import(/*webpackChunkName: "Login-chunk"*/ './LoginContainer')}>{ 
-//     (Component) => Component === null  
-//     ? <p>Loading..</p> 
-//     : <Component {...props}/>
-//   }</DynamicImport> 
-// ) 
-// const Weekly = (props) => ( 
-//   <DynamicImport load= {() => import(/*webpackChunkName: "Weekly-chunk"*/ './WeeklyContainer')}>{ 
-//     (Component) => Component === null  
-//     ? <p>Loading..</p> 
-//     : <Component {...props}/>
-//   }</DynamicImport> 
-// ) 
-
-console.log(createDynamicInjection(object))
+let exportLine = 10;
+// parameters: commponent objects and export line from outer obj to insert there
+console.log(createDynamicInjection(object, exportLine))

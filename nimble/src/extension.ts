@@ -1,8 +1,9 @@
 // import * as vscode from 'vscode';
 import {
-  ExtensionContext, commands, window, ViewColumn, Uri, workspace,
+  Position, WorkspaceEdit, ExtensionContext, commands, window, ViewColumn, Uri, workspace,
 } from 'vscode';
 import { URI } from 'vscode-uri';
+import { downloadAndUnzipVSCode } from 'vscode-test';
 // node docs;
 const { exec } = require('child_process');
 const fs = require('fs');
@@ -51,6 +52,15 @@ module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8',
             });
         case 'optimize':
           console.log('optimizing: parsing thru files and performing opt fx()');
+            //create a test readFile function from one of the component files (RR container)
+            //once read .then the variable readURI get updated with URI of current file
+            let currURI = URI.file('/Users/lola/Documents/codesmith/soloproject/src/client/containers/RRContainer.jsx');
+            //will use that and the starting position to comment out static imports by using workspaceEdit.insert(URI, position, string)
+            let edit = new WorkspaceEdit()
+            edit.insert(currURI, new Position(10, 0), "//");
+            workspace.applyEdit(edit)
+              .then(res => console.log('edited', res))
+          
           /*
             jackie and rachel's parsing algo for folders => ./path that requires opt();
             assuming: the returned files are importing components in an obj
