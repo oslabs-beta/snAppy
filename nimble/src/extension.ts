@@ -9,7 +9,7 @@ const { exec } = require('child_process');
 const fs = require('fs');
 const util = require('util');
 const esprima = require('esprima');
-import * as configs from "./webpackFunctions"
+import * as configs from "./functions/webpackFunctions"
 
 
 function loadScript(context: ExtensionContext, path: string) {
