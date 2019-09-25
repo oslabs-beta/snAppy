@@ -106,7 +106,7 @@ function traverseAndDynamicallyImport(entryPath: string) {
       let readURI: any = URI.file(entryPath);//userfolderpath/src/client/index.js
       workspace.fs.readFile(readURI)
       .then((res: any) => {
-            console.log("the esprima obj after res to string is:", esprima.parseModule(res.toString(), { tolerant: true }));
+            console.log("the esprima obj after res to string is:", esprima.parseModule(res.toString(), { tolerant: true, range: true}));
          });
       //as we hit the import statement
       //if it is (....child component), then store the path to child component in an array
