@@ -106,8 +106,11 @@ function traverseAndDynamicallyImport(entryPath: string) {
       let readURI: any = URI.file(entryPath);//userfolderpath/src/client/index.js
       workspace.fs.readFile(readURI)
       .then((res: any) => {
-            console.log("the esprima obj after res to string is:", esprima.parseModule(res.toString(), { tolerant: true, range: true, loc: true}));
-         });
+            // console.log("the esprima obj after res to string is:", esprima.parseModule(res.toString(), { tolerant: true, range: true, loc: true}));
+            let result = parseAST(esprima.parseModule(res.toString(), { tolerant: true, range: true, loc: true}));
+            console.log("this is the result obj from parseAST", result);  
+        
+      });
 
       //as we hit the import statement
       //if it is (....child component), then store the path to child component in an array
@@ -118,30 +121,48 @@ function traverseAndDynamicallyImport(entryPath: string) {
   }
 
 function parseAST(astObj: any) {
-  //this must loop through nested objects
-  //look through the body
-  // astObj.body = [{first import statement}, {second import statement}]
+  interface ComponentObj {
+    name: string;
+    source: string;
+    range?: number[];
+    line?: number;
+  }
+  interface ResultObj {
+    paths: Array<string>;
+    components: any;
+    exportLineNumber: number;
+    importLineNumbers: number[];
+  }
+
+  let resultObj: ResultObj = {paths:[], components:{}, exportLineNumber:0, importLineNumbers:[]};
   
-if (// astObj.body[0].type === 'ImportDeclaration';) //different from "const require statement"
-
-
-// (first import statement)
-// astObj.body[0].type === 'ImportDeclaration';
+  for (let i=0; i<astObj.body.length; i+=1) {
+    let regex = /\//g;
+    if (astObj.body[i].type === 'ImportDeclaration') {
+      let componentObj: ComponentObj = {name : '', source: '', range: [], line:0};
+      //if the current statement includes a child component import;
+      if (astObj.body[0].source.value === regex) {
+        componentObj.name = astObj.body[i].specifiers[0].local.name;
+        componentObj.source = astObj.body[i].source.value;
+        componentObj.range = astObj.body[i].range; 
+        componentObj.line = astObj.body[i].loc.start.line;
+      }
+      resultObj.components[componentObj.source] = componentObj;
+    }
+    
+    // astObj.body[0].type === 'ImportDeclaration';
 // astObj.body[0].specifiers[0].local.name === 'React';
-// asbObj.body[0].source.value: "react"
+// asbObj.body[0].source.value: "react" or path of the child component
 // asbObj.body[0].range === [0, 26];
-
+// asbObj.body[0].loc.start.line === 1;
+    
+// (first import statement)
 // (second import statement)
-
-
-
-
-
-
   //find Expression Statement
   //find Variable Declarations with callee.name === 'require'
+} 
+return resultObj;
 }
-
 
 
 function getWebviewContent(context: ExtensionContext) {
