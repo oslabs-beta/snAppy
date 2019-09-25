@@ -8,6 +8,7 @@ const { exec } = require('child_process');
 const fs = require('fs');
 const util = require('util');
 const esprima = require('esprima');
+const configs = require("./webpackFunctions");
 function loadScript(context, path) {
     return `<script src="${vscode_1.Uri.file(context.asAbsolutePath(path)).with({ scheme: 'vscode-resource' }).toString()}"></script>`;
 }
@@ -22,9 +23,9 @@ function activate(context) {
                 //button: config, build and get stats of app:
                 case 'config':
                     moduleState = Object.assign({}, message.module);
-                    const moduleObj = createModule(moduleState);
+                    const moduleObj = configs.createModule(moduleState);
                     // console.log(workspace.workspaceFolders? workspace.workspaceFolders[0]: '/', 'message.entry:', message.entry);
-                    const webpackConfigObject = createWebpackConfig(`${(vscode_1.workspace.workspaceFolders ? vscode_1.workspace.workspaceFolders[0].uri.path : '/') + message.entry}`, moduleObj);
+                    const webpackConfigObject = configs.createWebpackConfig(`${(vscode_1.workspace.workspaceFolders ? vscode_1.workspace.workspaceFolders[0].uri.path : '/') + message.entry}`, moduleObj);
                     // console.log('this is webpackConfigObject :', webpackConfigObject);
                     const writeUri = `${__dirname}/webpack.config.js`;
                     vscode_1.workspace.fs.writeFile(vscode_uri_1.URI.file(writeUri), new Uint8Array(Buffer.from(`const path = require('path');            
@@ -97,88 +98,6 @@ function getWebviewContent(context) {
 		${loadScript(context, 'out/snappy.js')}
 	</body>
 	</html>`;
-}
-// webpack config functions:
-// entry - message.entry:
-function createWebpackConfig(entry, mod) {
-    const moduleExports = {};
-    moduleExports.entry = {
-        main: entry,
-    };
-    moduleExports.output = {
-        filename: 'bundle.js',
-        path: `${(vscode_1.workspace.workspaceFolders ? vscode_1.workspace.workspaceFolders[0].uri.path : '/') + '/dist'}`,
-    };
-    moduleExports.resolve = {
-        extensions: ['.jsx', '.js', '.ts', '.tsx', '.json'],
-    };
-    moduleExports.module = mod;
-    return moduleExports;
-}
-// mod: moduleState.mod
-function createModule(modules) {
-    const module = {};
-    module.rules = [];
-    if (modules.css) {
-        module.rules.push({
-            // keeping regex in string form so that we can pass it to another file
-            // we are thinking to convert the string back to a regexpression right before injecting this code into another file
-            test: /\.css$/i,
-            use: ['style-loader', 'css-loader'],
-        });
-        // console.log("test key value from module.css obj is", module.rules[0].test);
-    }
-    if (modules.jsx) {
-        module.rules.push({
-            test: /\.(js|jsx)$/,
-            use: [{
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env', '@babel/preset-react'],
-                        plugins: ['@babel/plugin-proposal-class-properties']
-                    },
-                }],
-            exclude: '/node_modules/',
-        });
-    }
-    // if statement for modules.tsx
-    if (modules.tsx) {
-        module.rules.push({
-            test: /\.tsx?$/,
-            use: ['ts-loader'],
-            exclude: '/node_modules/',
-        });
-    }
-    if (modules.less) {
-        module.rules.push({
-            test: /\.less$/,
-            loader: 'less-loader',
-        });
-    }
-    if (modules.sass) {
-        module.rules.push({
-            test: /\.s[ac]ss$/i,
-            use: ['style-loader', 'css-loader', 'sass-loader'],
-        });
-    }
-    return module;
-}
-//assuming we have an obj stringified, we can now parse thru using ast;
-function optimize(parse) {
-    //if it imports browserrouter...
-    // if (parse.router) reactRouterDynamicImport(res);
-    //if lodash...moments, w/e
-    // if (parse.library)libraryDynamicImport(res);
-    //if eventListeners,
-    // if (parse.events) eventListenersDynamicImport(res);
-}
-function reactRouterDynamicImport(res) {
-    esprima.parseScript(res); //this will return the ast
-    //parse: 
-}
-function libraryDynamicImport(res) {
-}
-function eventListenersDynamicImport(res) {
 }
 function deactivate() { }
 exports.deactivate = deactivate;
