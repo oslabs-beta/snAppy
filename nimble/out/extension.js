@@ -90,7 +90,7 @@ function traverseAndDynamicallyImport(entryPath) {
     let readURI = vscode_uri_1.URI.file(entryPath); //userfolderpath/src/client/index.js
     vscode_1.workspace.fs.readFile(readURI)
         .then((res) => {
-        console.log("the esprima obj after res to string is:", esprima.parseModule(res.toString(), { tolerant: true, range: true }));
+        console.log("the esprima obj after res to string is:", esprima.parseModule(res.toString(), { tolerant: true, range: true, loc: true }));
     });
     //as we hit the import statement
     //if it is (....child component), then store the path to child component in an array
@@ -101,6 +101,24 @@ function traverseAndDynamicallyImport(entryPath) {
 function parseAST(astObj) {
     //this must loop through nested objects
     //look through the body
+    // astObj.body = [{first import statement}, {second import statement}]
+    if (
+    // (first import statement)
+    // astObj.body[0].type === 'ImportDeclaration';
+    // astObj.body[0].specifiers[0].local.name === 'React';
+    // asbObj.body[0].source.value: "react"
+    // asbObj.body[0].range === [0, 26];
+    // (second import statement)
+    //find Expression Statement
+    //find Variable Declarations with callee.name === 'require'
+    )
+        ; // astObj.body[0].type === 'ImportDeclaration';) //different from "const require statement"
+    // (first import statement)
+    // astObj.body[0].type === 'ImportDeclaration';
+    // astObj.body[0].specifiers[0].local.name === 'React';
+    // asbObj.body[0].source.value: "react"
+    // asbObj.body[0].range === [0, 26];
+    // (second import statement)
     //find Expression Statement
     //find Variable Declarations with callee.name === 'require'
 }

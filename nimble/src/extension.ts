@@ -106,8 +106,9 @@ function traverseAndDynamicallyImport(entryPath: string) {
       let readURI: any = URI.file(entryPath);//userfolderpath/src/client/index.js
       workspace.fs.readFile(readURI)
       .then((res: any) => {
-            console.log("the esprima obj after res to string is:", esprima.parseModule(res.toString(), { tolerant: true, range: true}));
+            console.log("the esprima obj after res to string is:", esprima.parseModule(res.toString(), { tolerant: true, range: true, loc: true}));
          });
+
       //as we hit the import statement
       //if it is (....child component), then store the path to child component in an array
       //iterate through the array and recursively call traverse function with each element 
@@ -118,8 +119,25 @@ function traverseAndDynamicallyImport(entryPath: string) {
 
 function parseAST(astObj: any) {
   //this must loop through nested objects
-
   //look through the body
+  // astObj.body = [{first import statement}, {second import statement}]
+  
+if (// astObj.body[0].type === 'ImportDeclaration';) //different from "const require statement"
+
+
+// (first import statement)
+// astObj.body[0].type === 'ImportDeclaration';
+// astObj.body[0].specifiers[0].local.name === 'React';
+// asbObj.body[0].source.value: "react"
+// asbObj.body[0].range === [0, 26];
+
+// (second import statement)
+
+
+
+
+
+
   //find Expression Statement
   //find Variable Declarations with callee.name === 'require'
 }
