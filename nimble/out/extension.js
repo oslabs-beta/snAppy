@@ -9,6 +9,7 @@ const fs = require('fs');
 const util = require('util');
 const esprima = require('esprima');
 const configs = require("./functions/webpackFunctions");
+const optimize = require("./functions/optimizeFunctions");
 function loadScript(context, path) {
     return `<script src="${vscode_1.Uri.file(context.asAbsolutePath(path)).with({ scheme: 'vscode-resource' }).toString()}"></script>`;
 }
@@ -38,20 +39,18 @@ module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8')
                             // console.log(stdout);
                             vscode_1.workspace.fs.readFile(vscode_uri_1.URI.file(`${__dirname}/compilation-stats.json`))
                                 .then(res => {
-                                panel.webview.postMessage({ command: 'stats', field: res.toString() });
+                                return panel.webview.postMessage({ command: 'stats', field: res.toString() });
                             });
                         });
                     });
+                    break;
                 case 'optimize':
                     console.log('optimizing: parsing thru files and performing opt fx()');
                     //create a test readFile function from one of the component files (RR container)
                     //once read .then the variable readURI get updated with URI of current file
                     let currURI = vscode_uri_1.URI.file('/Users/lola/Documents/codesmith/soloproject/src/client/containers/RRContainer.jsx');
-                    //will use that and the starting position to comment out static imports by using workspaceEdit.insert(URI, position, string)
-                    let edit = new vscode_1.WorkspaceEdit();
-                    edit.insert(currURI, new vscode_1.Position(10, 0), "//");
-                    vscode_1.workspace.applyEdit(edit)
-                        .then(res => console.log('edited', res));
+                    optimize.uncommentFunc(currURI, 10);
+                    break;
                 /*
                   jackie and rachel's parsing algo for folders => ./path that requires opt();
                   assuming: the returned files are importing components in an obj

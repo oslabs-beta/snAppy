@@ -99,6 +99,5 @@ const object = {
     path: './Last',
   },
 }
-let exportLine = 10;
-// parameters: commponent objects and export line from outer obj to insert there
-console.log(createDynamicInjection(object, exportLine))
+
+console.log(createDynamicInjection(object))
