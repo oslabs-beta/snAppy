@@ -37,6 +37,11 @@ export default class App extends React.Component<{},State> {
             console.log ("bundling working");
             return vscode.postMessage(message);
         };
+
+        const optimize = (message:any)  => {
+            console.log("optimizing");
+            return vscode.postMessage(message);
+        };
         //backend will send progress update
         //have an array here that renders the status messages
         window.addEventListener('message', event => {
@@ -60,7 +65,7 @@ export default class App extends React.Component<{},State> {
                 <br/><br/>
                  {/* will import in the form component here */}
                  <Form runFunc={runWebpackGetStats}  />
-                 <Assets recievedMessage={this.state.recievedMessage} messageField={this.state.messageField}/>
+                 <Assets recievedMessage={this.state.recievedMessage} messageField={this.state.messageField} optFunc = {optimize} />
             </div>
         );
     }

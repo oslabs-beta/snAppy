@@ -50,7 +50,7 @@ module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8',
               });
             });
         case 'optimize':
-          // console.log('optimizing: parsing thru files and performing opt fx()');
+          console.log('optimizing: parsing thru files and performing opt fx()');
           /*
             jackie and rachel's parsing algo for folders => ./path that requires opt();
             assuming: the returned files are importing components in an obj

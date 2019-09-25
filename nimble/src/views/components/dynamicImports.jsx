@@ -104,4 +104,50 @@ const object = {
   },
 }
 
+// class DynamicImport extends Component { 
+//   state = { 
+//     component: null 
+//   } 
+//   componentDidMount() { 
+//     this.props.load() 
+//       .then((component) => { 
+//         this.setState(()=> ({ 
+//           component : component.default ? component.default : component 
+//         })) 
+//     }) 
+//   } 
+//   render () { 
+//     return this.props.children(this.state.component) 
+//   } 
+// } 
+
+// const Mantra = (props) => ( 
+//   <DynamicImport load= {() => import(/*webpackChunkName: "Mantra-chunk"*/ './MantraContainer')}>{ 
+//     (Component) => Component === null  
+//     ? <p>Loading..</p> 
+//     : <Component {...props}/>
+//   }</DynamicImport> 
+// ) 
+// const Entry = (props) => ( 
+//   <DynamicImport load= {() => import(/*webpackChunkName: "Entry-chunk"*/ './EntryContainer')}>{ 
+//     (Component) => Component === null  
+//     ? <p>Loading..</p> 
+//     : <Component {...props}/>
+//   }</DynamicImport> 
+// ) 
+// const Login = (props) => ( 
+//   <DynamicImport load= {() => import(/*webpackChunkName: "Login-chunk"*/ './LoginContainer')}>{ 
+//     (Component) => Component === null  
+//     ? <p>Loading..</p> 
+//     : <Component {...props}/>
+//   }</DynamicImport> 
+// ) 
+// const Weekly = (props) => ( 
+//   <DynamicImport load= {() => import(/*webpackChunkName: "Weekly-chunk"*/ './WeeklyContainer')}>{ 
+//     (Component) => Component === null  
+//     ? <p>Loading..</p> 
+//     : <Component {...props}/>
+//   }</DynamicImport> 
+// ) 
+
 console.log(createDynamicInjection(object))
