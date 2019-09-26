@@ -8,12 +8,9 @@ const { exec } = require('child_process');
 const fs = require('fs');
 const util = require('util');
 const esprima = require('esprima');
-<<<<<<< HEAD
 import * as configs from "./functions/webpackFunctions"
 import dynamicImportFunc  from "./functions/optimizeFunctions"
-=======
 const path = require('path');
->>>>>>> dev
 
 
 function loadScript(context: ExtensionContext, path: string) {
