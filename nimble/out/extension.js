@@ -87,12 +87,21 @@ exports.activate = activate;
 //-------------------------ACTUAL START OF ALGO HERE-----------------------------------
 function traverseAndDynamicallyImport(entryPath) {
     //read the file
+    // let componentPath = path.resolve(__dirname, entryPath);
     let readURI = vscode_uri_1.URI.file(entryPath); //userfolderpath/src/client/index.js
     vscode_1.workspace.fs.readFile(readURI)
         .then((res) => {
         // console.log("the esprima obj after res to string is:", esprima.parseModule(res.toString(), { tolerant: true, range: true, loc: true}));
         let result = parseAST(esprima.parseModule(res.toString(), { tolerant: true, range: true, loc: true }));
         console.log("this is the result obj from parseAST", result);
+        if (result.paths.length > 0) {
+            for (let i = 0; i < result.paths.length; i += 1) {
+                let currentPath = result.paths[i];
+                let regex = /^\.*/;
+                currentPath.replace(regex, '');
+                traverseAndDynamicallyImport(currentPath);
+            }
+        }
         //iterate through the path array and recursively call traverse function with each element 
         //if it is (....child component), then store the path to child component in an array
         //change entryPointPath= new path (the child component path)
