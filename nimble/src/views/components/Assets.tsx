@@ -10,6 +10,7 @@ interface Asset {
 interface Props {
     recievedMessage:boolean;
     messageField?: Asset[];
+    optFunc:any
 }
 
 export default class Assets extends React.Component<Props,{}> {
@@ -26,9 +27,8 @@ export default class Assets extends React.Component<Props,{}> {
             return(<>
             <h4>Bundled Asset(s):  Size</h4>
             {messageField.map((asset:Asset)=><div >{`${asset.name}: ${asset.size} KiB`}</div>)}
-            <button>Remove Dupes</button>
-            <button>Lazy-load</button>
-            <button>Export Files</button>
+            <button onClick = {()=> this.props.optFunc({command: 'optimize'})}>Optimize</button>
+            
             </>);
         } else {return(
             <div>

@@ -1,6 +1,5 @@
-// import * as vscode from 'vscode';
 import {
-  ExtensionContext, commands, window, ViewColumn, Uri, workspace,
+  Position, WorkspaceEdit, ExtensionContext, commands, window, ViewColumn, Uri, workspace,
 } from 'vscode';
 import { URI } from 'vscode-uri';
 import { string } from 'prop-types';
@@ -9,6 +8,8 @@ const { exec } = require('child_process');
 const fs = require('fs');
 const util = require('util');
 const esprima = require('esprima');
+import * as configs from "./functions/webpackFunctions"
+import dynamicImportFunc  from "./functions/optimizeFunctions"
 const path = require('path');
 
 
@@ -33,9 +34,9 @@ export function activate(context: ExtensionContext) {
           moduleState = {
             ...message.module,
           };
-          const moduleObj = createModule(moduleState);
+          const moduleObj = configs.createModule(moduleState);
           // console.log(workspace.workspaceFolders? workspace.workspaceFolders[0]: '/', 'message.entry:', message.entry);
-          const webpackConfigObject: any = createWebpackConfig(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + message.entry}`, moduleObj);
+          const webpackConfigObject: any = configs.createWebpackConfig(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + message.entry}`, moduleObj);
           // console.log('this is webpackConfigObject :', webpackConfigObject);
           const writeUri = `${__dirname}/webpack.config.js`;
           workspace.fs.writeFile(URI.file(writeUri), new Uint8Array(Buffer.from(
@@ -49,11 +50,24 @@ export function activate(context: ExtensionContext) {
                 // console.log(stdout);
                 workspace.fs.readFile(URI.file(`${__dirname}/compilation-stats.json`))
                   .then(res => {
-                    panel.webview.postMessage({command: 'stats', field: res.toString()});
+                  return  panel.webview.postMessage({command: 'stats', field: res.toString()});
                   });
               });
             });
+            break;
         case 'optimize':
+          console.log('optimizing: parsing thru files and performing opt fx()');
+            //create a test readFile function from one of the component files (RR container)
+            //once read .then the variable readURI get updated with URI of current file
+ 
+            let currURI = URI.file('/Users/lola/Documents/codesmith/soloproject/src/client/containers/RRContainer.jsx');
+            dynamicImportFunc(currURI,[10,11,12,13],88)
+        
+            console.log("still inside")
+            // let dynamicInjection = optimize.createDynamicInjection(object);
+            // optimize.insertFunc(currURI , 106 , dynamicInjection)
+            break;
+
           //this is where we start the dynamic load functionality
           traverseAndDynamicallyImport(entryPointPath);
           
@@ -204,88 +218,5 @@ function getWebviewContent(context: ExtensionContext) {
 	</html>`;
 }
 
-// webpack config functions:
-// entry - message.entry:
-function createWebpackConfig(entry: any, mod: any) {
-  const moduleExports: any = {};
-  moduleExports.entry = {
-    main: entry,
-  };
-  moduleExports.output = {
-    filename: 'bundle.js',
-    path: `${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + '/dist'}`,
-  };
-  moduleExports.resolve = {
-    extensions: ['.jsx', '.js', '.ts', '.tsx', '.json'],
-  };
-  moduleExports.module = mod;
-  return moduleExports;
-}
 
-// mod: moduleState.mod
-function createModule(modules: any) {
-  const module: any = {};
-  module.rules = [];
-  if (modules.css) {
-    module.rules.push({
-      // keeping regex in string form so that we can pass it to another file
-      // we are thinking to convert the string back to a regexpression right before injecting this code into another file
-      test: /\.css$/i,
-      use: ['style-loader', 'css-loader'],
-    });
-    // console.log("test key value from module.css obj is", module.rules[0].test);
-  }
-  if (modules.jsx) {
-    module.rules.push({
-      test: /\.(js|jsx)$/,
-      use: [{
-        loader: 'babel-loader',
-        options: { presets: ['@babel/preset-env', '@babel/preset-react'] },
-      }],
-      exclude: '/node_modules/',
-    });
-  }
-  // if statement for modules.tsx
-  if (modules.tsx) {
-    module.rules.push({
-      test: /\.tsx?$/,
-      use: ['ts-loader'],
-      exclude: '/node_modules/',
-		  });
-  }
-  if (modules.less) {
-    module.rules.push({
-      test: /\.less$/,
-      loader: 'less-loader', // compiles Less to CSS
-		  });
-  }
-  if (modules.sass) {
-    module.rules.push({
-      test: /\.s[ac]ss$/i,
-      use: ['style-loader', 'css-loader', 'sass-loader'],
-		  });
-  }
-  return module;
-}
-
-//assuming we have an obj stringified, we can now parse thru using ast;
-
-function optimize(parse: any) {
-  //if it imports browserrouter...
-    // if (parse.router) reactRouterDynamicImport(res);
-  //if lodash...moments, w/e
-    // if (parse.library)libraryDynamicImport(res);
-  //if eventListeners,
-    // if (parse.events) eventListenersDynamicImport(res);
-}
-function reactRouterDynamicImport(res: string) {
-  esprima.parseScript(res); //this will return the ast
-  //parse: 
-}
-
-function libraryDynamicImport(res:string) {
-
-}
-function eventListenersDynamicImport(res:string) {
-}
 export function deactivate() {}

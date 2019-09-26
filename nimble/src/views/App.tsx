@@ -43,6 +43,11 @@ export default class App extends React.Component<{},State> {
             console.log ("bundling working");
             return vscode.postMessage(message);
         };
+
+        const optimize = (message:any)  => {
+            console.log("optimizing");
+            return vscode.postMessage(message);
+        }
         const algoTester = (message : any) => ()=> {
             return vscode.postMessage(message);
 
@@ -70,7 +75,7 @@ export default class App extends React.Component<{},State> {
                 <br/><br/>
                  {/* will import in the form component here */}
                  <Form runFunc={runWebpackGetStats}  />
-                 <Assets recievedMessage={this.state.recievedMessage} messageField={this.state.messageField}/>
+                 <Assets recievedMessage={this.state.recievedMessage} messageField={this.state.messageField} optFunc = {optimize} />
                  <button onClick={algoTester(this.state.algoMessage)}>Test Big Algo</button>
             </div>
         );
@@ -100,3 +105,13 @@ export default class App extends React.Component<{},State> {
     }
 
 }*/
+
+
+//need to create a path to our visualization using react Router
+//import reactRouter
+//in the render of the App class - need to have a component called <Router/>
+//need to add another element to the state - bunde: true or false
+//if true react Route to the component with visualizations
+//so react router need to wrapped inside an componenetDidMount inside of the app class snd sdd event listener which listens to the message from the backed when bundling is finished
+//and this will setState bundle: true
+//in the render () add a conidtional (this.state.bundled) : comp =<visualization/> ? componet
