@@ -2,21 +2,23 @@ import * as React from 'react';
 import '../../style/styles.css';
 
 interface State {
-    entryPoint: string;
     css: boolean;
     jsx: boolean;
     less: boolean;
     sass: boolean;
     tsx: boolean;
-    
 }
 
-export default class Form extends React.Component<{ runFunc: any},State> {
+interface Props {
+    runFunc: any;
+    entryFunc: any;
+    entry: string;
+}
+export default class Form extends React.Component<Props, State> {
 
     constructor(props: any) {
         super(props);
         this.state= {
-            entryPoint: "",
             css: false,
             jsx: false,
             less: false,
@@ -24,7 +26,6 @@ export default class Form extends React.Component<{ runFunc: any},State> {
             tsx: false
         };
 
-        this.entryHandler = this.entryHandler.bind(this);
         this.cssHandler = this.cssHandler.bind(this);
         this.lessHandler = this.lessHandler.bind(this);
         this.jsxHandler = this.jsxHandler.bind(this);
@@ -33,11 +34,7 @@ export default class Form extends React.Component<{ runFunc: any},State> {
         this.onSubmitForm = this.onSubmitForm.bind(this);
     }
 
-    entryHandler(event: any) {
-        // event.preventdefault();
-        console.log('entry: ', this.state.entryPoint);
-        this.setState({entryPoint: event.target.value});
-    }
+
 
     cssHandler(event: any) {
         console.log('originalcssState', this.state.css);
@@ -117,7 +114,7 @@ export default class Form extends React.Component<{ runFunc: any},State> {
 
         const messageObjectToExtension: any = {
             command: 'config',
-            entry: this.state.entryPoint,
+            entry: this.props.entry,
             module: {
                 css: this.state.css,
                 jsx: this.state.jsx,
@@ -132,12 +129,11 @@ export default class Form extends React.Component<{ runFunc: any},State> {
 
 
     render() {
-        const state = this.state;
         return(
             <div id='formDiv'>
                 <form onSubmit={this.onSubmitForm}>
                     <label id='firstFormLabel'>Entry Point: </label>
-                    <input type='text' value={state.entryPoint} onChange={this.entryHandler}/>
+                    <input type='text' value={this.props.entry} onChange={this.props.entryFunc}/>
 
                     <br/>
                     <br/>
