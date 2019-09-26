@@ -93,36 +93,46 @@ function traverseAndDynamicallyImport(entryPath) {
         // console.log("the esprima obj after res to string is:", esprima.parseModule(res.toString(), { tolerant: true, range: true, loc: true}));
         let result = parseAST(esprima.parseModule(res.toString(), { tolerant: true, range: true, loc: true }));
         console.log("this is the result obj from parseAST", result);
+        //iterate through the path array and recursively call traverse function with each element 
+        //if it is (....child component), then store the path to child component in an array
+        //change entryPointPath= new path (the child component path)
+        //otherwise (if it is regular statement), change to dynamic import statement   
     });
-    //as we hit the import statement
-    //if it is (....child component), then store the path to child component in an array
-    //iterate through the array and recursively call traverse function with each element 
-    //change entryPointPath= new path (the child component path)
-    //otherwise (if it is regular statement), change to dynamic import statement   
 }
 function parseAST(astObj) {
-    let resultObj = { paths: [], components: {}, exportLineNumber: 0, importLineNumbers: [] };
+    let resultObj = { paths: [], components: {}, exportLineNumber: 0, importLineNumbers: [], otherImports: {} };
     for (let i = 0; i < astObj.body.length; i += 1) {
         let regex = /\//g;
+        //"import...from..." statement case
         if (astObj.body[i].type === 'ImportDeclaration') {
-            let componentObj = { name: '', source: '', range: [], line: 0 };
             //if the current statement includes a child component import;
-            if (astObj.body[0].source.value === regex) {
-                componentObj.name = astObj.body[i].specifiers[0].local.name;
-                componentObj.source = astObj.body[i].source.value;
-                componentObj.range = astObj.body[i].range;
-                componentObj.line = astObj.body[i].loc.start.line;
+            let componentObj = { name: '', source: '', path: '' };
+            componentObj.name = astObj.body[i].specifiers[0].local.name;
+            componentObj.source = astObj.body[i].source.value;
+            // componentObj.range = astObj.body[i].range; 
+            if (astObj.body[i].source.value.match(regex)) {
+                // componentObj.line = astObj.body[i].loc.start.line;
+                componentObj.path = astObj.body[i].source.value;
+                //push the path into the paths array
+                resultObj.paths.push(astObj.body[i].source.value);
+                //and add the components object to the components key object
+                resultObj.components[astObj.body[i].specifiers[0].local.name] = componentObj;
+                //we have to reset the uri path for the next file to read, set it to source.value
+                //call the function with the new uri path
             }
-            resultObj.components[componentObj.source] = componentObj;
+            else if (astObj.body[i].specifiers[0].local.name) {
+                resultObj.otherImports[astObj.body[i].source.value] = componentObj;
+            }
+            //otherwise, it is other import statements
+            resultObj.importLineNumbers.push(astObj.body[i].loc.start.line);
         }
-        // astObj.body[0].type === 'ImportDeclaration';
-        // astObj.body[0].specifiers[0].local.name === 'React';
-        // asbObj.body[0].source.value: "react" or path of the child component
-        // asbObj.body[0].range === [0, 26];
-        // asbObj.body[0].loc.start.line === 1;
-        // (first import statement)
-        // (second import statement)
-        //find Expression Statement
+        //if export...from
+        if (astObj.body[i].type === 'ExpressionStatement') {
+            if (astObj.body[i].expression.left.object.name === "exports") {
+                //resultobj: line, 
+                resultObj.exportLineNumber = astObj.body[i].loc.start.line;
+            }
+        }
         //find Variable Declarations with callee.name === 'require'
     }
     return resultObj;
