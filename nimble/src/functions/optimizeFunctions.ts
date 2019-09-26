@@ -1,5 +1,6 @@
 import { WorkspaceEdit, workspace, Position } from "vscode";
 import { string } from "prop-types";
+import { URI } from 'vscode-uri';
 
 export const uncommentFunc = (uri: any, lines: number[]) => {
   //will use that and the starting position to comment out static imports by using workspaceEdit.insert(URI, position, string)
@@ -9,7 +10,22 @@ for (let line of lines) {
     edit.insert(uri, new Position(line-1, 0), "//");
    }
   workspace.applyEdit(edit)
-  .then(res => console.log("edited", res))
+  .then(res => {
+    console.log("edited", res);
+    const object = {
+      Mantra: {
+        name: 'Mantra',
+        path: './Mantra',
+      },
+      Login: {
+        name: 'Login',
+        path: './Login',
+      }  
+    };
+    let dynamicInjection = createDynamicInjection(object);
+    let currURI = URI.file('/Users/courtneykwong/Documents/Codesmith/Projects/soloproject/src/client/containers/RRContainer.jsx');
+    insertFunc(currURI , 106 , dynamicInjection);
+  });
 };
 
 export const createDynamicInjection = (componentObject: any) => {
@@ -39,7 +55,7 @@ export const createDynamicInjection = (componentObject: any) => {
     }
   //concatenate every new instance of class invoked with each key/values to injection string
   //return the resulting string with injection+ each instance of new class
-    return injection
+    return injection;
   }
   //inside of the outside func there will be a function that injects a string literal with values from the object into string declaration of new instance of DynamicImports class
   function newInstance(name:string, path: string) {
@@ -55,6 +71,7 @@ export const createDynamicInjection = (componentObject: any) => {
 
   export const insertFunc =(uri: any, line: number, injection: string) => {
     console.log("inject", injection)
+    console.log('line', line)
     let edit = new WorkspaceEdit();
     edit.insert(uri, new Position (line-2,0), injection)
       // .then(res => console.log('is it inserting?', res))

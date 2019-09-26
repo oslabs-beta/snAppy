@@ -58,21 +58,12 @@ module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8',
             //create a test readFile function from one of the component files (RR container)
             //once read .then the variable readURI get updated with URI of current file
  
-            let currURI = URI.file('/Users/lola/Documents/codesmith/soloproject/src/client/containers/RRContainer.jsx');
+            let currURI = URI.file('/Users/courtneykwong/Documents/Codesmith/Projects/soloproject/src/client/containers/RRContainer.jsx');
             optimize.uncommentFunc(currURI,[10,11,12,13])
-            const object = {
-              Mantra: {
-                name: 'Mantra',
-                path: './Mantra',
-              },
-              Login: {
-                name: 'Login',
-                path: './Login',
-              }  
-            }
+        
             console.log("still inside")
-            let dynamicInjection = optimize.createDynamicInjection(object);
-            optimize.insertFunc(currURI , 88 , dynamicInjection)
+            // let dynamicInjection = optimize.createDynamicInjection(object);
+            // optimize.insertFunc(currURI , 106 , dynamicInjection)
             break;
 
           /*

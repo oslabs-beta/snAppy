@@ -48,21 +48,11 @@ module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8')
                     console.log('optimizing: parsing thru files and performing opt fx()');
                     //create a test readFile function from one of the component files (RR container)
                     //once read .then the variable readURI get updated with URI of current file
-                    let currURI = vscode_uri_1.URI.file('/Users/lola/Documents/codesmith/soloproject/src/client/containers/RRContainer.jsx');
+                    let currURI = vscode_uri_1.URI.file('/Users/courtneykwong/Documents/Codesmith/Projects/soloproject/src/client/containers/RRContainer.jsx');
                     optimize.uncommentFunc(currURI, [10, 11, 12, 13]);
-                    const object = {
-                        Mantra: {
-                            name: 'Mantra',
-                            path: './Mantra',
-                        },
-                        Login: {
-                            name: 'Login',
-                            path: './Login',
-                        }
-                    };
                     console.log("still inside");
-                    let dynamicInjection = optimize.createDynamicInjection(object);
-                    optimize.insertFunc(currURI, 88, dynamicInjection);
+                    // let dynamicInjection = optimize.createDynamicInjection(object);
+                    // optimize.insertFunc(currURI , 106 , dynamicInjection)
                     break;
                 /*
                   jackie and rachel's parsing algo for folders => ./path that requires opt();
