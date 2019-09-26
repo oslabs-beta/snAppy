@@ -28,6 +28,7 @@ export default class Assets extends React.Component<Props,{}> {
             <h4>Bundled Asset(s):  Size</h4>
             {messageField.map((asset:Asset)=><div >{`${asset.name}: ${asset.size} KiB`}</div>)}
             <button onClick = {()=> this.props.optFunc({command: 'optimize'})}>Optimize</button>
+            
             </>);
         } else {return(
             <div>

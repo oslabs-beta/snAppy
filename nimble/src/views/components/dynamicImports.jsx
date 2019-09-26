@@ -66,11 +66,11 @@ let injection = `class DynamicImport extends Component {
 //inside of the outside func there will be a function that injects a string literal with values from the object into string declaration of new instance of DynamicImports class
 function newInstance(name, path) {
   return `const ${name} = (props) => (
-  <DynamicImport load= {() => import(/*wepbackChunkName: "${name}-chunk"*/ '${path}')}>{
-    (Component) => Component === null 
+  <DynamicImport load= {() => import(/*${name}-chunk*/ '${path}')}>
+    {(Component) => Component === null 
     ? <p>Loading..</p>
-    : <Component {...props}/>
-  }</DynamicImport>
+    : <Component {...props}/>}
+  </DynamicImport>
 )
 `
 }
@@ -85,19 +85,23 @@ const object = {
   Main: {
     name: 'Main',
     path: './Main',
+    range: [1, 2]
   },
   App: {
     name: 'App',
     path: './App',
+    range: [3, 6]
   },  
   Entry: {
     name: 'Entry',
     path: './Entry',
+    range: [7, 9]
   },  
   Last: {
     name: 'Last',
     path: './Last',
+    range: [10, 13]
   },
 }
 
-console.log(createDynamicInjection(object))
+//console.log(createDynamicInjection(object))
