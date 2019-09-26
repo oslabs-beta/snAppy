@@ -1,16 +1,13 @@
-// import * as vscode from 'vscode';
 import {
   Position, WorkspaceEdit, ExtensionContext, commands, window, ViewColumn, Uri, workspace,
 } from 'vscode';
 import { URI } from 'vscode-uri';
-import { downloadAndUnzipVSCode } from 'vscode-test';
-// node docs;
 const { exec } = require('child_process');
 const fs = require('fs');
 const util = require('util');
 const esprima = require('esprima');
 import * as configs from "./functions/webpackFunctions"
-import * as optimize from "./functions/optimizeFunctions"
+import dynamicImportFunc  from "./functions/optimizeFunctions"
 
 
 function loadScript(context: ExtensionContext, path: string) {
@@ -58,8 +55,8 @@ module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8',
             //create a test readFile function from one of the component files (RR container)
             //once read .then the variable readURI get updated with URI of current file
  
-            let currURI = URI.file('/Users/courtneykwong/Documents/Codesmith/Projects/soloproject/src/client/containers/RRContainer.jsx');
-            optimize.uncommentFunc(currURI,[10,11,12,13])
+            let currURI = URI.file('/Users/lola/Documents/codesmith/soloproject/src/client/containers/RRContainer.jsx');
+            dynamicImportFunc(currURI,[10,11,12,13],88)
         
             console.log("still inside")
             // let dynamicInjection = optimize.createDynamicInjection(object);

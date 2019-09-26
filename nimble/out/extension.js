@@ -1,15 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-// import * as vscode from 'vscode';
 const vscode_1 = require("vscode");
 const vscode_uri_1 = require("vscode-uri");
-// node docs;
 const { exec } = require('child_process');
 const fs = require('fs');
 const util = require('util');
 const esprima = require('esprima');
 const configs = require("./functions/webpackFunctions");
-const optimize = require("./functions/optimizeFunctions");
+const optimizeFunctions_1 = require("./functions/optimizeFunctions");
 function loadScript(context, path) {
     return `<script src="${vscode_1.Uri.file(context.asAbsolutePath(path)).with({ scheme: 'vscode-resource' }).toString()}"></script>`;
 }
@@ -48,8 +46,8 @@ module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8')
                     console.log('optimizing: parsing thru files and performing opt fx()');
                     //create a test readFile function from one of the component files (RR container)
                     //once read .then the variable readURI get updated with URI of current file
-                    let currURI = vscode_uri_1.URI.file('/Users/courtneykwong/Documents/Codesmith/Projects/soloproject/src/client/containers/RRContainer.jsx');
-                    optimize.uncommentFunc(currURI, [10, 11, 12, 13]);
+                    let currURI = vscode_uri_1.URI.file('/Users/lola/Documents/codesmith/soloproject/src/client/containers/RRContainer.jsx');
+                    optimizeFunctions_1.default(currURI, [10, 11, 12, 13], 88);
                     console.log("still inside");
                     // let dynamicInjection = optimize.createDynamicInjection(object);
                     // optimize.insertFunc(currURI , 106 , dynamicInjection)

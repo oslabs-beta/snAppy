@@ -7,6 +7,7 @@ export const createWebpackConfig = (entry: any, mod: any) => {
     moduleExports.entry = {
       main: entry,
     };
+    moduleExports.mode = 'development'
     moduleExports.output = {
       filename: 'bundle.js',
       path: `${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + '/dist'}`,
