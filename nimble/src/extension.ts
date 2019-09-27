@@ -174,7 +174,6 @@ function parseAST(astObj: any) {
           //check here to see if the import name is in the componentNames array
           //only if it is inside of that array, then we will add the component object to the restlt components obj
           console.log('jsxname: ', astObj.body[i].specifiers[0].local.name);
-          console.log('component Names: ',resultObj.componentNames);
           for(let k = 0; k < resultObj.componentNames.length; k++) {
             console.log('IN HERRRRRERERERERE')
             let currentName = resultObj.componentNames[k];
@@ -184,11 +183,12 @@ function parseAST(astObj: any) {
                 resultObj.paths.push(astObj.body[i].source.value);
                 resultObj.components[astObj.body[i].specifiers[0].local.name] = componentObj;
                 resultObj.importLineNumbers.push(astObj.body[i].loc.start.line);
-    
+                
               }
-            // }
-
-          }
+              // }
+              
+            }
+            console.log('component Names: ',resultObj.componentNames);
         } else if (astObj.body[i].source.value){
           resultObj.otherImports[astObj.body[i].source.value] = componentObj;
       }
