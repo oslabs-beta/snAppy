@@ -72,7 +72,8 @@ originalEntry = path + /src/client/index.js
 entryPath = path, but mutates 
 */
 function traverseAndDynamicallyImport(originalEntry: string, entryPath: string) {
-      // console.log('entry path(param)', entryPath);
+  console.log('orig path(param)', originalEntry);    
+  console.log('entry path(param)', entryPath);
       //read the file
       // let componentPath = path.resolve(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + entryPath}`);
       // console.log('comp path:', componentPath);
@@ -127,7 +128,7 @@ function traverseAndDynamicallyImport(originalEntry: string, entryPath: string) 
                // let replacement = currentPath.replace(regex, '');
                // let splitPath = originalEntry.split('/');
                
-                // traverseAndDynamicallyImport(originalEntry, 'path');
+                traverseAndDynamicallyImport(originalEntry, resolvedPath + '.jsx');
               }
           } 
       }); 
