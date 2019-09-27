@@ -1,6 +1,6 @@
 import { WorkspaceEdit, workspace, Position } from "vscode";
 
-export default function dynamicImportFunc(uri: any, uncommentLines: number[],exportLine: number) {
+export default function dynamicImportFunc(uri: any, uncommentLines: number[],exportLine: number, components: any) {
   //will use that and the starting position to comment out static imports by using workspaceEdit.insert(URI, position, string)
   let edit = new WorkspaceEdit();
   for (let line of uncommentLines) {
@@ -8,17 +8,7 @@ export default function dynamicImportFunc(uri: any, uncommentLines: number[],exp
   }
   workspace.applyEdit(edit).then(res => {
     console.log("edited", res);
-    const object = {
-      Mantra: {
-        name: "Mantra",
-        path: "./MantraContainer"
-      },
-      Login: {
-        name: "Login",
-        path: "./LoginContainer"
-      }
-    };
-    let dynamicInjection = createDynamicInjection(object);
+    let dynamicInjection = createDynamicInjection(components);
     insertFunc(uri, exportLine, dynamicInjection);
   });
 }
@@ -48,7 +38,7 @@ const createDynamicInjection = (componentObject: any) => {
     console.log(componentObject[val].name);
     injection += newInstance(
       componentObject[val].name,
-      componentObject[val].path
+      componentObject[val].source
     );
   }
   //concatenate every new instance of class invoked with each key/values to injection string
