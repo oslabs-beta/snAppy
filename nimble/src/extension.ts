@@ -88,6 +88,7 @@ function traverseAndDynamicallyImport(originalEntry: string, entryPath: string) 
               if (entryPath !== originalEntry) {
                 dynamicImportFunc(readURI,result.importLineNumbers, result.exportLineNumber, result.components);
               }
+
               if (result.paths.length > 0) {
               for (let i=0; i<result.paths.length; i+=1) {
                 let currentPath = result.paths[i];
@@ -116,7 +117,7 @@ function traverseAndDynamicallyImport(originalEntry: string, entryPath: string) 
               let joinOriginalArr = [...originalSplitEntry].join('/');
               let joinCurrentArr = [...currentSplitArr].join('/');
               console.log('joined', joinOriginalArr);
-              let resolvedPath = path.resolve(joinOriginalArr, joinCurrentArr);  
+              let resolvedPath = path.join(joinOriginalArr, joinCurrentArr);  
                console.log('resolved:', resolvedPath);
               //  console.log('edited split arr', originalSplitEntry);               
                 traverseAndDynamicallyImport(originalEntry, resolvedPath + '.jsx');
@@ -138,17 +139,30 @@ function parseAST(astObj: any) {
   interface ResultObj {
     paths: Array<string>;
     components: any;
+    componentNames: Array<string>;
     exportLineNumber: number;
     importLineNumbers: number[];
     otherImports: any;
   }
 
-  let resultObj: ResultObj = {paths:[], components:{}, exportLineNumber:0, importLineNumbers:[], otherImports:{}};
-  
+  let resultObj: ResultObj = {paths:[], components:{}, componentNames: [], exportLineNumber:0, importLineNumbers:[], otherImports:{}};
+  for (let i=0; i<astObj.body.length; i+=1) {
+    //Checking for JSX elements on the page..because we do not want to dynamically import non-component paths
+    if(astObj.body[i].type === 'ExpressionStatement') {
+      //fin the jsx element
+      
+      if(astObj.body[i].expression.arguments[0].type === 'JSXElement' && astObj.body[i].expression.arguments[0].openingElement.name.type === 'JSXIdentifier') {
+        let compName = astObj.body[i].expression.arguments[0].openingElement.name.name;
+        resultObj.componentNames.push(compName);
+      }
+    }
+  }
   for (let i=0; i<astObj.body.length; i+=1) {
     let regex = /\//g;
     //"import...from..." statement case
-    // console.log(`specifier${i}:`, astObj.body[i].specifiers);
+    // console.log(`specifier${i}:`, astObj.body[i].specifiers)
+
+    //Checking the import statments to find paths to dynamically import
     if (astObj.body[i].type === 'ImportDeclaration') {
       //if the current statement includes a child component import;
       let componentObj: ImportObj = {name : '', source: '', path: ''};
@@ -157,11 +171,24 @@ function parseAST(astObj: any) {
         componentObj.source = astObj.body[i].source.value;
         if (astObj.body[i].source.value.match(regex)) {
 
-            componentObj.path = astObj.body[i].source.value;
-            resultObj.paths.push(astObj.body[i].source.value);
-            resultObj.components[astObj.body[i].specifiers[0].local.name] = componentObj;
-            resultObj.importLineNumbers.push(astObj.body[i].loc.start.line);
+          //check here to see if the import name is in the componentNames array
+          //only if it is inside of that array, then we will add the component object to the restlt components obj
+          console.log('jsxname: ', astObj.body[i].specifiers[0].local.name);
+          console.log('component Names: ',resultObj.componentNames);
+          for(let k = 0; k < resultObj.componentNames.length; k++) {
+            console.log('IN HERRRRRERERERERE')
+            let currentName = resultObj.componentNames[k];
+            // if(resultObj.componentNames.includes(astObj.body[i].specifiers[0].local.name)) {
+              if(astObj.body[i].specifiers[0].local.name === currentName) {
+                componentObj.path = astObj.body[i].source.value;
+                resultObj.paths.push(astObj.body[i].source.value);
+                resultObj.components[astObj.body[i].specifiers[0].local.name] = componentObj;
+                resultObj.importLineNumbers.push(astObj.body[i].loc.start.line);
+    
+              }
+            // }
 
+          }
         } else if (astObj.body[i].source.value){
           resultObj.otherImports[astObj.body[i].source.value] = componentObj;
       }
@@ -169,14 +196,15 @@ function parseAST(astObj: any) {
       //otherwise, it is other import statements
     } 
     //if export...from
-    if (astObj.body[i].type === 'ExpressionStatement' && astObj.body[i].expression.left) {
-      if (astObj.body[i].expression.left.object.name === "exports") {
+    if (astObj.body[i].type === 'ExportDefaultDeclaration') {
+      // if (astObj.body[i].expression.left.object.name === "exports") {
         //resultobj: line, 
         resultObj.exportLineNumber = astObj.body[i].loc.start.line;
-      }
+      // }
     } 
   //find Variable Declarations with callee.name === 'require'
 } 
+console.log('resultObj: ', resultObj);
 return resultObj;
 }
 
