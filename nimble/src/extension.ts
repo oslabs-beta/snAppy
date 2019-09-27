@@ -118,16 +118,7 @@ function traverseAndDynamicallyImport(originalEntry: string, entryPath: string) 
               console.log('joined', joinOriginalArr);
               let resolvedPath = path.resolve(joinOriginalArr, joinCurrentArr);  
                console.log('resolved:', resolvedPath);
-              //  console.log('edited split arr', originalSplitEntry);
-
-               
-               // letoriginalEntry.slice(1); 
-               // iterate thru string, increment for every dot we have;
-               //divide the # by 2, floor and cut off every /. 
-               // let regex = /^\./;
-               // let replacement = currentPath.replace(regex, '');
-               // let splitPath = originalEntry.split('/');
-               
+              //  console.log('edited split arr', originalSplitEntry);               
                 traverseAndDynamicallyImport(originalEntry, resolvedPath + '.jsx');
               }
           } 
