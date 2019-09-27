@@ -110,7 +110,7 @@ function traverseAndDynamicallyImport(originalEntry: string, entryPath: string) 
                 let currentPath = result.paths[i];
               //  console.log('current component path:', currentPath);
                // console.log('split orig:', originalEntry.split(path.sep));
-               const originalSplitEntry = originalEntry.split(path.sep);
+               const originalSplitEntry = entryPath.split(path.sep);
                const currentSplitArr = currentPath.split('/');
                //iterate thru split array, if elem is '.' pop(), 
                //if elem is '..', start a counter at 1, and increment each instance; then splice;
