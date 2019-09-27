@@ -77,11 +77,10 @@ function traverseAndDynamicallyImport(originalEntry: string, entryPath: string) 
       // let componentPath = path.resolve(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + entryPath}`);
       // console.log('comp path:', componentPath);
       let readURI: any = URI.file(entryPath);
-      // console.log('readURI:', readURI);
       workspace.fs.readFile(readURI)
         .then((res: any) => {
           // console.log('reading file');
-              console.log("the esprima obj after res to string is:", esprima.parseModule(res.toString(), { tolerant: true, range: true, loc: true, jsx: true }));
+              // console.log("the esprima obj after res to string is:", esprima.parseModule(res.toString(), { tolerant: true, range: true, loc: true, jsx: true }));
               let result = parseAST(esprima.parseModule(res.toString(), { tolerant: true, range: true, loc: true, jsx: true }));
               // console.log("this is the result obj from parseAST", result);  
 
@@ -90,24 +89,31 @@ function traverseAndDynamicallyImport(originalEntry: string, entryPath: string) 
               }
               if (result.paths.length > 0) {
               for (let i=0; i<result.paths.length; i+=1) {
-                console.log('going to next file...');
                 let currentPath = result.paths[i];
-                // let relativePath = path.relative(entryPath, currentPath + '.jsx');
-                // console.log('relative:', relativePath);
-                // let resolved = path.resolve(entryPath, currentPath); //`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/')}`, relativePath);
-                // console.log('resolved:', resolved);
-                // let regex = /^\./;
-                // let replacement = currentPath.replace(regex, '');
-                // let splitPath = originalEntry.split('/');
+              //  console.log('current component path:', currentPath);
+               // console.log('split orig:', originalEntry.split(path.sep));
+               const originalSplitEntry = originalEntry.split(path.sep);
+               const currentSplitArr = currentPath.split('/');
+               //iterate thru split array, if elem is '.' pop(), 
+               //if elem is '..', start a counter at 1, and increment each instance; then splice;
+               let counter = 1;
+               for (let j = 0; j <= currentSplitArr.length - 1; j++) {
+                 if (currentSplitArr[j] === '.') {originalSplitEntry.pop();}
+                 if (currentSplitArr[j] === '..') {counter++;}
+                }
+                if (counter !== 1) {originalSplitEntry.splice(counter);}
+               //path.resolve(...currentsplitarr);
+               console.log('edited split arr', originalSplitEntry);
 
-                // letoriginalEntry.slice(1); 
-                // iterate thru string, increment for every dot we have;
-                //divide the # by 2, floor and cut off every /. 
-
-                let builtPath = path.resolve(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.fsPath: '/')}`);
-                console.log('workspace:', workspace.workspaceFolders? workspace.workspaceFolders[0]: '/');
-                console.log('built:', builtPath);
-                traverseAndDynamicallyImport(originalEntry, builtPath);
+               
+               // letoriginalEntry.slice(1); 
+               // iterate thru string, increment for every dot we have;
+               //divide the # by 2, floor and cut off every /. 
+               // let regex = /^\./;
+               // let replacement = currentPath.replace(regex, '');
+               // let splitPath = originalEntry.split('/');
+               
+                traverseAndDynamicallyImport(originalEntry, 'path');
               }
           } 
       }); 
