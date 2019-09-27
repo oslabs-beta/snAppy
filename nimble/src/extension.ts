@@ -72,7 +72,7 @@ originalEntry = path + /src/client/index.js
 entryPath = path, but mutates 
 */
 function traverseAndDynamicallyImport(originalEntry: string, entryPath: string) {
-      console.log('entry path(param)', entryPath);
+      // console.log('entry path(param)', entryPath);
       //read the file
       // let componentPath = path.resolve(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + entryPath}`);
       // console.log('comp path:', componentPath);
@@ -98,10 +98,12 @@ function traverseAndDynamicallyImport(originalEntry: string, entryPath: string) 
                //if elem is '..', start a counter at 1, and increment each instance; then splice;
                let counter = 1;
                for (let j = 0; j <= currentSplitArr.length - 1; j++) {
+                 console.log('current,', currentSplitArr)
                  if (currentSplitArr[j] === '.') {originalSplitEntry.pop();}
                  if (currentSplitArr[j] === '..') {counter++;}
                 }
-                if (counter !== 1) {originalSplitEntry.splice(counter);}
+                console.log('count:', counter)
+                if (counter !== 1) {originalSplitEntry.splice(originalSplitEntry.length - counter);}
                //path.resolve(...currentsplitarr);
                console.log('edited split arr', originalSplitEntry);
 
