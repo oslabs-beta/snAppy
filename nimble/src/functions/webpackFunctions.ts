@@ -7,7 +7,7 @@ export const createWebpackConfig = (entry: any, mod: any) => {
     moduleExports.entry = {
       main: entry,
     };
-    moduleExports.mode = 'development'
+    moduleExports.mode = 'development';
     moduleExports.output = {
       filename: 'bundle.js',
       path: `${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + '/dist'}`,
@@ -17,7 +17,7 @@ export const createWebpackConfig = (entry: any, mod: any) => {
     };
     moduleExports.module = mod;
     return moduleExports;
-  }
+  };
   
   // mod: moduleState.mod
 export const createModule = (modules: any) => {
@@ -45,7 +45,7 @@ export const createModule = (modules: any) => {
         exclude: '/node_modules/',
       });
     }
-    // if statement for modules.tsx
+
     if (modules.tsx) {
       module.rules.push({
         test: /\.tsx?$/,
@@ -66,4 +66,4 @@ export const createModule = (modules: any) => {
             });
     }
     return module;
-  }
+  };
