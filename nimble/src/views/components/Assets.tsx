@@ -1,4 +1,5 @@
 import * as React from 'react';
+import OptimizeButton from './OptimizeButton'
 
 interface Asset {
     name: string;
