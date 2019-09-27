@@ -1,5 +1,6 @@
 import * as React from 'react';
-import OptimizeButton from './OptimizeButton'
+import {Link} from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 interface Asset {
     name: string;
@@ -26,16 +27,20 @@ export default class Assets extends React.Component<Props,{}> {
         const {recievedMessage, messageField} = this.props;
 
         if(recievedMessage && messageField){
+            console.log("received!!")
             return(<>
             <h4>Bundled Asset(s):  Size</h4>
             {messageField.map((asset:Asset)=><div >{`${asset.name}: ${asset.size} KiB`}</div>)}
-            <button onClick = {()=> this.props.optFunc({command: 'optimize', entry: this.props.entry})}>Optimize</button>
-            
-            </>);
+            <Router>
+            <Link to ="/chart"><button /*onClick = {()=> this.props.optFunc({command: 'optimize', entry: this.props.entry})}*/>Optimize</button> </Link>
+                <Route path="/chart" component={Chart} />
+            </Router>
+             </>);
         } else {return(
             <div>
-
+                
             </div>
+            
         );
     }
     }
@@ -44,3 +49,10 @@ export default class Assets extends React.Component<Props,{}> {
 
 
 }
+const Chart = () => {
+    return (
+      <div className="nav">
+        Hey hey!
+      </div>
+    )
+  }

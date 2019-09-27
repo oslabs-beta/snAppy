@@ -1,13 +1,10 @@
-import {withRouter} from 'react-router';
 import * as React from "react";
+import {withRouter} from 'react-router'
 
 
 const optimizeBtn = (props: any) =>{
     const {
         history,
-        location,
-        match,
-        staticContext,
         to,
         onClick,
       } = props
