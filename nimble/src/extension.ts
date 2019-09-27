@@ -10,6 +10,7 @@ const util = require('util');
 const esprima = require('esprima');
 import * as configs from "./functions/webpackFunctions";
 import dynamicImportFunc  from "./functions/optimizeFunctions";
+import { relative } from 'path';
 const path = require('path');
 
 
@@ -56,9 +57,9 @@ export function activate(context: ExtensionContext) {
             break;
         case 'optimize':
           console.log('optimizing: parsing thru files and performing opt fx()');
-
+          let resolvedEntry = path.resolve(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + message.entry}`);
           ///src/client/index.js
-            traverseAndDynamicallyImport(message.entry, message.entry);
+            traverseAndDynamicallyImport(resolvedEntry, resolvedEntry);
             break;
       }
     });
@@ -66,12 +67,16 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(startCommand);
 }       
 
+/*
+originalEntry = path + /src/client/index.js
+entryPath = path, but mutates 
+*/
 function traverseAndDynamicallyImport(originalEntry: string, entryPath: string) {
       console.log('entry path(param)', entryPath);
       //read the file
-      let componentPath = `${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + entryPath}`;
-      console.log('comp path:', componentPath);
-      let readURI: any = URI.file(componentPath);
+      // let componentPath = path.resolve(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + entryPath}`);
+      // console.log('comp path:', componentPath);
+      let readURI: any = URI.file(entryPath);
       // console.log('readURI:', readURI);
       workspace.fs.readFile(readURI)
         .then((res: any) => {
@@ -82,16 +87,29 @@ function traverseAndDynamicallyImport(originalEntry: string, entryPath: string) 
 
               if (entryPath !== originalEntry) {
                 dynamicImportFunc(readURI,result.importLineNumbers, result.exportLineNumber, result.components);
-
+              }
               if (result.paths.length > 0) {
               for (let i=0; i<result.paths.length; i+=1) {
+                console.log('going to next file...');
                 let currentPath = result.paths[i];
-                let regex = /^\.*/;
-                currentPath.replace(regex, '');
-                traverseAndDynamicallyImport(originalEntry, currentPath);
+                // let relativePath = path.relative(entryPath, currentPath + '.jsx');
+                // console.log('relative:', relativePath);
+                // let resolved = path.resolve(entryPath, currentPath); //`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/')}`, relativePath);
+                // console.log('resolved:', resolved);
+                // let regex = /^\./;
+                // let replacement = currentPath.replace(regex, '');
+                // let splitPath = originalEntry.split('/');
+
+                // letoriginalEntry.slice(1); 
+                // iterate thru string, increment for every dot we have;
+                //divide the # by 2, floor and cut off every /. 
+
+                let builtPath = path.resolve(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.fsPath: '/')}`);
+                console.log('workspace:', workspace.workspaceFolders? workspace.workspaceFolders[0]: '/');
+                console.log('built:', builtPath);
+                traverseAndDynamicallyImport(originalEntry, builtPath);
               }
           } 
-        }
       }); 
   }
 
@@ -118,8 +136,7 @@ function parseAST(astObj: any) {
   for (let i=0; i<astObj.body.length; i+=1) {
     let regex = /\//g;
     //"import...from..." statement case
-    console.log('i:', i)
-    console.log('specifier:', astObj.body[i].specifiers)
+    console.log(`specifier${i}:`, astObj.body[i].specifiers);
     if (astObj.body[i].type === 'ImportDeclaration') {
       //if the current statement includes a child component import;
       let componentObj: ImportObj = {name : '', source: '', path: ''};
