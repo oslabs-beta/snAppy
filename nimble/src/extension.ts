@@ -11,6 +11,7 @@ const esprima = require('esprima');
 import * as configs from "./functions/webpackFunctions";
 import dynamicImportFunc  from "./functions/optimizeFunctions";
 import { relative } from 'path';
+import { cpus } from 'os';
 const path = require('path');
 
 
@@ -82,14 +83,29 @@ function traverseAndDynamicallyImport(originalEntry: string, entryPath: string) 
         .then((res: any) => {
           // console.log('reading file');
               // console.log("the esprima obj after res to string is:", esprima.parseModule(res.toString(), { tolerant: true, range: true, loc: true, jsx: true }));
+
+              //create the import paths array
+              // //create the components array
+              // let componentsArray: Array<string> = [];
+              
+              // let esprimaObj = esprima.parseModule(res.toString(), { tolerant: true, range: true, loc: true, jsx: true });
+              
+              
+              //find all import statements
+              //find all the jsx elements using regex
+              //template literal to add < with the name of the import statment for the search
+              //only add the import statements that are jsx elements
+              let holdingRes = res.toString();
               let result = parseAST(esprima.parseModule(res.toString(), { tolerant: true, range: true, loc: true, jsx: true }));
               // console.log("this is the result obj from parseAST", result);  
-
+              
+              let newResults: any = findComponentsInFile(result.components, holdingRes, result.paths, result.importLineNumbers);
+              console.log("the newResult object is: ", newResults);
               if (entryPath !== originalEntry) {
-                dynamicImportFunc(readURI,result.importLineNumbers, result.exportLineNumber, result.components);
+                dynamicImportFunc(readURI,newResults.importLineNumbers, result.exportLineNumber, newResults.components);
               }
-
-              if (result.paths.length > 0) {
+              
+              if (newResults.paths.length > 0) {
               for (let i=0; i<result.paths.length; i+=1) {
                 let currentPath = result.paths[i];
               //  console.log('current component path:', currentPath);
@@ -126,6 +142,12 @@ function traverseAndDynamicallyImport(originalEntry: string, entryPath: string) 
       }); 
   }
 
+// function findImportPaths(stringedFile: string) {
+//   let regex = /\//g;
+//   let esprima.parseModule(stringedFile, { tolerant: true, range: true, loc: true, jsx: true })
+//   return [];
+// }
+
 function parseAST(astObj: any) {
   console.log('entered~ astobj:', astObj);
   interface ImportObj {
@@ -139,24 +161,32 @@ function parseAST(astObj: any) {
   interface ResultObj {
     paths: Array<string>;
     components: any;
-    componentNames: Array<string>;
     exportLineNumber: number;
     importLineNumbers: number[];
     otherImports: any;
   }
 
-  let resultObj: ResultObj = {paths:[], components:{}, componentNames: [], exportLineNumber:0, importLineNumbers:[], otherImports:{}};
-  for (let i=0; i<astObj.body.length; i+=1) {
+  let resultObj: ResultObj = {
+    paths:[],
+     components:{},
+       exportLineNumber:0,
+        importLineNumbers:[],
+         otherImports:{}};
+  // for (let i=0; i<astObj.body.length; i+=1) {
     //Checking for JSX elements on the page..because we do not want to dynamically import non-component paths
-    if(astObj.body[i].type === 'ExpressionStatement') {
+    // if(astObj.body[i].type === 'ExpressionStatement') {
       //fin the jsx element
-      
-      if(astObj.body[i].expression.arguments[0].type === 'JSXElement' && astObj.body[i].expression.arguments[0].openingElement.name.type === 'JSXIdentifier') {
-        let compName = astObj.body[i].expression.arguments[0].openingElement.name.name;
-        resultObj.componentNames.push(compName);
-      }
-    }
-  }
+      // console.log('going into compNames pushing: ')
+      //astObj.body[i].expression.arguments[0].type === 'JSXElement' &&
+      // if( astObj.body[i].expression.arguments[0].openingElement.name.type === 'JSXIdentifier') {
+        // console.log('we have a jsx attribute')
+        
+        // let compName = 
+        //astObj.body[i].expression.arguments[0].openingElement.name.name;
+        // resultObj.componentNames.push(compName);
+      // }
+    // }
+  // }
   for (let i=0; i<astObj.body.length; i+=1) {
     let regex = /\//g;
     //"import...from..." statement case
@@ -169,26 +199,25 @@ function parseAST(astObj: any) {
       if (astObj.body[i].specifiers[0] !== undefined) {
         componentObj.name = astObj.body[i].specifiers[0].local.name;
         componentObj.source = astObj.body[i].source.value;
+        //check here to see if the import name is in the componentNames array
         if (astObj.body[i].source.value.match(regex)) {
 
-          //check here to see if the import name is in the componentNames array
           //only if it is inside of that array, then we will add the component object to the restlt components obj
-          console.log('jsxname: ', astObj.body[i].specifiers[0].local.name);
-          for(let k = 0; k < resultObj.componentNames.length; k++) {
-            console.log('IN HERRRRRERERERERE')
-            let currentName = resultObj.componentNames[k];
+          // console.log('jsxname: ', astObj.body[i].specifiers[0].local.name);
+          // for(let k = 0; k < componentsArray.length; k++) {
+          //   console.log('IN HERRRRRERERERERE')
+          //   let currentName = componentsArray[k];
             // if(resultObj.componentNames.includes(astObj.body[i].specifiers[0].local.name)) {
-              if(astObj.body[i].specifiers[0].local.name === currentName) {
+              // if(astObj.body[i].specifiers[0].local.name === currentName) {
                 componentObj.path = astObj.body[i].source.value;
                 resultObj.paths.push(astObj.body[i].source.value);
                 resultObj.components[astObj.body[i].specifiers[0].local.name] = componentObj;
                 resultObj.importLineNumbers.push(astObj.body[i].loc.start.line);
                 
-              }
+              // }
               // }
               
-            }
-            console.log('component Names: ',resultObj.componentNames);
+            // }
         } else if (astObj.body[i].source.value){
           resultObj.otherImports[astObj.body[i].source.value] = componentObj;
       }
@@ -208,6 +237,31 @@ console.log('resultObj: ', resultObj);
 return resultObj;
 }
 
+function findComponentsInFile (componentsObj: any, stringifiedResult: string, pathsArray: Array<string>, importLineNumbers: Array<number>) {
+  //use regex to find component names
+  // let regex = //;
+  // let resultArray = [];
+  let newResultObj: any = {};
+  let componentNames = Object.keys(componentsObj);
+  for (let i=0; i<componentNames.length; i+=1) {
+    let currentName = componentNames[i];
+    let searchName = '<' + currentName;
+    let regex = new RegExp (searchName, 'g');
+    //logic to delete the irrelevant components from the resultObject
+    //search name is the regex, 
+    if (!stringifiedResult.match(regex)) {
+        delete componentsObj[currentName];
+        //what is being removed (index) = i
+        pathsArray.splice(i,1);
+        importLineNumbers.splice(i,1);
+    }
+    // resultArray.push(searchName);
+  }
+  newResultObj.components = componentsObj;
+  newResultObj.paths = pathsArray;
+  newResultObj.importLineNumbers = importLineNumbers;
+  return newResultObj;
+}
 
 function getWebviewContent(context: ExtensionContext) {
   return `<!DOCTYPE html>
