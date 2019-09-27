@@ -56,7 +56,7 @@ export function activate(context: ExtensionContext) {
             });
             break;
         case 'optimize':
-          console.log('optimizing: parsing thru files and performing opt fx()');
+          // console.log('optimizing: parsing thru files and performing opt fx()');
           let resolvedEntry = path.resolve(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + message.entry}`);
           ///src/client/index.js
             traverseAndDynamicallyImport(resolvedEntry, resolvedEntry);
@@ -98,14 +98,26 @@ function traverseAndDynamicallyImport(originalEntry: string, entryPath: string) 
                //if elem is '..', start a counter at 1, and increment each instance; then splice;
                let counter = 1;
                for (let j = 0; j <= currentSplitArr.length - 1; j++) {
-                 console.log('current,', currentSplitArr)
-                 if (currentSplitArr[j] === '.') {originalSplitEntry.pop();}
-                 if (currentSplitArr[j] === '..') {counter++;}
+                //  console.log('current,', currentSplitArr)
+                 if (currentSplitArr[j] === '.') {
+                   originalSplitEntry.pop();
+                   currentSplitArr.splice(j, 1);
+                  }
+                 if (currentSplitArr[j] === '..') {
+                   counter++;
+                  }
                 }
-                console.log('count:', counter)
-                if (counter !== 1) {originalSplitEntry.splice(originalSplitEntry.length - counter);}
-               //path.resolve(...currentsplitarr);
-               console.log('edited split arr', originalSplitEntry);
+                if (counter !== 1) {
+                  currentSplitArr.splice(0, counter - 1);
+                  originalSplitEntry.splice(originalSplitEntry.length - counter);
+                }
+               console.log(...originalSplitEntry, ...currentSplitArr);
+              let joinOriginalArr = [...originalSplitEntry].join('/');
+              let joinCurrentArr = [...currentSplitArr].join('/');
+              console.log('joined', joinOriginalArr);
+              let resolvedPath = path.resolve(joinOriginalArr, joinCurrentArr);  
+               console.log('resolved:', resolvedPath);
+              //  console.log('edited split arr', originalSplitEntry);
 
                
                // letoriginalEntry.slice(1); 
@@ -115,7 +127,7 @@ function traverseAndDynamicallyImport(originalEntry: string, entryPath: string) 
                // let replacement = currentPath.replace(regex, '');
                // let splitPath = originalEntry.split('/');
                
-                traverseAndDynamicallyImport(originalEntry, 'path');
+                // traverseAndDynamicallyImport(originalEntry, 'path');
               }
           } 
       }); 
@@ -144,7 +156,7 @@ function parseAST(astObj: any) {
   for (let i=0; i<astObj.body.length; i+=1) {
     let regex = /\//g;
     //"import...from..." statement case
-    console.log(`specifier${i}:`, astObj.body[i].specifiers);
+    // console.log(`specifier${i}:`, astObj.body[i].specifiers);
     if (astObj.body[i].type === 'ImportDeclaration') {
       //if the current statement includes a child component import;
       let componentObj: ImportObj = {name : '', source: '', path: ''};
