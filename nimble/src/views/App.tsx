@@ -1,7 +1,8 @@
 import * as React from 'react';
 import Form from './components/Form';
 import '../style/styles.css';
-import Assets from './components/Assets';
+const Assets: any = React.lazy(() => import ('./components/Assets'));
+const Visualizations: any = React.lazy(() => import ('./components/Visualizations'))
 
 // interface set for class; set type to void because function does not return a value;
 interface Vscode {
@@ -23,6 +24,7 @@ interface State {
     initialBundleStats?: Asset[];
     bundleButtonClicked : boolean;
     entry: string;
+    optimizeButtonClicked: boolean;
     postBundleComplete: boolean;
     postBundleStats?: Asset[];
 }
@@ -35,6 +37,7 @@ export default class App extends React.Component<{},State> {
             initialBundleStats: undefined,
             bundleButtonClicked: false,
             entry: '',
+            optimizeButtonClicked: false,
             postBundleComplete: false,
             postBundleStats: undefined
         };
@@ -50,9 +53,6 @@ export default class App extends React.Component<{},State> {
         
         const runWebpackGetStats = (message : any) => {
             console.log ("bundling working");
-             //lazy load the asset
-            //reassign the Component to render <suspnese> <Asset/><suspense>
-            //fallback will be the gif
             this.setState({bundleButtonClicked: true})
             console.log("clicked", this.state.bundleButtonClicked)
             return vscode.postMessage(message);
@@ -60,9 +60,7 @@ export default class App extends React.Component<{},State> {
          
         const optimize = (message:any)  => {
             console.log("optimizing");
-             //lazy load the Visualization
-             //reassign the Component to render <suspnese> <Visualization/><suspense>
-            //fallback will be the snappy gif
+            this.setState({optimizeButtonClicked: true})
             return vscode.postMessage(message);
         };
         
@@ -98,11 +96,22 @@ export default class App extends React.Component<{},State> {
         }
         if (this.state.initialBundleComplete && this.state.initialBundleStats) {
             CurrentComponent = 
+            <div>
+            <React.Suspense fallback ={<div>fallback</div>} >
             <Assets initialBundleStats={this.state.initialBundleStats} optFunc = {optimize} entry={this.state.entry} />
-            console.log('component bundle',CurrentComponent)
+            </React.Suspense>
+            </div>
+        }
+        if (this.state.optimizeButtonClicked) {
+            CurrentComponent = <div>Snapping...!</div>
         }
         if (this.state.postBundleComplete && this.state.postBundleStats) {
-            CurrentComponent = <div>Visualize Optimize! Don't Worry Be snAppy!</div>
+            CurrentComponent = 
+            <div>
+            <React.Suspense fallback ={<div>fallback</div>} >
+            <Visualizations/>
+            </React.Suspense>
+            </div>
         }
         return (
                
