@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Link} from 'react-router-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Chart from './OptimizeButton'
 
 interface Asset {
     name: string;
@@ -49,10 +50,3 @@ export default class Assets extends React.Component<Props,{}> {
 
 
 }
-const Chart = () => {
-    return (
-      <div className="nav">
-        Hey hey!
-      </div>
-    )
-  }

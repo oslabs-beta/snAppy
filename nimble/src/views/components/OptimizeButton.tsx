@@ -1,6 +1,16 @@
 import * as React from "react";
-import {withRouter} from 'react-router'
+import { withRouter } from 'react-router';
 
+
+//  const Chart = () => {
+//     return (
+//       <div className="nav">
+//         Hey hey!
+//       </div>
+//     )
+//   }
+
+//   export default Chart;
 
 const optimizeBtn = (props: any) =>{
     const {
