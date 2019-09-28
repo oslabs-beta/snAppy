@@ -44,16 +44,18 @@ export default class App extends React.Component<{},State> {
         this.setState({entry: event.target.value});
     }
     render() {
-       let CurrentComponent;
+        let CurrentComponent;
+        
         const runWebpackGetStats = (message : any) => {
             console.log ("bundling working");
              //lazy load the asset
             //reassign the Component to render <suspnese> <Asset/><suspense>
             //fallback will be the gif
             CurrentComponent = <Assets initialBundleComplete={this.state.initialBundleComplete} initialBundleStats={this.state.initialBundleStats} optFunc = {optimize} entry={this.state.entry} />
+            console.log('component bundle',CurrentComponent)
             return vscode.postMessage(message);
         };
-
+         
         const optimize = (message:any)  => {
             console.log("optimizing");
              //lazy load the Visualization
@@ -76,9 +78,12 @@ export default class App extends React.Component<{},State> {
                     }); 
              }   
         });    
-        
-        CurrentComponent =<Form runFunc={runWebpackGetStats} entryFunc = {this.entryHandler} entry={this.state.entry} />
 
+        if (this.state.initialBundleComplete === false)
+        {
+            CurrentComponent =<Form runFunc={runWebpackGetStats} entryFunc = {this.entryHandler} entry={this.state.entry} />
+         
+        }
         return (
                
             <div id='mainApp'> 

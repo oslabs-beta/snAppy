@@ -39,7 +39,7 @@ export function activate(context: ExtensionContext) {
           const moduleObj = configs.createModule(moduleState);
           // console.log(workspace.workspaceFolders? workspace.workspaceFolders[0]: '/', 'message.entry:', message.entry);
           const webpackConfigObject: any = configs.createWebpackConfig(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + message.entry}`, moduleObj);
-          // console.log('this is webpackConfigObject :', webpackConfigObject);
+          console.log('this is webpackConfigObject :', webpackConfigObject);
           const writeUri = `${__dirname}/webpack.config.js`;
           workspace.fs.writeFile(URI.file(writeUri), new Uint8Array(Buffer.from(
             `const path = require('path');
