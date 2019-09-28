@@ -44,17 +44,21 @@ export default class App extends React.Component<{},State> {
         this.setState({entry: event.target.value});
     }
     render() {
-    
+       let CurrentComponent;
         const runWebpackGetStats = (message : any) => {
             console.log ("bundling working");
-            //change the component to render <suspnese> <Asset/><suspense>
+             //lazy load the asset
+            //reassign the Component to render <suspnese> <Asset/><suspense>
             //fallback will be the gif
-            //lazy load the asset
+            CurrentComponent = <Assets initialBundleComplete={this.state.initialBundleComplete} initialBundleStats={this.state.initialBundleStats} optFunc = {optimize} entry={this.state.entry} />
             return vscode.postMessage(message);
         };
 
         const optimize = (message:any)  => {
             console.log("optimizing");
+             //lazy load the Visualization
+             //reassign the Component to render <suspnese> <Visualization/><suspense>
+            //fallback will be the snappy gif
             return vscode.postMessage(message);
         };
         
@@ -72,19 +76,15 @@ export default class App extends React.Component<{},State> {
                     }); 
              }   
         });    
-       //will create if/switch statement to conditionally render either default Form
-       // when initial bundle state are complete change the state to bundlinfg to true 
-       //and then the case bundled true with load the Suspense compoent with gif and lazy load of the asssets containifn the bundled stats 
+        
+        CurrentComponent =<Form runFunc={runWebpackGetStats} entryFunc = {this.entryHandler} entry={this.state.entry} />
 
         return (
                
             <div id='mainApp'> 
                 <h1 id='logoText'>snAppy</h1>
                 <br/><br/>
-                {component}
-                 {/* <Form runFunc={runWebpackGetStats} entryFunc = {this.entryHandler} entry={this.state.entry} />
-                 <Assets initialBundleComplete={this.state.initialBundleComplete} initialBundleStats={this.state.initialBundleStats} optFunc = {optimize} entry={this.state.entry} /> */}
-                
+                {CurrentComponent}
             </div>
         );
     }
