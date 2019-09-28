@@ -101,7 +101,7 @@ function traverseAndDynamicallyImport(originalEntry: string, entryPath: string) 
               
               let newResults: any = findComponentsInFile(result.components, holdingRes, result.paths, result.importLineNumbers);
               console.log("the newResult object is: ", newResults);
-              if (entryPath !== originalEntry) {
+              if (entryPath !== originalEntry && newResults.importLineNumbers.length) {
                 dynamicImportFunc(readURI,newResults.importLineNumbers, result.exportLineNumber, newResults.components);
               }
               

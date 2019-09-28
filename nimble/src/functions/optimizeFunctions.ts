@@ -20,7 +20,7 @@ const createDynamicInjection = (componentObject: any) => {
   let injection = `class DynamicImport extends Component {
     constructor(props) {
       super(props);
-      state = {
+      this.state = {
         component: null
       }
     }
