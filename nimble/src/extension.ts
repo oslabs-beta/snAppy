@@ -61,6 +61,13 @@ export function activate(context: ExtensionContext) {
           let resolvedEntry = path.resolve(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + message.entry}`);
           ///src/client/index.js
             traverseAndDynamicallyImport(resolvedEntry, resolvedEntry);
+            return exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname}, (err : Error, stdout: string)=>{
+
+              workspace.fs.readFile(URI.file(`${__dirname}/compilation-stats.json`))
+                .then(res => {
+                return  panel.webview.postMessage({command: 'post', field: res.toString()});
+                });
+            });
             break;
       }
     });
