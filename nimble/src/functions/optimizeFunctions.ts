@@ -36,6 +36,7 @@ const createDynamicInjection = (componentObject: any) => {
       return this.props.children(this.state.component)
     }
   }
+
   `;
   for (let val in componentObject) {
     console.log(componentObject[val].name);
@@ -64,7 +65,7 @@ const insertFunc = (uri: any, line: number, injection: string) => {
   console.log("inject", injection);
   console.log("line", line);
   let edit = new WorkspaceEdit();
-  edit.insert(uri, new Position(line - 2, 0), injection);
+  edit.insert(uri, new Position(line - 1, 0), injection);
   // .then(res => console.log('is it inserting?', res))
   workspace.applyEdit(edit).then(res => console.log("applyedit", res));
 };
