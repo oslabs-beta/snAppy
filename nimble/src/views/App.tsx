@@ -22,6 +22,8 @@ interface State {
     initialBundleComplete: boolean;
     initialBundleStats?: Asset[];
     entry: string;
+    postBundleComplete: boolean,
+    postBundleStats?: Asset[]
 }
 
 export default class App extends React.Component<{},State> {
@@ -31,6 +33,8 @@ export default class App extends React.Component<{},State> {
             initialBundleComplete: false,
             initialBundleStats: undefined,
             entry: '',
+            postBundleComplete: false,
+            postBundleStats: undefined
         };
         this.entryHandler = this.entryHandler.bind(this);
     }
@@ -54,13 +58,16 @@ export default class App extends React.Component<{},State> {
         window.addEventListener('message', event => {
             // console.log(event.data)
             const message: any = (event.data);
-            console.log(JSON.parse(message.field));
-            let assetObj: Asset[] = JSON.parse(message.field).assets;
-            console.log('message recieved', assetObj);
-            this.setState ({
-                initialBundleComplete: true,
-                initialBundleStats: assetObj
-            }); 
+            switch (message.command) {
+                case 'initial':
+                    console.log(JSON.parse(message.field));
+                    let initialStats: Asset[] = JSON.parse(message.field).assets;
+                    console.log('message recieved', initialStats);
+                    this.setState ({
+                        initialBundleComplete: true,
+                        initialBundleStats: initialStats
+                    }); 
+             }   
         });     
         return (
                
@@ -75,26 +82,3 @@ export default class App extends React.Component<{},State> {
     }
     
 }
-
-
-// Outline for components
-
-//app:
-    //contain the Form and the submit functionality
-
-//Module Selection Components:
-    //a toggle button with some text
-    //will have a true or false flag
-
-/*object = {
-    Command: 'config',
-    Field: {
-        entry: 'string',
-        module: {
-            jsx: true,
-            css: true,
-            sass: true,
-        }
-    }
-
-}*/
