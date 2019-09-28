@@ -19,8 +19,8 @@ interface Asset {
 }
 
 interface State {
-    recievedMessage: boolean;
-    messageField?: Asset[];
+    initialBundleComplete: boolean;
+    initialBundleStats?: Asset[];
     entry: string;
 }
 
@@ -28,13 +28,9 @@ export default class App extends React.Component<{},State> {
     constructor(props: any) {
         super(props);
         this.state= {
-            recievedMessage: false,
-            messageField: undefined,
+            initialBundleComplete: false,
+            initialBundleStats: undefined,
             entry: '',
-            // algoMessage: {
-            //     command: 'optimize',
-            //     entry: '/Users/MacBong/Desktop/production/CJOR/nimble/out/src/views/components/test.js',
-            // }
         };
         this.entryHandler = this.entryHandler.bind(this);
     }
@@ -44,8 +40,7 @@ export default class App extends React.Component<{},State> {
         this.setState({entry: event.target.value});
     }
     render() {
-        
-        //This is the function that onlick of the submit button, will send the state to the extension.ts file
+    
         const runWebpackGetStats = (message : any) => {
             console.log ("bundling working");
             return vscode.postMessage(message);
@@ -55,13 +50,7 @@ export default class App extends React.Component<{},State> {
             console.log("optimizing");
             return vscode.postMessage(message);
         };
-        // const algoTester = (message : any) => ()=> {
-        //     return vscode.postMessage(message);
-
-        // };
         
-        //backend will send progress update
-        //have an array here that renders the status messages
         window.addEventListener('message', event => {
             // console.log(event.data)
             const message: any = (event.data);
@@ -69,23 +58,18 @@ export default class App extends React.Component<{},State> {
             let assetObj: Asset[] = JSON.parse(message.field).assets;
             console.log('message recieved', assetObj);
             this.setState ({
-                recievedMessage: true,
-                messageField: assetObj
+                initialBundleComplete: true,
+                initialBundleStats: assetObj
             }); 
-        });
-        // if (this.state.recievedMessage) {
-
-        // }
-        // console.log(this.state)       
+        });     
         return (
                
             <div id='mainApp'> 
                 <h1 id='logoText'>snAppy</h1>
                 <br/><br/>
-                 {/* will import in the form component here */}
                  <Form runFunc={runWebpackGetStats} entryFunc = {this.entryHandler} entry={this.state.entry} />
-                 <Assets recievedMessage={this.state.recievedMessage} messageField={this.state.messageField} optFunc = {optimize} entry={this.state.entry} />
-                 {/* <button onClick={algoTester(this.state.algoMessage)}>Test Big Algo</button> */}
+                 <Assets initialBundleComplete={this.state.initialBundleComplete} initialBundleStats={this.state.initialBundleStats} optFunc = {optimize} entry={this.state.entry} />
+                
             </div>
         );
     }
