@@ -18,8 +18,11 @@ const createDynamicInjection = (componentObject: any) => {
   //an outside function that loops through the object and for each key will execute the function below to create a new instance of class
   //will have a varibale "injection"  with the class declaration
   let injection = `class DynamicImport extends Component {
-    state = {
-      component: null
+    constructor(props) {
+      super(props);
+      this.state = {
+        component: null
+      }
     }
     componentDidMount() {
       this.props.load()
