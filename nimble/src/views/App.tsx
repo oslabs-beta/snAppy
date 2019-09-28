@@ -78,7 +78,13 @@ export default class App extends React.Component<{},State> {
                         initialBundleComplete: true,
                         initialBundleStats: initialStats
                     }); 
-                    
+                    break;
+                case 'post':
+                    let postStats: Asset[] = JSON.parse(message.field).assets;
+                    this.setState({
+                        postBundleComplete: true,
+                        postBundleStats: postStats
+                    })
              }   
         });    
 
@@ -94,6 +100,9 @@ export default class App extends React.Component<{},State> {
             CurrentComponent = 
             <Assets initialBundleStats={this.state.initialBundleStats} optFunc = {optimize} entry={this.state.entry} />
             console.log('component bundle',CurrentComponent)
+        }
+        if (this.state.postBundleComplete && this.state.postBundleStats) {
+            CurrentComponent = <div>Visualize Optimize! Don't Worry Be snAppy!</div>
         }
         return (
                
