@@ -21,9 +21,10 @@ interface Asset {
 interface State {
     initialBundleComplete: boolean;
     initialBundleStats?: Asset[];
+    bundleButtonClicked : boolean;
     entry: string;
-    postBundleComplete: boolean,
-    postBundleStats?: Asset[]
+    postBundleComplete: boolean;
+    postBundleStats?: Asset[];
 }
 
 export default class App extends React.Component<{},State> {
@@ -32,6 +33,7 @@ export default class App extends React.Component<{},State> {
         this.state= {
             initialBundleComplete: false,
             initialBundleStats: undefined,
+            bundleButtonClicked: false,
             entry: '',
             postBundleComplete: false,
             postBundleStats: undefined
@@ -51,6 +53,7 @@ export default class App extends React.Component<{},State> {
              //lazy load the asset
             //reassign the Component to render <suspnese> <Asset/><suspense>
             //fallback will be the gif
+            this.setState({bundleButtonClicked: true})
             return vscode.postMessage(message);
         };
          
@@ -82,6 +85,9 @@ export default class App extends React.Component<{},State> {
         {
             CurrentComponent =<Form runFunc={runWebpackGetStats} entryFunc = {this.entryHandler} entry={this.state.entry} />
          
+        }
+        else if (this.state.bundleButtonClicked) {
+            CurrentComponent= <div>Caaaat Cooooding!</div>
         }
         else if (this.state.initialBundleComplete && this.state.initialBundleStats) {
             CurrentComponent = 
