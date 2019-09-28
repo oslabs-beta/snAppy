@@ -14,9 +14,10 @@ import { relative } from 'path';
 import { cpus } from 'os';
 const path = require('path');
 
-
+//serving the react files
 function loadScript(context: ExtensionContext, path: string) {
-  return `<script src="${Uri.file(context.asAbsolutePath(path)).with({ scheme: 'vscode-resource' }).toString()}"></script>`;
+  let absolutePath = Uri.file(context.asAbsolutePath(path)).with({ scheme: 'vscode-resource' }).toString();
+  return "<script src=" + `${absolutePath}` + "></script>";
 }
 
 export function activate(context: ExtensionContext) {
@@ -25,6 +26,7 @@ export function activate(context: ExtensionContext) {
     const panel = window.createWebviewPanel('snAppy', 'snAppy!', ViewColumn.Beside, { enableScripts: true });
     panel.webview.html = getWebviewContent(context);
     
+    //
     panel.webview.onDidReceiveMessage((message: any) => {
       
       let entryPointPath: any = message.entry;
@@ -69,6 +71,7 @@ export function activate(context: ExtensionContext) {
 }       
 
 /*
+//traver through the user's workspace and convert static import statements into dynamic imports
 originalEntry = path + /src/client/index.js
 entryPath = path, but mutates 
 */
