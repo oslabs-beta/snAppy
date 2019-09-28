@@ -8,8 +8,7 @@ interface Asset {
 }
 
 interface Props {
-    initialBundleComplete:boolean;
-    initialBundleStats?: Asset[];
+    initialBundleStats: Asset[];
     entry: string;
     optFunc:any;
 }
@@ -22,23 +21,18 @@ export default class Assets extends React.Component<Props,{}> {
 
 
     render() {
-        const {initialBundleComplete, initialBundleStats} = this.props;
-
-        if(initialBundleComplete && initialBundleStats){
+        const {initialBundleStats} = this.props;
             return(<>
             <h4>Bundled Asset(s):  Size</h4>
             {initialBundleStats.map((asset:Asset)=><div >{`${asset.name}: ${asset.size} KiB`}</div>)}
             <button onClick = {()=> this.props.optFunc({command: 'optimize', entry: this.props.entry})}>Optimize</button>
             
             </>);
-        } else {return(
-            <div>
-
-            </div>
-        );
-    }
+        } 
+    };
+    
    
-    }
+
 
 
 
