@@ -54,6 +54,7 @@ export default class App extends React.Component<{},State> {
             //reassign the Component to render <suspnese> <Asset/><suspense>
             //fallback will be the gif
             this.setState({bundleButtonClicked: true})
+            console.log("clicked", this.state.bundleButtonClicked)
             return vscode.postMessage(message);
         };
          
@@ -86,10 +87,10 @@ export default class App extends React.Component<{},State> {
             CurrentComponent =<Form runFunc={runWebpackGetStats} entryFunc = {this.entryHandler} entry={this.state.entry} />
          
         }
-        else if (this.state.bundleButtonClicked) {
+        if (this.state.bundleButtonClicked) {
             CurrentComponent= <div>Caaaat Cooooding!</div>
         }
-        else if (this.state.initialBundleComplete && this.state.initialBundleStats) {
+        if (this.state.initialBundleComplete && this.state.initialBundleStats) {
             CurrentComponent = 
             <Assets initialBundleStats={this.state.initialBundleStats} optFunc = {optimize} entry={this.state.entry} />
             console.log('component bundle',CurrentComponent)
