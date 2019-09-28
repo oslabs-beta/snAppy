@@ -10,7 +10,6 @@ interface Vscode {
 
 declare const vscode: Vscode;
 
-
 interface Asset {
     name: string;
     size: number;
@@ -31,10 +30,6 @@ export default class App extends React.Component<{},State> {
             recievedMessage: false,
             messageField: undefined,
             entry: '',
-            // algoMessage: {
-            //     command: 'optimize',
-            //     entry: '/Users/MacBong/Desktop/production/CJOR/nimble/out/src/views/components/test.js',
-            // }
         };
         this.entryHandler = this.entryHandler.bind(this);
     }
@@ -52,31 +47,24 @@ export default class App extends React.Component<{},State> {
         };
 
         const optimize = (message:any)  => {
-            console.log("optimizing");
+            // console.log("optimizing");
             return vscode.postMessage(message);
         };
-        // const algoTester = (message : any) => ()=> {
-        //     return vscode.postMessage(message);
 
-        // };
-        
         //backend will send progress update
         //have an array here that renders the status messages
         window.addEventListener('message', event => {
-            // console.log(event.data)
+
             const message: any = (event.data);
-            console.log(JSON.parse(message.field));
+            // console.log(JSON.parse(message.field));
             let assetObj: Asset[] = JSON.parse(message.field).assets;
-            console.log('message recieved', assetObj);
+            // console.log('message recieved', assetObj);
             this.setState ({
                 recievedMessage: true,
                 messageField: assetObj
             }); 
         });
-        // if (this.state.recievedMessage) {
 
-        // }
-        // console.log(this.state)
         return (
             <div id='mainApp'> 
                 <h1 id='logoText'>snAppy</h1>
@@ -84,7 +72,6 @@ export default class App extends React.Component<{},State> {
                  {/* will import in the form component here */}
                  <Form runFunc={runWebpackGetStats} entryFunc = {this.entryHandler} entry={this.state.entry} />
                  <Assets recievedMessage={this.state.recievedMessage} messageField={this.state.messageField} optFunc = {optimize} entry={this.state.entry} />
-                 {/* <button onClick={algoTester(this.state.algoMessage)}>Test Big Algo</button> */}
             </div>
         );
     }

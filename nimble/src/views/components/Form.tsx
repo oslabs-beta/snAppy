@@ -113,7 +113,7 @@ export default class Form extends React.Component<Props, State> {
         console.log('inside onSubmitFunc');
 
         const messageObjectToExtension: any = {
-            command: 'config',
+            command: 'bundle',
             entry: this.props.entry,
             module: {
                 css: this.state.css,
@@ -158,8 +158,4 @@ export default class Form extends React.Component<Props, State> {
             </div>
         );
     }
-
-
-
-
 }

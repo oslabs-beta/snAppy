@@ -1,17 +1,11 @@
+
 import {
   Position, WorkspaceEdit, ExtensionContext, commands, window, ViewColumn, Uri, workspace,
 } from 'vscode';
 import { URI } from 'vscode-uri';
-import { string } from 'prop-types';
-// node docs;
-const { exec } = require('child_process');
-const fs = require('fs');
-const util = require('util');
-const esprima = require('esprima');
 import * as configs from "./functions/webpackFunctions";
 import dynamicImportFunc  from "./functions/optimizeFunctions";
-import { relative } from 'path';
-import { cpus } from 'os';
+const esprima = require('esprima');
 const path = require('path');
 
 //serving the react files
@@ -20,49 +14,39 @@ function loadScript(context: ExtensionContext, path: string) {
   return "<script src=" + `${absolutePath}` + "></script>";
 }
 
+//activating the webview extension command functionality
 export function activate(context: ExtensionContext) {
   console.log('Congratulations, your extension "snAppy" is now active!');
   const startCommand = commands.registerCommand('extension.startSnappy', () => {
+    
+    //creating the webview panel
     const panel = window.createWebviewPanel('snAppy', 'snAppy!', ViewColumn.Beside, { enableScripts: true });
     panel.webview.html = getWebviewContent(context);
     
-    //
+    //webview panel front-end event listener
     panel.webview.onDidReceiveMessage((message: any) => {
-      
-      let entryPointPath: any = message.entry;
-      let moduleState: any;
+      //user enters the entryPoint path
       console.log('this is the message.entry: ', message.entry);
       switch (message.command) {
-        //button: config, build and get stats of app:
-        case 'config':
-          moduleState = {
+        //button: bundle, build and get stats of app:
+        case 'bundle':
+          let moduleState: any = {
+            entry: message.entry,
             ...message.module,
           };
-          const moduleObj = configs.createModule(moduleState);
-          // console.log(workspace.workspaceFolders? workspace.workspaceFolders[0]: '/', 'message.entry:', message.entry);
-          const webpackConfigObject: any = configs.createWebpackConfig(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + message.entry}`, moduleObj);
-          // console.log('this is webpackConfigObject :', webpackConfigObject);
-          const writeUri = `${__dirname}/webpack.config.js`;
-          workspace.fs.writeFile(URI.file(writeUri), new Uint8Array(Buffer.from(
-            `const path = require('path');
-              module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8',
-          )))
-            .then(res => {
-              window.showInformationMessage('Bundling...');
-              return exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname}, (err : Error, stdout: string)=>{
-
-                workspace.fs.readFile(URI.file(`${__dirname}/compilation-stats.json`))
-                  .then(res => {
-                  return  panel.webview.postMessage({command: 'stats', field: res.toString()});
-                  });
-              });
-            });
-            break;
+          
+          //run functionality to generate the webpack config file, bundle the developer's app and write the bundles to the dev's workspace
+          configs.runWriteWebpackBundle(moduleState, panel);
+         
+          break;
+        
+          //button: optimize
         case 'optimize':
           // console.log('optimizing: parsing thru files and performing opt fx()');
           let resolvedEntry = path.resolve(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + message.entry}`);
           ///src/client/index.js
             traverseAndDynamicallyImport(resolvedEntry, resolvedEntry);
+          
             break;
       }
     });

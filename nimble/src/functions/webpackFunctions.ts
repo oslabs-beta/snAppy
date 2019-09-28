@@ -1,7 +1,40 @@
-import {workspace} from "vscode";
+// node docs;
+const fs = require('fs');
+const util = require('util');
+import { URI } from 'vscode-uri';
+import { Position, WorkspaceEdit, ExtensionContext, commands, window, ViewColumn, Uri, workspace } from 'vscode';
+const { exec } = require('child_process');
 
 // webpack config functions:
 // entry - message.entry:
+
+
+//we moved runWriteWebpackBundle func from extension to here:
+export const runWriteWebpackBundle = (moduleStateObj: any, panel: any) => {
+  const moduleObj = createModule(moduleStateObj);
+  // console.log(workspace.workspaceFolders? workspace.workspaceFolders[0]: '/', 'message.entry:', message.entry);
+  const webpackConfigObject: any = createWebpackConfig(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + moduleStateObj.entry}`, moduleObj);
+  // console.log('this is webpackConfigObject :', webpackConfigObject);
+
+  // create runWriteWebpackBundle function
+  const writeUri = `${__dirname}/webpack.config.js`;
+    workspace.fs.writeFile(URI.file(writeUri), new Uint8Array(Buffer.from(
+      `const path = require('path');
+        module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8',
+    )))
+      .then(res => {
+        window.showInformationMessage('Bundling...');
+        return exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname}, (err : Error, stdout: string)=>{
+
+          workspace.fs.readFile(URI.file(`${__dirname}/compilation-stats.json`))
+      .then(res => {
+        return  panel.webview.postMessage({command: 'stats', field: res.toString()});
+          });
+        });
+      });
+    };
+
+
 export const createWebpackConfig = (entry: any, mod: any) => {
     const moduleExports: any = {};
     moduleExports.entry = {
