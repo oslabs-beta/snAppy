@@ -76,14 +76,9 @@ export default class App extends React.Component<{},State> {
         // if (this.state.recievedMessage) {
 
         // }
-        // console.log(this.state)
+        // console.log(this.state)       
         return (
-             //if props.bunleStats then return <Visualization> component imported from vis files
-             //otherwise it will default to the logic below
-             //but once optimized is clicked the message is send and once optimizaiton is done the backend should send the stats to the front end and update state.bundleStats with it
-             //the on props.bundleStats change to true from undefined and will render try to load the visualziation
-             //the <Visualization> component will be rendered in Suspense and the import will be lazy loaded 
-             //the fallback will be a GIF cat coding or snapping , until the component is fully loaded and the graph will be displayed
+               
             <div id='mainApp'> 
                 <h1 id='logoText'>snAppy</h1>
                 <br/><br/>
@@ -119,13 +114,3 @@ export default class App extends React.Component<{},State> {
     }
 
 }*/
-
-
-//need to create a path to our visualization using react Router
-//import reactRouter
-//in the render of the App class - need to have a component called <Router/>
-//need to add another element to the state - bunde: true or false
-//if true react Route to the component with visualizations
-//so react router need to wrapped inside an componenetDidMount inside of the app class snd sdd event listener which listens to the message from the backed when bundling is finished
-//and this will setState bundle: true
-//in the render () add a conidtional (this.state.bundled) : comp =<visualization/> ? componet
