@@ -97,8 +97,8 @@ export default class App extends React.Component<{},State> {
         if (this.state.optimizeButtonClicked) {
             CurrentComponent = <div>Snapping...!</div>;
         }
-        if (this.state.postBundleComplete && this.state.postBundleStats) {
-            CurrentComponent = <Visualizations/>;
+        if (this.state.initialBundleStats && this.state.postBundleStats) {
+            CurrentComponent = <Visualizations initialBundleStats={this.state.initialBundleStats} postBundleStats={this.state.postBundleStats}/>;
         }
         return (
                

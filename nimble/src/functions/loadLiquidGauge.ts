@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 // import { Area } from 'd3';
 
-interface configI {
+interface ConfigI {
     minValue: number;
     maxValue: number;
     circleThickness: number;
@@ -24,7 +24,7 @@ interface configI {
     waveTextColor: string;
 }
 
-export function liquidFillGaugeDefaultSettings() : configI {
+export function liquidFillGaugeDefaultSettings() : ConfigI {
     return {
         minValue: 0, // The gauge minimum value.
         maxValue: 100, // The gauge maximum value.
@@ -65,7 +65,7 @@ export function liquidFillGaugeDefaultSettings() : configI {
     };
 }
 
-export function loadLiquidFillGauge(elementId: string, value:any, config:configI) {
+export function loadLiquidFillGauge(elementId: string, value:any, config:ConfigI) {
     if (config === undefined) { config = liquidFillGaugeDefaultSettings(); }
 
     const gauge = d3.select("#" + elementId);
@@ -138,7 +138,7 @@ export function loadLiquidFillGauge(elementId: string, value:any, config:configI
     // Center the gauge within the parent SVG.
     const gaugeGroup = gauge.append("g")
         .attr('transform','translate(' + locationX + ',' + locationY + ')');
-    console.log('GAUAGE GROUP: ', locationX);
+    // console.log('GAUAGE GROUP: ', locationX);
 
     // Draw the outer circle.
     const gaugeCircleArc = d3.arc()
@@ -151,7 +151,7 @@ export function loadLiquidFillGauge(elementId: string, value:any, config:configI
         .attr("d", <any>gaugeCircleArc)
         .style("fill", config.circleColor)
         .attr('transform','translate(' + radius + ',' + radius + ')');
-console.log('gaugeGroup append PATH: ', radius);
+// console.log('gaugeGroup append PATH: ', radius);
     // Text where the wave does not overlap.
     gaugeGroup.append("text")
         .text(format(<any>textStartValue) + percentText)
