@@ -3,8 +3,7 @@ import {loadLiquidFillGauge, liquidFillGaugeDefaultSettings} from '../../../func
 
 const LiquidGauges: React.FC = () => {
     React.useEffect(()=>{
-        loadLiquidFillGauge("fillgauge1",60.44, liquidFillGaugeDefaultSettings());
-        // var config4 = liquidFillGaugeDefaultSettings();
+        const config = liquidFillGaugeDefaultSettings();
         // config4.circleThickness = 0.15;
         // config4.circleColor = "#808015";
         // config4.textColor = "#555500";
@@ -19,7 +18,7 @@ const LiquidGauges: React.FC = () => {
         // config4.waveOffset = 0.25;
         // config4.textSize = 0.75;
         // config4.waveCount = 3;
-        // loadLiquidFillGauge("fillgauge5", 60.44, config4);
+        loadLiquidFillGauge("fillgauge1",60.44, config);
     });
 
     return <svg id="fillgauge1" width="19%" height="200"></svg>;
