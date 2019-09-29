@@ -65,7 +65,7 @@ export function liquidFillGaugeDefaultSettings() : ConfigI {
     };
 }
 
-export function loadLiquidFillGauge(elementId: string, value:any, config:ConfigI) {
+export function loadLiquidFillGauge(elementId: string, value:any, config:ConfigI, post:number) {
     if (config === undefined) { config = liquidFillGaugeDefaultSettings(); }
 
     const gauge = d3.select("#" + elementId);
@@ -300,6 +300,8 @@ export function loadLiquidFillGauge(elementId: string, value:any, config:ConfigI
                 .attr('transform','translate(' + waveGroupXPosition + ',' + newHeight + ')');
         }
     }
-
-    return new GaugeUpdater();
+    const gaugeT=  new GaugeUpdater();
+    gauge.attr('onClick',<any>(()=>{
+        gaugeT.update(post);
+    })); 
 }
