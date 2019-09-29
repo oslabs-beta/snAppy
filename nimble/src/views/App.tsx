@@ -52,14 +52,14 @@ export default class App extends React.Component<{},State> {
         
         const runWebpackGetStats = (message : any) => {
             console.log ("bundling working");
-            this.setState({bundleButtonClicked: true})
-            console.log("clicked", this.state.bundleButtonClicked)
+            this.setState({bundleButtonClicked: true});
+            console.log("clicked", this.state.bundleButtonClicked);
             return vscode.postMessage(message);
         };
          
         const optimize = (message:any)  => {
             console.log("optimizing");
-            this.setState({optimizeButtonClicked: true})
+            this.setState({optimizeButtonClicked: true});
             return vscode.postMessage(message);
         };
         
@@ -81,26 +81,26 @@ export default class App extends React.Component<{},State> {
                     this.setState({
                         postBundleComplete: true,
                         postBundleStats: postStats
-                    })
+                    });
              }   
         });    
 
         if (this.state.initialBundleComplete === false)
         {
-            CurrentComponent =<Form runFunc={runWebpackGetStats} entryFunc = {this.entryHandler} entry={this.state.entry} />
+            CurrentComponent =<Form runFunc={runWebpackGetStats} entryFunc = {this.entryHandler} entry={this.state.entry} />;
          
         }
         if (this.state.bundleButtonClicked) {
-            CurrentComponent= <div>Caaaat Cooooding!</div>
+            CurrentComponent= <div>Caaaat Cooooding!</div>;
         }
         if (this.state.initialBundleComplete && this.state.initialBundleStats) {
-            CurrentComponent =  <Assets initialBundleStats={this.state.initialBundleStats} optFunc = {optimize} entry={this.state.entry} />
+            CurrentComponent =  <Assets initialBundleStats={this.state.initialBundleStats} optFunc = {optimize} entry={this.state.entry} />;
         }
         if (this.state.optimizeButtonClicked) {
-            CurrentComponent = <div>Snapping...!</div>
+            CurrentComponent = <div>Snapping...!</div>;
         }
         if (this.state.postBundleComplete && this.state.postBundleStats) {
-            CurrentComponent = <Visualizations/>
+            CurrentComponent = <Visualizations/>;
 
         }
         return (
