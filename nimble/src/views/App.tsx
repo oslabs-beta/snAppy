@@ -85,10 +85,8 @@ export default class App extends React.Component<{},State> {
              }   
         });    
 
-        if (this.state.initialBundleComplete === false)
-        {
+        if (this.state.initialBundleComplete === false) {
             CurrentComponent =<Form runFunc={runWebpackGetStats} entryFunc = {this.entryHandler} entry={this.state.entry} />;
-         
         }
         if (this.state.bundleButtonClicked) {
             CurrentComponent= <div>Caaaat Cooooding!</div>;
@@ -101,7 +99,6 @@ export default class App extends React.Component<{},State> {
         }
         if (this.state.postBundleComplete && this.state.postBundleStats) {
             CurrentComponent = <Visualizations/>;
-
         }
         return (
                
