@@ -34,8 +34,12 @@ const LiquidGauges: React.FC<Props> = (props) => {
         config.textSize = 0.75;
         config.waveCount = 3;
         const mainBundle = getMainSize(props.initialBundleStats, props.postBundleStats);
-        loadLiquidFillGauge("fillgauge1",mainBundle.initial, config, mainBundle.post);
-    });
+        const gauge = loadLiquidFillGauge("fillgauge1",mainBundle.initial, config, mainBundle.post);
+        document.getElementById('fillgauge1')!.onclick=()=>{
+            console.log('on click CLICKED');
+            gauge.update(mainBundle.post);
+        };
+    }, []);
     return <svg id="fillgauge1" width="19%" height="200"></svg>;
 };
 function getMainSize(initial: Asset[], post: Asset[]) {
@@ -47,6 +51,7 @@ function getMainSize(initial: Asset[], post: Asset[]) {
             initialN = obj.size;
         }
     }
+
     for (let obj of post) {
         if (obj.name === 'bundle.js') {
             postN = obj.size;
