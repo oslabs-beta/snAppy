@@ -1,7 +1,8 @@
 import * as React from 'react';
 import Form from './components/Form';
 import '../style/styles.css';
-import Assets from './components/Assets';
+const Assets: any = React.lazy(() => import ('./components/Assets'));
+const Visualizations: any = React.lazy(() => import ('./components/Visualizations'))
 
 // interface set for class; set type to void because function does not return a value;
 interface Vscode {
@@ -19,22 +20,26 @@ interface Asset {
 }
 
 interface State {
-    recievedMessage: boolean;
-    messageField?: Asset[];
+    initialBundleComplete: boolean;
+    initialBundleStats?: Asset[];
+    bundleButtonClicked : boolean;
     entry: string;
+    optimizeButtonClicked: boolean;
+    postBundleComplete: boolean;
+    postBundleStats?: Asset[];
 }
 
 export default class App extends React.Component<{},State> {
     constructor(props: any) {
         super(props);
         this.state= {
-            recievedMessage: false,
-            messageField: undefined,
+            initialBundleComplete: false,
+            initialBundleStats: undefined,
+            bundleButtonClicked: false,
             entry: '',
-            // algoMessage: {
-            //     command: 'optimize',
-            //     entry: '/Users/MacBong/Desktop/production/CJOR/nimble/out/src/views/components/test.js',
-            // }
+            optimizeButtonClicked: false,
+            postBundleComplete: false,
+            postBundleStats: undefined
         };
         this.entryHandler = this.entryHandler.bind(this);
     }
@@ -44,82 +49,78 @@ export default class App extends React.Component<{},State> {
         this.setState({entry: event.target.value});
     }
     render() {
+        let CurrentComponent;
         
-        //This is the function that onlick of the submit button, will send the state to the extension.ts file
         const runWebpackGetStats = (message : any) => {
             console.log ("bundling working");
+            this.setState({bundleButtonClicked: true})
+            console.log("clicked", this.state.bundleButtonClicked)
             return vscode.postMessage(message);
         };
-
+         
         const optimize = (message:any)  => {
             console.log("optimizing");
+            this.setState({optimizeButtonClicked: true})
             return vscode.postMessage(message);
         };
-        // const algoTester = (message : any) => ()=> {
-        //     return vscode.postMessage(message);
-
-        // };
         
-        //backend will send progress update
-        //have an array here that renders the status messages
         window.addEventListener('message', event => {
             // console.log(event.data)
             const message: any = (event.data);
-            console.log(JSON.parse(message.field));
-            let assetObj: Asset[] = JSON.parse(message.field).assets;
-            console.log('message recieved', assetObj);
-            this.setState ({
-                recievedMessage: true,
-                messageField: assetObj
-            }); 
-        });
-        // if (this.state.recievedMessage) {
+            switch (message.command) {
+                case 'initial':
+                    console.log(JSON.parse(message.field));
+                    let initialStats: Asset[] = JSON.parse(message.field).assets;
+                    console.log('message recieved', initialStats);
+                    this.setState ({
+                        initialBundleComplete: true,
+                        initialBundleStats: initialStats
+                    }); 
+                    break;
+                case 'post':
+                    let postStats: Asset[] = JSON.parse(message.field).assets;
+                    this.setState({
+                        postBundleComplete: true,
+                        postBundleStats: postStats
+                    })
+             }   
+        });    
 
-        // }
-        // console.log(this.state)
+        if (this.state.initialBundleComplete === false)
+        {
+            CurrentComponent =<Form runFunc={runWebpackGetStats} entryFunc = {this.entryHandler} entry={this.state.entry} />
+         
+        }
+        if (this.state.bundleButtonClicked) {
+            CurrentComponent= <div>Caaaat Cooooding!</div>
+        }
+        if (this.state.initialBundleComplete && this.state.initialBundleStats) {
+            CurrentComponent = 
+            <div>
+            <React.Suspense fallback ={<div>fallback</div>} >
+            <Assets initialBundleStats={this.state.initialBundleStats} optFunc = {optimize} entry={this.state.entry} />
+            </React.Suspense>
+            </div>
+        }
+        if (this.state.optimizeButtonClicked) {
+            CurrentComponent = <div>Snapping...!</div>
+        }
+        if (this.state.postBundleComplete && this.state.postBundleStats) {
+            CurrentComponent = 
+            <div>
+            <React.Suspense fallback ={<div>fallback</div>} >
+            <Visualizations/>
+            </React.Suspense>
+            </div>
+        }
         return (
+               
             <div id='mainApp'> 
                 <h1 id='logoText'>snAppy</h1>
                 <br/><br/>
-                 {/* will import in the form component here */}
-                 <Form runFunc={runWebpackGetStats} entryFunc = {this.entryHandler} entry={this.state.entry} />
-                 <Assets recievedMessage={this.state.recievedMessage} messageField={this.state.messageField} optFunc = {optimize} entry={this.state.entry} />
-                 {/* <button onClick={algoTester(this.state.algoMessage)}>Test Big Algo</button> */}
+                {CurrentComponent}
             </div>
         );
     }
     
 }
-
-
-// Outline for components
-
-//app:
-    //contain the Form and the submit functionality
-
-//Module Selection Components:
-    //a toggle button with some text
-    //will have a true or false flag
-
-/*object = {
-    Command: 'config',
-    Field: {
-        entry: 'string',
-        module: {
-            jsx: true,
-            css: true,
-            sass: true,
-        }
-    }
-
-}*/
-
-
-//need to create a path to our visualization using react Router
-//import reactRouter
-//in the render of the App class - need to have a component called <Router/>
-//need to add another element to the state - bunde: true or false
-//if true react Route to the component with visualizations
-//so react router need to wrapped inside an componenetDidMount inside of the app class snd sdd event listener which listens to the message from the backed when bundling is finished
-//and this will setState bundle: true
-//in the render () add a conidtional (this.state.bundled) : comp =<visualization/> ? componet

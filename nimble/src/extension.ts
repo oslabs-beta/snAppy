@@ -39,7 +39,7 @@ export function activate(context: ExtensionContext) {
           const moduleObj = configs.createModule(moduleState);
           // console.log(workspace.workspaceFolders? workspace.workspaceFolders[0]: '/', 'message.entry:', message.entry);
           const webpackConfigObject: any = configs.createWebpackConfig(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + message.entry}`, moduleObj);
-          // console.log('this is webpackConfigObject :', webpackConfigObject);
+          console.log('this is webpackConfigObject :', webpackConfigObject);
           const writeUri = `${__dirname}/webpack.config.js`;
           workspace.fs.writeFile(URI.file(writeUri), new Uint8Array(Buffer.from(
             `const path = require('path');
@@ -51,7 +51,7 @@ export function activate(context: ExtensionContext) {
 
                 workspace.fs.readFile(URI.file(`${__dirname}/compilation-stats.json`))
                   .then(res => {
-                  return  panel.webview.postMessage({command: 'stats', field: res.toString()});
+                  return  panel.webview.postMessage({command: 'initial', field: res.toString()});
                   });
               });
             });
@@ -61,6 +61,13 @@ export function activate(context: ExtensionContext) {
           let resolvedEntry = path.resolve(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + message.entry}`);
           ///src/client/index.js
             traverseAndDynamicallyImport(resolvedEntry, resolvedEntry);
+            return exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname}, (err : Error, stdout: string)=>{
+
+              workspace.fs.readFile(URI.file(`${__dirname}/compilation-stats.json`))
+                .then(res => {
+                return  panel.webview.postMessage({command: 'post', field: res.toString()});
+                });
+            });
             break;
       }
     });
