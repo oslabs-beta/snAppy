@@ -300,8 +300,9 @@ export function loadLiquidFillGauge(elementId: string, value:any, config:ConfigI
                 .attr('transform','translate(' + waveGroupXPosition + ',' + newHeight + ')');
         }
     }
-    const gaugeT=  new GaugeUpdater();
-    gauge.attr('onClick',<any>(()=>{
-        gaugeT.update(post);
-    })); 
+    // const gaugeT=  new GaugeUpdater();
+    // gauge.attr('onClick',<any>(()=>{
+    //     gaugeT.update(post);
+    // })); 
+    return new GaugeUpdater();
 }
