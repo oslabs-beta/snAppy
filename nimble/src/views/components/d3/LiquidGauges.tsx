@@ -1,26 +1,38 @@
 import * as React from 'react';
 import {loadLiquidFillGauge, liquidFillGaugeDefaultSettings} from '../../../functions/loadLiquidGauge';
 
-const LiquidGauges: React.FC = () => {
+interface Asset {
+    name: string;
+    size: number;
+}
+
+interface Props {
+    initialBundleStats: Asset[];
+    postBundleStats: Asset[];
+}
+
+const LiquidGauges: React.FC<Props> = (props) => {
     React.useEffect(()=>{
         const config = liquidFillGaugeDefaultSettings();
-        // config4.circleThickness = 0.15;
-        // config4.circleColor = "#808015";
-        // config4.textColor = "#555500";
-        // config4.waveTextColor = "#FFFFAA";
-        // config4.waveColor = "#AAAA39";
-        // config4.textVertPosition = 0.8;
-        // config4.waveAnimateTime = 1000;
-        // config4.waveHeight = 0.05;
-        // config4.waveAnimate = true;
-        // config4.waveRise = false;
-        // config4.waveHeightScaling = false;
-        // config4.waveOffset = 0.25;
-        // config4.textSize = 0.75;
-        // config4.waveCount = 3;
+        config.circleThickness = 0.1;
+        config.circleColor = "#3342FF";
+        config.textColor = "#6E92F3";
+        config.waveTextColor = "#FFFFFF";
+        config.waveColor = "#305FDE";
+        config.textVertPosition = 0.8;
+        config.waveAnimateTime = 1000;
+        config.waveHeight = 0.05;
+        config.waveAnimate = true;
+        config.waveRise = false;
+        config.waveHeightScaling = false;
+        config.waveOffset = 0.25;
+        config.textSize = 0.75;
+        config.waveCount = 3;
+        if (props.initialBundleStats[0].name === 'bundle.js' || props.postBundleStats[0].name === 'bundle.js') {
+            console.log(props.initialBundleStats[0].size, props.postBundleStats[0].size); 
+        }  
         loadLiquidFillGauge("fillgauge1",60.44, config);
     });
-
     return <svg id="fillgauge1" width="19%" height="200"></svg>;
 };
 
