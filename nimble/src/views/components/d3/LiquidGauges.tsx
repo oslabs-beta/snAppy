@@ -40,13 +40,10 @@ const LiquidGauges: React.FC<Props> = (props) => {
         const gauge = loadLiquidFillGauge("fillgauge1",mainBundle.initial, config, mainBundle.post);
         setGauge(gauge);
         setBundle(mainBundle);
-        // document.getElementById('fillgauge1')!.onclick=()=>{
-            
-        // };
     }, []);
     return <svg id="fillgauge1" width="19%" height="200" onClick={()=>{
         console.log('on click CLICKED', toggle);
-        myGauge.update(toggle ? 777 : bundle.initial);
+        myGauge.update(toggle ? bundle.initial : bundle.post);
         setToggle(!toggle);
     }}></svg>;
 };
