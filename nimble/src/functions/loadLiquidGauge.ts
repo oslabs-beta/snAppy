@@ -89,7 +89,7 @@ export function loadLiquidFillGauge(elementId: string, value:any, config:ConfigI
     const textPixels = (config.textSize * radius / 2);
     const textFinalValue = parseFloat(value).toFixed(2);
     const textStartValue = config.valueCountUp ? config.minValue : textFinalValue;
-    const percentText = config.displayPercent ? "%" : "";
+    const percentText = config.displayPercent ? "" : "";
     const circleThickness = config.circleThickness * radius;
     const circleFillGap = config.circleFillGap * radius;
     const fillCircleMargin = circleThickness + circleFillGap;
@@ -199,7 +199,7 @@ export function loadLiquidFillGauge(elementId: string, value:any, config:ConfigI
             .duration(config.waveRiseTime)
             .tween("text", function(d) {
                 var that = d3.select(this);
-                var i = d3.interpolateNumber(<any>that.text().replace("%", ""), <any>textFinalValue);
+                var i = d3.interpolateNumber(<any>that.text().replace("", ""), <any>textFinalValue);
                 return function(t) { that.text(format(i(t)) + percentText); };
             });
     }
