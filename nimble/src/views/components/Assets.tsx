@@ -29,7 +29,7 @@ export default class Assets extends React.Component<Props,{}> {
             
             </>);
         } 
-    };
+    }
     
    
 
