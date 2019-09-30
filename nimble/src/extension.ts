@@ -26,36 +26,19 @@ export function activate(context: ExtensionContext) {
     panel.webview.html = getWebviewContent(context);
     
     panel.webview.onDidReceiveMessage((message: any) => {
-      
-      let entryPointPath: any = message.entry;
-      let moduleState: any;
+
       console.log('this is the message.entry: ', message.entry);
       switch (message.command) {
         //button: config, build and get stats of app:
         case 'config':
-          moduleState = {
+          let moduleState: any = {
+            entry: message.entry,
             ...message.module,
           };
-          const moduleObj = configs.createModule(moduleState);
-          // console.log(workspace.workspaceFolders? workspace.workspaceFolders[0]: '/', 'message.entry:', message.entry);
-          const webpackConfigObject: any = configs.createWebpackConfig(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + message.entry}`, moduleObj);
-          console.log('this is webpackConfigObject :', webpackConfigObject);
-          const writeUri = `${__dirname}/webpack.config.js`;
-          workspace.fs.writeFile(URI.file(writeUri), new Uint8Array(Buffer.from(
-            `const path = require('path');
-              module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8',
-          )))
-            .then(res => {
-              window.showInformationMessage('Bundling...');
-              return exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname}, (err : Error, stdout: string)=>{
 
-                workspace.fs.readFile(URI.file(`${__dirname}/compilation-stats.json`))
-                  .then(res => {
-                  return  panel.webview.postMessage({command: 'initial', field: res.toString()});
-                  });
-              });
-            });
-            break;
+          configs.runWriteWebpackBundle(moduleState, panel);
+          
+          break;
         case 'optimize':
           // console.log('optimizing: parsing thru files and performing opt fx()');
           let resolvedEntry = path.resolve(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + message.entry}`);
