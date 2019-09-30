@@ -8,23 +8,16 @@ class Donut extends React.Component {
     render() {
    
       let data :any = {
-        labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8', 'W9', 'W10'],
-        series: [
-          [1, 2, 4, 8, 6, -2, -1, -4, -6, -2]
-        ]
-      };
+        series: [10, 20, 50, 20, 5, 50, 15],
+        labels: [1, 2, 3, 4, 5, 6, 7]
+      }; 
    
       let options : any= {
-        high: 10,
-        low: -10,
-        axisX: {
-          labelInterpolationFnc: function(value: number, index: number) {
-            return index % 2 === 0 ? value : null;
-          }
-        }
+        donut: true,
+        showLabel: true
       };
    
-      var type = 'Bar'
+      var type = 'Pie'
    
       return (
         <div>
