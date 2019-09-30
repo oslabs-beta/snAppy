@@ -53,14 +53,14 @@ export default class App extends React.Component<{},State> {
         
         const runWebpackGetStats = (message : any) => {
             console.log ("bundling working");
-            this.setState({bundleButtonClicked: true})
-            console.log("clicked", this.state.bundleButtonClicked)
+            this.setState({bundleButtonClicked: true});
+            console.log("clicked", this.state.bundleButtonClicked);
             return vscode.postMessage(message);
         };
          
         const optimize = (message:any)  => {
             console.log("optimizing");
-            this.setState({optimizeButtonClicked: true})
+            this.setState({optimizeButtonClicked: true});
             return vscode.postMessage(message);
         };
         
@@ -82,14 +82,12 @@ export default class App extends React.Component<{},State> {
                     this.setState({
                         postBundleComplete: true,
                         postBundleStats: postStats
-                    })
+                    });
              }   
         });    
 
-        if (this.state.initialBundleComplete === false)
-        {
-            CurrentComponent =<Form runFunc={runWebpackGetStats} entryFunc = {this.entryHandler} entry={this.state.entry} />
-         
+        if (this.state.initialBundleComplete === false) {
+            CurrentComponent =<Form runFunc={runWebpackGetStats} entryFunc = {this.entryHandler} entry={this.state.entry} />;
         }
         if (this.state.bundleButtonClicked) {
             CurrentComponent= <div><img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" width="300" /> <br></br>
@@ -109,16 +107,13 @@ export default class App extends React.Component<{},State> {
             <img src ="https://images2.minutemediacdn.com/image/upload/c_crop,h_674,w_1200,x_0,y_113/f_auto,q_auto,w_1100/v1554999553/shape/mentalfloss/504605-publicdomain.gif"  width= "300"></img>
             </div>
         }
-        if (this.state.postBundleComplete && this.state.postBundleStats) {
-            CurrentComponent = 
-            <div>
-            <Visualizations/>
-            </div>
+        if (this.state.initialBundleStats && this.state.postBundleStats) {
+            CurrentComponent = <Visualizations initialBundleStats={this.state.initialBundleStats} postBundleStats={this.state.postBundleStats}/>;
         }
         return (
                
             <div id='mainApp'> 
-                <h1 id='logoText'>snAppy</h1>
+                <h1 id='logoText'>snAppy!</h1>
                 <br/><br/>
                 {CurrentComponent}
             </div>
