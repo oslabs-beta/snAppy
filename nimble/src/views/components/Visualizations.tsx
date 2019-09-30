@@ -18,7 +18,7 @@ class Visualizations extends React.Component {
         high: 10,
         low: -10,
         axisX: {
-          labelInterpolationFnc: function(value, index) {
+          labelInterpolationFnc: function(value: number, index: number) {
             return index % 2 === 0 ? value : null;
           }
         }
