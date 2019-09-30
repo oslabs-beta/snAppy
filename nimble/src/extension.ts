@@ -1,17 +1,11 @@
-import {
-  Position, WorkspaceEdit, ExtensionContext, commands, window, ViewColumn, Uri, workspace,
-} from 'vscode';
+import { ExtensionContext, commands, window, ViewColumn, Uri, workspace } from 'vscode';
 import { URI } from 'vscode-uri';
-import { string } from 'prop-types';
 // node docs;
 const { exec } = require('child_process');
-const fs = require('fs');
 const util = require('util');
 const esprima = require('esprima');
 import * as configs from "./functions/webpackFunctions";
 import dynamicImportFunc  from "./functions/optimizeFunctions";
-import { relative } from 'path';
-import { cpus } from 'os';
 const path = require('path');
 
 
