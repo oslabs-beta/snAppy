@@ -24,7 +24,7 @@ class Visualizations extends React.Component <Props, {}> {
                 <h3>Before/After of Main Bundle (kiB) </h3>
                 <LiquidGauges initialBundleStats={this.props.initialBundleStats} postBundleStats={this.props.postBundleStats}/>
                 <h3>Assets and Chunks:</h3>
-                <p>insert chartist bar graph here</p>
+                <p>insert chartist bar graph here as a component</p>
             </div>
         );
     }

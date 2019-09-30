@@ -42,11 +42,12 @@ const LiquidGauges: React.FC<Props> = (props) => {
         setGauge(gauge);
         setBundle(mainBundle);
     }, []);
-    return <svg id="fillgauge1" width="40%" height="40%"  onClick={()=>{
+    return (
+        <svg id="fillgauge1" width="40%" height="40%"  onClick={()=>{
         console.log('on click CLICKED', toggle);
-        myGauge.update(toggle ? bundle.initial : bundle.post);
-        setToggle(!toggle);
-    }}></svg>;
+        myGauge.update(toggle ? bundle.post : bundle.initial);
+        setToggle(!toggle);}}></svg>
+    );
 };
 function getMainSize(initial: Asset[], post: Asset[]) {
     //iterate thru initial and post - and only use where nane = 'bundle.js'
@@ -59,7 +60,7 @@ function getMainSize(initial: Asset[], post: Asset[]) {
     }
     for (let obj of post) {
         if (obj.name === 'bundle.js') {
-            postN = (initialN - obj.size);
+            postN = obj.size;
         }
     }
     const mainObjs: MainBundle = { initial: (initialN), post: (postN) };
