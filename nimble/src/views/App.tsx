@@ -105,7 +105,11 @@ export default class App extends React.Component<{},State> {
             </div>
         }
         if (this.state.optimizeButtonClicked) {
-            CurrentComponent = <div><img src="https://cdn.dribbble.com/users/2063732/screenshots/6330750/untitled-1.gif" width="300" /></div>
+            CurrentComponent = <div>
+            <img src="https://cdn.dribbble.com/users/2063732/screenshots/6330750/untitled-1.gif" width="300" />
+            <br></br>
+            <img src ="https://images2.minutemediacdn.com/image/upload/c_crop,h_674,w_1200,x_0,y_113/f_auto,q_auto,w_1100/v1554999553/shape/mentalfloss/504605-publicdomain.gif"  width= "300"></img>
+            </div>
         }
         if (this.state.postBundleComplete && this.state.postBundleStats) {
             CurrentComponent = 
