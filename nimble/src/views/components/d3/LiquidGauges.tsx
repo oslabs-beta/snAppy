@@ -24,11 +24,11 @@ const LiquidGauges: React.FC<Props> = (props) => {
         const config = liquidFillGaugeDefaultSettings();
         const mainBundle = getMainSize(props.initialBundleStats, props.postBundleStats);
         config.maxValue = mainBundle.initial;
-        config.circleThickness = 0.1;
-        config.circleColor = "#3342FF";
-        config.textColor = "#6E92F3";
-        config.waveTextColor = "#FFFFFF";
-        config.waveColor = "#305FDE";
+        config.circleThickness = 0.05;
+        config.circleColor = " #4da6ff";
+        config.textColor = "#FFFFFF";
+        config.waveTextColor = "#004d99";
+        config.waveColor = " #66b3ff";
         config.textVertPosition = 0.8;
         config.waveAnimateTime = 1000;
         config.waveHeight = 0.05;
