@@ -1,9 +1,8 @@
 import * as React from 'react';
 import Form from './components/Form';
 import '../style/styles.css';
-const Assets: any = React.lazy(() => import ('./components/Assets'));
-const Visualizations: any = React.lazy(() => import ('./components/Visualizations'))
-
+import Assets from './components/Assets';
+import Visualizations from './components/Visualizations';
 // interface set for class; set type to void because function does not return a value;
 interface Vscode {
     postMessage(message: any): void;
@@ -53,14 +52,14 @@ export default class App extends React.Component<{},State> {
         
         const runWebpackGetStats = (message : any) => {
             console.log ("bundling working");
-            this.setState({bundleButtonClicked: true})
-            console.log("clicked", this.state.bundleButtonClicked)
+            this.setState({bundleButtonClicked: true});
+            console.log("clicked", this.state.bundleButtonClicked);
             return vscode.postMessage(message);
         };
          
         const optimize = (message:any)  => {
             console.log("optimizing");
-            this.setState({optimizeButtonClicked: true})
+            this.setState({optimizeButtonClicked: true});
             return vscode.postMessage(message);
         };
         
@@ -82,41 +81,29 @@ export default class App extends React.Component<{},State> {
                     this.setState({
                         postBundleComplete: true,
                         postBundleStats: postStats
-                    })
+                    });
              }   
         });    
 
-        if (this.state.initialBundleComplete === false)
-        {
-            CurrentComponent =<Form runFunc={runWebpackGetStats} entryFunc = {this.entryHandler} entry={this.state.entry} />
-         
+        if (this.state.initialBundleComplete === false) {
+            CurrentComponent =<Form runFunc={runWebpackGetStats} entryFunc = {this.entryHandler} entry={this.state.entry} />;
         }
         if (this.state.bundleButtonClicked) {
-            CurrentComponent= <div>Caaaat Cooooding!</div>
+            CurrentComponent= <div>Caaaat Cooooding!</div>;
         }
         if (this.state.initialBundleComplete && this.state.initialBundleStats) {
-            CurrentComponent = 
-            <div>
-            <React.Suspense fallback ={<div>fallback</div>} >
-            <Assets initialBundleStats={this.state.initialBundleStats} optFunc = {optimize} entry={this.state.entry} />
-            </React.Suspense>
-            </div>
+            CurrentComponent =  <Assets initialBundleStats={this.state.initialBundleStats} optFunc = {optimize} entry={this.state.entry} />;
         }
         if (this.state.optimizeButtonClicked) {
-            CurrentComponent = <div>Snapping...!</div>
+            CurrentComponent = <div>Snapping...!</div>;
         }
-        if (this.state.postBundleComplete && this.state.postBundleStats) {
-            CurrentComponent = 
-            <div>
-            <React.Suspense fallback ={<div>fallback</div>} >
-            <Visualizations/>
-            </React.Suspense>
-            </div>
+        if (this.state.initialBundleStats && this.state.postBundleStats) {
+            CurrentComponent = <Visualizations initialBundleStats={this.state.initialBundleStats} postBundleStats={this.state.postBundleStats}/>;
         }
         return (
                
             <div id='mainApp'> 
-                <h1 id='logoText'>snAppy</h1>
+                <h1 id='logoText'>snAppy!</h1>
                 <br/><br/>
                 {CurrentComponent}
             </div>
