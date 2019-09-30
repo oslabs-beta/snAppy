@@ -73,7 +73,7 @@ export function loadLiquidFillGauge(elementId: string, value:any, config:ConfigI
 
     const locationX = parseInt(gauge.style("width")) / 2 - radius;
     const locationY = parseInt(gauge.style("height")) / 2 - radius;
-    const fillPercent = Math.max(config.minValue, Math.min(config.maxValue, value)) / config.maxValue;
+    const fillPercent = value / config.maxValue;
 
     let waveHeightScale : d3.ScaleLinear<number, number>;
     if (config.waveHeightScaling) {
@@ -300,9 +300,5 @@ export function loadLiquidFillGauge(elementId: string, value:any, config:ConfigI
                 .attr('transform','translate(' + waveGroupXPosition + ',' + newHeight + ')');
         }
     }
-    // const gaugeT=  new GaugeUpdater();
-    // gauge.attr('onClick',<any>(()=>{
-    //     gaugeT.update(post);
-    // })); 
     return new GaugeUpdater();
 }
