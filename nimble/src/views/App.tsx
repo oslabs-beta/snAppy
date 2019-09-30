@@ -103,7 +103,7 @@ export default class App extends React.Component<{},State> {
         return (
                
             <div id='mainApp'> 
-                <h1 id='logoText'>snAppy</h1>
+                <h1 id='logoText'>snAppy!</h1>
                 <br/><br/>
                 {CurrentComponent}
             </div>
