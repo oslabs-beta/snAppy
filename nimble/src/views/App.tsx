@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Form from './components/Form';
 import '../style/styles.css';
-const Assets: any = React.lazy(() => import ('./components/Assets'));
-const Visualizations: any = React.lazy(() => import ('./components/Visualizations'))
+import Assets from './components/Assets';
+import Visualizations from './components/Visualizations'
 
 // interface set for class; set type to void because function does not return a value;
 interface Vscode {
@@ -97,9 +97,7 @@ export default class App extends React.Component<{},State> {
         if (this.state.initialBundleComplete && this.state.initialBundleStats) {
             CurrentComponent = 
             <div>
-            <React.Suspense fallback ={<div>fallback</div>} >
             <Assets initialBundleStats={this.state.initialBundleStats} optFunc = {optimize} entry={this.state.entry} />
-            </React.Suspense>
             </div>
         }
         if (this.state.optimizeButtonClicked) {
@@ -108,9 +106,7 @@ export default class App extends React.Component<{},State> {
         if (this.state.postBundleComplete && this.state.postBundleStats) {
             CurrentComponent = 
             <div>
-            <React.Suspense fallback ={<div>fallback</div>} >
             <Visualizations/>
-            </React.Suspense>
             </div>
         }
         return (
