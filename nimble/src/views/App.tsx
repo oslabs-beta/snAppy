@@ -89,14 +89,19 @@ export default class App extends React.Component<{},State> {
             CurrentComponent =<Form runFunc={runWebpackGetStats} entryFunc = {this.entryHandler} entry={this.state.entry} />;
         }
         if (this.state.bundleButtonClicked) {
-            CurrentComponent= <div>Caaaat Cooooding!</div>;
+            CurrentComponent= <div><img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" width="300" /> <br></br>
+            </div>
         }
         if (this.state.initialBundleComplete && this.state.initialBundleStats) {
             CurrentComponent =  <Assets initialBundleStats={this.state.initialBundleStats} optFunc = {optimize} entry={this.state.entry} />;
         }
+      
         if (this.state.optimizeButtonClicked) {
-            CurrentComponent = <div>Snapping...!</div>;
-        }
+            CurrentComponent = <div>
+            <img src="https://cdn.dribbble.com/users/2063732/screenshots/6330750/untitled-1.gif" width="300" id= "snap"/>
+            </div>
+        }    
+       
         if (this.state.initialBundleStats && this.state.postBundleStats) {
             CurrentComponent = <Visualizations initialBundleStats={this.state.initialBundleStats} postBundleStats={this.state.postBundleStats}/>;
         }
