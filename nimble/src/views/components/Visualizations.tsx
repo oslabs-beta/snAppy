@@ -18,13 +18,13 @@ class Visualizations extends React.Component <Props, {}> {
         super(props);
     }
     render() {
-        // const {initialBundleStats, postBundleStats} = this.props;
-        // if (initialBundleStats[0].name === 'bundle.js' || postBundleStats[0].name === 'bundle.js') {
-        //     console.log(initialBundleStats[0].size, postBundleStats[0].size); 
-        // }
         return (
             <div>
+                <h2>Stats:</h2>
+                <h3>Before/After of Main Bundle (kiB) </h3>
                 <LiquidGauges initialBundleStats={this.props.initialBundleStats} postBundleStats={this.props.postBundleStats}/>
+                <h3>Assets and Chunks:</h3>
+                <p>insert chartist bar graph here</p>
             </div>
         );
     }
