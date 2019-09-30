@@ -22,7 +22,7 @@ function loadScript(context: ExtensionContext, path: string) {
 export function activate(context: ExtensionContext) {
   console.log('Congratulations, your extension "snAppy" is now active!');
   const startCommand = commands.registerCommand('extension.startSnappy', () => {
-    const panel = window.createWebviewPanel('snAppy', 'snAppy!', ViewColumn.Beside, { enableScripts: true });
+    const panel = window.createWebviewPanel('snAppy', 'snAppy!', ViewColumn.Beside, { enableScripts: true , retainContextWhenHidden: true});
     panel.webview.html = getWebviewContent(context);
     
     panel.webview.onDidReceiveMessage((message: any) => {
