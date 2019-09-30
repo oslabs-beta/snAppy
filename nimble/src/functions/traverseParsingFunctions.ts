@@ -5,7 +5,7 @@ const esprima = require('esprima');
 const path = require('path');
 
 /*
-//traver through the user's workspace and convert static import statements into dynamic imports
+//traverse through the user's workspace and convert static import statements into dynamic imports
 originalEntry = path + /src/client/index.js
 entryPath = path, but mutates 
 */

@@ -54,13 +54,6 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(startCommand);
 }       
 
-// function findImportPaths(stringedFile: string) {
-//   let regex = /\//g;
-//   let esprima.parseModule(stringedFile, { tolerant: true, range: true, loc: true, jsx: true })
-//   return [];
-// }
-
-
 function getWebviewContent(context: ExtensionContext) {
   return `<!DOCTYPE html>
 	<html lang="en">
