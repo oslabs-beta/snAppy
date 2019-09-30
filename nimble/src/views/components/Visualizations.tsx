@@ -12,10 +12,11 @@ interface Asset {
 interface Props {
     initialBundleStats: Asset[];
     postBundleStats: Asset[];
+    exportFunc : any
 }
 
 class Visualizations extends React.Component <Props, {}> {
-    constructor(props: any) {
+    constructor(props: Props) {
         super(props);
     }
     render() {
@@ -28,7 +29,8 @@ class Visualizations extends React.Component <Props, {}> {
                 <h3>Assets and Chunks:</h3>
                 <p>insert chartist bar graph here as a component</p>
                 <br></br>
-                <Donut/>
+                <Donut postBundleStats={this.props.postBundleStats}/>
+                <button onClick={()=> this.props.exportFunc({command:'export'})}>Export</button>
             </div>
         );
     }

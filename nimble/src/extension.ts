@@ -69,6 +69,8 @@ export function activate(context: ExtensionContext) {
                 });
             });
             break;
+            case 'export':
+             workspace.fs.copy(URI.file(`${__dirname}/compilation-stats.json`),URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/'))
       }
     });
   });
@@ -277,15 +279,16 @@ function getWebviewContent(context: ExtensionContext) {
 		<meta charset="UTF-8">
 		<meta http-equiv="Content-Security-Policy">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Snappy</title>
+    <title>Snappy</title>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
 	</head>
-
 	<body>
-	<div id="root"></div>
+  <div id="root"></div>
 		<script>
 		const vscode = acquireVsCodeApi();
-		</script>
-		${loadScript(context, 'out/snappy.js')}
+    </script>
+    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    ${loadScript(context, 'out/snappy.js')}
 	</body>
 	</html>`;
 }

@@ -63,7 +63,9 @@ export default class App extends React.Component<{},State> {
             this.setState({optimizeButtonClicked: true});
             return vscode.postMessage(message);
         };
-        
+        const exportFiles = (message: any) => {
+            return vscode.postMessage(message)
+        }
         window.addEventListener('message', event => {
             // console.log(event.data)
             const message: any = (event.data);
@@ -108,7 +110,8 @@ export default class App extends React.Component<{},State> {
             </div>
         }
         if (this.state.initialBundleStats && this.state.postBundleStats) {
-            CurrentComponent = <Visualizations initialBundleStats={this.state.initialBundleStats} postBundleStats={this.state.postBundleStats}/>;
+            CurrentComponent = <Visualizations initialBundleStats=
+            {this.state.initialBundleStats} postBundleStats={this.state.postBundleStats} exportFunc = {exportFiles}/>;
         }
         return (
                

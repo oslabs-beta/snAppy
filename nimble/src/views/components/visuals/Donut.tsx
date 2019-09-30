@@ -1,29 +1,46 @@
 import * as React from 'react';
-import ChartistGraph from 'react-chartist';
+import * as Chart from 'chart.js';
 
-// const Visualizations = () => <div>Hello</div>
-// export default Visualizations
+interface Asset {
+  name: string;
+  size: number;
+}
 
-class Donut extends React.Component {
-    render() {
+interface Props {
+   postBundleStats: Asset[];
+}
+
+
+
+class DoughnutChart extends React.Component <Props> {
+  constructor(props: Props) {
+    super(props);
    
-      let data :any = {
-        series: [10, 20, 50, 20, 5, 50, 15],
-        labels: [1, 2, 3, 4, 5, 6, 7]
-      }; 
-   
-      let options : any= {
-        donut: true,
-        showLabel: true
-      };
-   
-      var type = 'Pie'
-   
-      return (
-        <div>
-          <ChartistGraph data={data} options={options} type={type} />
-        </div>
-      )
-    }
   }
-  export default Donut
+
+  componentDidUpdate() {
+    myChart.data.labels = this.props.data.map(d => d.label);
+    myChart.data.datasets[0].data = this.props.data.map(d => d.value);
+    myChart.update();
+  }
+
+  componentDidMount() {
+    let chartRef :React.RefObject<any> = React.createRef();
+    this.myChart :Chart = new Chart(chartRef.current, {
+      type: 'doughnut',
+      data: {
+        labels: this.props.data.map(d => d.label),
+        datasets: [{
+          data: this.props.data.map(d => d.value),
+          backgroundColor: this.props.colors
+        }]
+      }
+    });
+  }
+  
+  render() {
+    return <canvas ref={this.chartRef} />;
+  }
+}
+
+export default DoughnutChart;
