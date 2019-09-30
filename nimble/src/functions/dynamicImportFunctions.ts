@@ -1,6 +1,6 @@
 import { WorkspaceEdit, workspace, Position } from "vscode";
 
-export default function dynamicImportFunc(uri: any, uncommentLines: number[],exportLine: number, components: any) {
+export default function dynamicImportFunc(uri: any, uncommentLines: number[], exportLine: number, components: any) {
   //will use that and the starting position to comment out static imports by using workspaceEdit.insert(URI, position, string)
   let edit = new WorkspaceEdit();
   for (let line of uncommentLines) {
