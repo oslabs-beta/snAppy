@@ -22,6 +22,8 @@ const LiquidGauges: React.FC<Props> = (props) => {
     const [myGauge, setGauge] = React.useState({update(num:number){console.log(num);}});
     React.useEffect(()=>{
         const config = liquidFillGaugeDefaultSettings();
+        const mainBundle = getMainSize(props.initialBundleStats, props.postBundleStats);
+        config.maxValue = mainBundle.initial;
         config.circleThickness = 0.1;
         config.circleColor = "#3342FF";
         config.textColor = "#6E92F3";
@@ -36,7 +38,6 @@ const LiquidGauges: React.FC<Props> = (props) => {
         config.waveOffset = 0.25;
         config.textSize = 0.75;
         config.waveCount = 3;
-        const mainBundle = getMainSize(props.initialBundleStats, props.postBundleStats);
         const gauge = loadLiquidFillGauge("fillgauge1",mainBundle.initial, config, mainBundle.post);
         setGauge(gauge);
         setBundle(mainBundle);
@@ -58,10 +59,11 @@ function getMainSize(initial: Asset[], post: Asset[]) {
     }
     for (let obj of post) {
         if (obj.name === 'bundle.js') {
-            postN = obj.size;
+            postN = (initialN - obj.size);
         }
     }
-    const mainObjs: MainBundle = { initial: initialN, post: postN };
+    const mainObjs: MainBundle = { initial: (initialN), post: (postN) };
+    console.log('main bundle',mainObjs);
     return mainObjs;
 }
 export default LiquidGauges;
