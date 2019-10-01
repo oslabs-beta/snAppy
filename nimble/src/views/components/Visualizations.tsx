@@ -1,6 +1,5 @@
 import * as React from 'react';
 import LiquidGauges from './visuals/LiquidGauges';
-import AssetChunks from './visuals/AssetChunks';
 
 interface Asset {
     name: string;
@@ -26,7 +25,6 @@ class Visualizations extends React.Component <Props, {}> {
                 <LiquidGauges initialBundleStats={this.props.initialBundleStats} postBundleStats={this.props.postBundleStats}/>
                 <p>Insert a small visual/graphic for % of decrease</p>
                 <h3>Assets and Chunks:</h3>
-                <AssetChunks/>
                 <p>insert chartist bar graph here as a component</p>
             </div>
         );
