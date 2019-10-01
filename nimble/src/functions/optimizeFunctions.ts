@@ -12,9 +12,17 @@ export default function dynamicImportFunc(uri: any, uncommentLines: number[],exp
     insertFunc(uri, exportLine, dynamicInjection);
   });
 }
+interface EachComponent {
+  name: string;
+  source: string;
+  path: string
+}
+interface componentObject {
+
+}
 
 const createDynamicInjection = (componentObject: any) => {
-  console.log("inside dynamic import");
+  console.log("componentObject", componentObject);
   //an outside function that loops through the object and for each key will execute the function below to create a new instance of class
   //will have a varibale "injection"  with the class declaration
   let injection = `class DynamicImport extends Component {
