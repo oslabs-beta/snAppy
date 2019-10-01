@@ -44,6 +44,8 @@ export function activate(context: ExtensionContext) {
                 });
             });
             break;
+        case 'export':
+          workspace.fs.copy(URI.file(`${__dirname}/compilation-stats.json`),URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/'))
       }
     });
   });

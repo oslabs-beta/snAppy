@@ -63,6 +63,10 @@ export default class App extends React.Component<{},State> {
             return vscode.postMessage(message);
         };
         
+        const exportFiles = (message: any) => {
+            return vscode.postMessage(message);
+        };
+
         window.addEventListener('message', event => {
             // console.log(event.data)
             const message: any = (event.data);

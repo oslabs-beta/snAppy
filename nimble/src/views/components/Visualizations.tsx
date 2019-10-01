@@ -56,6 +56,7 @@ class Visualizations extends React.Component <Props, {}> {
                 <h4>decrease from initial bundle to optimized bundle</h4>
                 <h3>Assets and Chunks:</h3>
                 {this.props.postBundleStats.map((asset:Asset)=><div >{`${asset.name}: ${asset.size} KiB`}</div>)}
+                <button onClick={()=> this.props.exportFunc({command:'export'})}>Export</button>
             </div>
         );
     }
