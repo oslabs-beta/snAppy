@@ -17,7 +17,7 @@ export const runWriteWebpackBundle = (moduleStateObj: any, panel: any) => {
             .then(res => {
               window.showInformationMessage('Bundling...');
               return exec('npx webpack --profile --json > compilation-stats.json', {cwd:  path.join(__dirname, '..')}, (err : Error, stdout: string)=>{
-w
+
                 workspace.fs.readFile(URI.file(path.join(__dirname, '..', 'compilation-stats.json')))
                   .then(res => {
                   return  panel.webview.postMessage({command: 'initial', field: res.toString()});
