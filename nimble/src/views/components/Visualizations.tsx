@@ -11,6 +11,7 @@ interface Asset {
 interface Props {
     initialBundleStats: Asset[];
     postBundleStats: Asset[];
+    exportFunc: any;
 }
 
 interface MainBundle {
