@@ -63,6 +63,11 @@ export default class App extends React.Component<{},State> {
             return vscode.postMessage(message);
         };
         
+        const exportFiles = (message: any) => {
+            console.log('sending to vscode post message with:', message)
+            return vscode.postMessage(message);
+        };
+
         window.addEventListener('message', event => {
             // console.log(event.data)
             const message: any = (event.data);
@@ -103,7 +108,7 @@ export default class App extends React.Component<{},State> {
         }    
        
         if (this.state.initialBundleStats && this.state.postBundleStats) {
-            CurrentComponent = <Visualizations initialBundleStats={this.state.initialBundleStats} postBundleStats={this.state.postBundleStats}/>;
+            CurrentComponent = <Visualizations initialBundleStats={this.state.initialBundleStats} postBundleStats={this.state.postBundleStats} exportFunc={exportFiles}/>;
         }
         return (
                

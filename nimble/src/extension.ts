@@ -19,7 +19,7 @@ export function activate(context: ExtensionContext) {
     
     panel.webview.onDidReceiveMessage((message: any) => {
 
-      console.log('this is the message.entry: ', message.entry);
+      // console.log('this is the message.entry: ', message.entry);
       switch (message.command) {
         //button: config, build and get stats of app:
         case 'config':
@@ -32,18 +32,32 @@ export function activate(context: ExtensionContext) {
           
           break;
         case 'optimize':
-          // console.log('optimizing: parsing thru files and performing opt fx()');
+          // console.log('optimizing:', message.entry)
           let resolvedEntry = path.resolve(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + message.entry}`);
           ///src/client/index.js
             traverseAndDynamicallyImport(resolvedEntry, resolvedEntry);
             return exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname}, (err : Error, stdout: string)=>{
-
               workspace.fs.readFile(URI.file(path.join(__dirname, 'compilation-stats.json')))
                 .then(res => {
                 return  panel.webview.postMessage({command: 'post', field: res.toString()});
                 });
             });
             break;
+        case 'export':
+          console.log('exporting files');
+          console.log(URI.file(`${__dirname}/compilation-stats.json`));
+          workspace.fs.createDirectory((URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/snappy': '/')));
+          workspace.fs.readFile(URI.file(path.join(__dirname, 'compilation-stats.json')))
+            .then( res => {
+              console.log('creating file', URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/webpack.config.js': '/'));
+              workspace.fs.writeFile(URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/snappy/webpack.config.js': '/'), res);
+            });
+          workspace.fs.readFile(URI.file(path.join(__dirname, 'compilation-stats.json')))
+            .then( res => {
+              console.log('creating file', URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/compilation-stats.json': '/'));
+              workspace.fs.writeFile(URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/snappy/compilation-stats.json': '/'), res);
+            });
+          // workspace.fs.copy(URI.file(`${__dirname}/compilation-stats.json`),URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/'))
       }
     });
   });
