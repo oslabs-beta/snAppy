@@ -32,7 +32,7 @@ export function activate(context: ExtensionContext) {
           
           break;
         case 'optimize':
-          console.log('optimizing:', message.entry)
+          // console.log('optimizing:', message.entry)
           let resolvedEntry = path.resolve(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + message.entry}`);
           ///src/client/index.js
             traverseAndDynamicallyImport(resolvedEntry, resolvedEntry);
@@ -45,7 +45,13 @@ export function activate(context: ExtensionContext) {
             break;
         case 'export':
           console.log('exporting files');
-          workspace.fs.copy(URI.file(`${__dirname}/compilation-stats.json`),URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/'))
+          console.log(URI.file(`${__dirname}/compilation-stats.json`));
+          workspace.fs.readFile(URI.file(path.join(__dirname, 'compilation-stats.json')))
+            .then( res => {
+              console.log('creating file', URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/compilation-stats.json': '/'));
+              workspace.fs.writeFile(URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/compilation-stats.json': '/'), res)
+            });
+          // workspace.fs.copy(URI.file(`${__dirname}/compilation-stats.json`),URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/'))
       }
     });
   });
