@@ -38,7 +38,7 @@ export function activate(context: ExtensionContext) {
             traverseAndDynamicallyImport(resolvedEntry, resolvedEntry);
             return exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname}, (err : Error, stdout: string)=>{
 
-              workspace.fs.readFile(URI.file(`${__dirname}/compilation-stats.json`))
+              workspace.fs.readFile(URI.file(path.join(__dirname, '..', 'compilation-stats.json')))
                 .then(res => {
                 return  panel.webview.postMessage({command: 'post', field: res.toString()});
                 });
