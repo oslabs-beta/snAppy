@@ -17,9 +17,22 @@ export function activate(context: ExtensionContext) {
     const panel = window.createWebviewPanel('snAppy', 'snAppy!', ViewColumn.Beside, { enableScripts: true , retainContextWhenHidden: true});
     panel.webview.html = getWebviewContent(context);
     
-    panel.webview.onDidReceiveMessage((message: any) => {
+    interface Messages {
+      command: string;
+      entry?: string;
+      module?: Modules
+    }
 
-      console.log('this is the message.entry: ', message.entry);
+    interface Modules {
+      css: boolean;
+      jsx: boolean;
+      less: boolean;
+      sass: boolean;
+      tsx: boolean
+    }
+    panel.webview.onDidReceiveMessage((message: Messages) => {
+      
+      //console.log('this is the messages: ', message);
       switch (message.command) {
         //button: config, build and get stats of app:
         case 'config':
