@@ -1,0 +1,16 @@
+{
+	"apples": [
+		{ "region": "North", "count": "53245"},
+		{ "region": "South", "count": "28479"},
+		{ "region": "East", "count": "19697"},
+		{ "region": "West", "count": "24037"},
+		{ "region": "Central", "count": "40245"}
+	],
+	"oranges": [
+		{ "region": "North", "count": "200"},
+		{ "region": "South", "count": "200"},
+		{ "region": "East", "count": "200"},
+		{ "region": "West", "count": "200"},
+		{ "region": "Central", "count": "200"}
+	]
+}
