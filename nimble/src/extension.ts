@@ -46,10 +46,16 @@ export function activate(context: ExtensionContext) {
         case 'export':
           console.log('exporting files');
           console.log(URI.file(`${__dirname}/compilation-stats.json`));
+          workspace.fs.createDirectory((URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/snappy': '/')));
+          workspace.fs.readFile(URI.file(path.join(__dirname, 'compilation-stats.json')))
+            .then( res => {
+              console.log('creating file', URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/webpack.config.js': '/'));
+              workspace.fs.writeFile(URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/snappy/webpack.config.js': '/'), res);
+            });
           workspace.fs.readFile(URI.file(path.join(__dirname, 'compilation-stats.json')))
             .then( res => {
               console.log('creating file', URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/compilation-stats.json': '/'));
-              workspace.fs.writeFile(URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/compilation-stats.json': '/'), res)
+              workspace.fs.writeFile(URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/snappy/compilation-stats.json': '/'), res);
             });
           // workspace.fs.copy(URI.file(`${__dirname}/compilation-stats.json`),URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/'))
       }
