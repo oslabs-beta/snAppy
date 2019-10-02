@@ -48,7 +48,7 @@ export function activate(context: ExtensionContext) {
             entry: message.entry,
             ...message.module,
           };
-
+    
           configs.runWriteWebpackBundle(moduleState, panel);
           
           break;

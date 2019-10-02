@@ -4,7 +4,16 @@ import util = require('util');
 import path = require('path');
 const { exec } = require('child_process');
 
-export const runWriteWebpackBundle = (moduleStateObj: any, panel: any) => {
+interface ModuleState {
+  entry: string | undefined;
+  css?: boolean;
+  jsx?: boolean;
+  less?: boolean;
+  sass?: boolean;
+  tsx?: boolean
+}
+export const runWriteWebpackBundle = (moduleStateObj: ModuleState, panel: any ) => {
+    console.log("panel", panel)
           const moduleObj = createModule(moduleStateObj);
           // console.log(workspace.workspaceFolders? workspace.workspaceFolders[0]: '/', 'message.entry:', message.entry);
           const webpackConfigObject: any = createWebpackConfig(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + moduleStateObj.entry}`, moduleObj);
@@ -29,7 +38,10 @@ export const runWriteWebpackBundle = (moduleStateObj: any, panel: any) => {
 
 // webpack config functions:
 // entry - message.entry:
-export const createWebpackConfig = (entry: any, mod: any) => {
+
+
+export const createWebpackConfig = (entry: string, mod: any) => {
+  console.log("modddd", mod)
     const moduleExports: any = {};
     moduleExports.entry = {
       main: entry,
