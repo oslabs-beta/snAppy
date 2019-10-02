@@ -15,7 +15,8 @@
         "noUnusedLocals": true,
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
-        "experimentalDecorators": true
+        "experimentalDecorators": true, 
+        "typeRoots": ["overrides", "node_modules/@types"]
     },
     "exclude": [
         "node_modules"

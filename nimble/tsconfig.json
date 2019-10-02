@@ -10,11 +10,12 @@
 		"jsx": "react",
 		"sourceMap": true,
 		"rootDir": "src",
-		"strict": true   /* enable all strict type-checking options */
+		"strict": true,   /* enable all strict type-checking options */
 		/* Additional Checks */
 		// "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
 		// "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
 		// "noUnusedParameters": true,  /* Report errors on unused parameters. */
+		"typeRoots": ["overrides", "node_modules/@types"]
 	},
 	"exclude": [
 		"node_modules",
@@ -23,3 +24,52 @@
 	]
 
 }
+
+
+// // this is the new one to solve our conflict issues with React and TypeScript
+// {
+// 	"compilerOptions": {
+// 	  "outDir": "build/dist",
+// 	  "module": "esnext",
+// 	  "target": "es5",
+// 	  "lib": ["es6", "dom", "es2016.array.include", "es2017"],
+// 	  "sourceMap": true,
+// 	  "allowJs": true,
+// 	  "jsx": "react",
+// 	  "moduleResolution": "node",
+// 	  "rootDir": "src",
+// 	  "forceConsistentCasingInFileNames": true,
+// 	  "noImplicitReturns": true,
+// 	  "noImplicitThis": true,
+// 	  "noImplicitAny": true,
+// 	  "strictNullChecks": true,
+// 	  "suppressImplicitAnyIndexErrors": true,
+// 	  "noUnusedLocals": true,
+// 	  "experimentalDecorators": true,
+// 	  "allowSyntheticDefaultImports": true,
+// 	  "resolveJsonModule": true,
+// 	  "typeRoots": ["overrides", "node_modules/@types"]
+// 	},
+// 	"exclude": [
+// 	  "env.js",
+// 	  "config",
+// 	  "node_modules",
+// 	  "build",
+// 	  "scripts",
+// 	  "acceptance-tests",
+// 	  "webpack",
+// 	  "jest",
+// 	  "src/setupTests.ts",
+// 	  "src/storyshots.test.ts",
+// 	  "src/**/__mocks__/*.ts",
+// 	  "src/**/__mocks__/*.tsx",
+// 	  "src/**/*.test.ts",
+// 	  "src/**/*.test.tsx",
+// 	  "src/**/__snapshots__/*.test.tsx.snap",
+// 	  "src/__snapshots__/*.test.tsx.snap",
+// 	  "src/IntegrationTests/*.ts",
+// 	  "src/**/*.puppeteer.ts",
+// 	  "src/puppeteer.spec.ts",
+// 	  "config/polyfills.js"
+// 	]
+//   }
