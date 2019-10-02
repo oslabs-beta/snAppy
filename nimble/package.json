@@ -3,6 +3,7 @@
 	"displayName": "snAppy",
 	"description": "Front-end Optimization",
 	"version": "0.0.1",
+	"publisher": "snAppy",
 	"engines": {
 		"vscode": "^1.38.0"
 	},
@@ -64,6 +65,7 @@
 		"react-dom": "^16.9.0",
 		"ts-import-plugin": "^1.6.1",
 		"utf8": "^3.0.0",
+		"vsce": "^1.67.1",
 		"vscode-uri": "^2.0.3",
 		"webpack": "^4.40.2",
 		"webpack-cli": "^3.3.8"
