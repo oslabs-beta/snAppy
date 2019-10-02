@@ -24,7 +24,7 @@ export default class Assets extends React.Component<Props,{}> {
         const {initialBundleStats} = this.props;
             return(<>
             <h4>Bundled Asset(s):  Size</h4>
-            {initialBundleStats.map((asset:Asset)=><div >{`${asset.name}: ${asset.size} KiB`}</div>)}
+            {initialBundleStats.map((asset:Asset)=><div className="initalBundle">{`${asset.name}: ${asset.size} KiB`}</div>)}
             <button onClick = {()=> this.props.optFunc({command: 'optimize', entry: this.props.entry})}>Optimize</button>
             </>);
         } 

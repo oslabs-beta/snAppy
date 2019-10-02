@@ -1,4 +1,4 @@
-import { workspace } from 'vscode';
+import { workspace, Uri } from 'vscode';
 import { URI } from 'vscode-uri';
 import dynamicImportFunc  from "./optimizeFunctions";
 const esprima = require('esprima');
@@ -9,21 +9,34 @@ const path = require('path');
 originalEntry = path + /src/client/index.js
 entryPath = path, but mutates 
 */
+interface EachComponent {
+  name: string;
+  source: string;
+  path: string
+}
+interface ComponentObject {
+[propName: string]: EachComponent
+}
 export default function traverseAndDynamicallyImport (originalEntry: string, entryPath: string) {
     console.log('orig path(param)', originalEntry);    
     console.log('entry path(param)', entryPath);
         //read the file
         // let componentPath = path.resolve(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + entryPath}`);
         // console.log('comp path:', componentPath);
-        let readURI: any = URI.file(entryPath);
+        let readURI: Uri = URI.file(entryPath);
         workspace.fs.readFile(readURI)
           .then((res: any) => {
             
                 let holdingRes = res.toString();
                 let result = parseAST(esprima.parseModule(res.toString(), { tolerant: true, range: true, loc: true, jsx: true }));
                 // console.log("this is the result obj from parseAST", result);  
-                
-                let newResults: any = findComponentsInFile(result.components, holdingRes, result.paths, result.importLineNumbers);
+               
+                interface NewResults {
+                  components: ComponentObject;
+                  paths: string[];
+                  importLineNumbers: number[]
+                }
+                let newResults: NewResults = findComponentsInFile(result.components, holdingRes, result.paths, result.importLineNumbers);
                 console.log("the newResult object is: ", newResults);
                 if (entryPath !== originalEntry && newResults.importLineNumbers.length) {
                   dynamicImportFunc(readURI,newResults.importLineNumbers, result.exportLineNumber, newResults.components);
@@ -63,20 +76,20 @@ export default function traverseAndDynamicallyImport (originalEntry: string, ent
   
   function parseAST(astObj: any) {
     console.log('entered~ astobj:', astObj);
-    interface ImportObj {
-      name: string;
-      source: string;
-      path: string;
-      range?: number[];
-      line?: number;
-    }
+    // interface ImportObj {
+    //   name: string;
+    //   source: string;
+    //   path: string;
+    //   range?: number[];
+    //   line?: number;
+    // }
     
     interface ResultObj {
       paths: Array<string>;
-      components: any;
+      components: ComponentObject;
       exportLineNumber: number;
       importLineNumbers: number[];
-      otherImports: any;
+      otherImports: ComponentObject ;
     }
   
     let resultObj: ResultObj = {
@@ -93,7 +106,7 @@ export default function traverseAndDynamicallyImport (originalEntry: string, ent
       //Checking the import statments to find paths to dynamically import
       if (astObj.body[i].type === 'ImportDeclaration') {
         //if the current statement includes a child component import;
-        let componentObj: ImportObj = {name : '', source: '', path: ''};
+        let componentObj: EachComponent = {name : '', source: '', path: ''};
         if (astObj.body[i].specifiers[0] !== undefined) {
           componentObj.name = astObj.body[i].specifiers[0].local.name;
           componentObj.source = astObj.body[i].source.value;
@@ -119,7 +132,7 @@ export default function traverseAndDynamicallyImport (originalEntry: string, ent
   return resultObj;
 }
   
-  function findComponentsInFile (componentsObj: any, stringifiedResult: string, pathsArray: Array<string>, importLineNumbers: Array<number>) {
+  function findComponentsInFile (componentsObj: ComponentObject, stringifiedResult: string, pathsArray: Array<string>, importLineNumbers: Array<number>) {
     let newResultObj: any = {};
     let componentNames = Object.keys(componentsObj);
     for (let i=0; i<componentNames.length; i+=1) {

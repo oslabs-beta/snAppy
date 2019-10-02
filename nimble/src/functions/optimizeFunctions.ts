@@ -1,6 +1,7 @@
-import { WorkspaceEdit, workspace, Position } from "vscode";
+import { WorkspaceEdit, workspace, Position, Uri } from "vscode";
 
-export default function dynamicImportFunc(uri: any, uncommentLines: number[],exportLine: number, components: any) {
+
+export default function dynamicImportFunc(uri: Uri, uncommentLines: number[],exportLine: number, components: ComponentObject) {
   //will use that and the starting position to comment out static imports by using workspaceEdit.insert(URI, position, string)
   let edit = new WorkspaceEdit();
   for (let line of uncommentLines) {
@@ -12,9 +13,16 @@ export default function dynamicImportFunc(uri: any, uncommentLines: number[],exp
     insertFunc(uri, exportLine, dynamicInjection);
   });
 }
+interface EachComponent {
+  name: string;
+  source: string;
+  path: string
+}
+interface ComponentObject {
+[propName: string]: EachComponent
+}
 
-const createDynamicInjection = (componentObject: any) => {
-  console.log("inside dynamic import");
+const createDynamicInjection = (componentObject: ComponentObject) => {
   //an outside function that loops through the object and for each key will execute the function below to create a new instance of class
   //will have a varibale "injection"  with the class declaration
   let injection = `class DynamicImport extends Component {
@@ -61,7 +69,7 @@ function newInstance(name: string, path: string) {
   `;
 }
 
-const insertFunc = (uri: any, line: number, injection: string) => {
+const insertFunc = (uri: Uri, line: number, injection: string) => {
   console.log("inject", injection);
   console.log("line", line);
   let edit = new WorkspaceEdit();

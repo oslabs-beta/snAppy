@@ -48,7 +48,7 @@ class Visualizations extends React.Component <Props, {}> {
         }
         let mainBundle = getMainSize(this.props.initialBundleStats, this.props.postBundleStats);
         return (
-            <div>
+            <div id="stats">
                 <h2>Stats:</h2>
                 <h3>Before/After of Main Bundle (kiB): </h3>
                 <LiquidGauges initialBundleStats={this.props.initialBundleStats} postBundleStats={this.props.postBundleStats}/>
