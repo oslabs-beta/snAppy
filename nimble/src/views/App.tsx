@@ -63,6 +63,11 @@ export default class App extends React.Component<{},State> {
             return vscode.postMessage(message);
         };
         
+        const exportFiles = (message: any) => {
+            console.log('sending to vscode post message with:', message)
+            return vscode.postMessage(message);
+        };
+
         window.addEventListener('message', event => {
             // console.log(event.data)
             const message: any = (event.data);
@@ -97,18 +102,18 @@ export default class App extends React.Component<{},State> {
         }
       
         if (this.state.optimizeButtonClicked) {
-            CurrentComponent = <div>
+            CurrentComponent = <div className="image-cropper">
             <img src="https://cdn.dribbble.com/users/2063732/screenshots/6330750/untitled-1.gif" width="300" id= "snap"/>
             </div>
         }    
        
         if (this.state.initialBundleStats && this.state.postBundleStats) {
-            CurrentComponent = <Visualizations initialBundleStats={this.state.initialBundleStats} postBundleStats={this.state.postBundleStats}/>;
+            CurrentComponent = <Visualizations initialBundleStats={this.state.initialBundleStats} postBundleStats={this.state.postBundleStats} exportFunc={exportFiles}/>;
         }
         return (
                
             <div id='mainApp'> 
-                <h1 id='logoText'>snAppy!</h1>
+                <h1 id='logoText'>snAppy</h1>
                 <br/><br/>
                 {CurrentComponent}
             </div>
