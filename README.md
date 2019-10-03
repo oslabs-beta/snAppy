@@ -18,7 +18,8 @@ Pull down the Command Palette in your workspace/project and search: snAppy: Star
 
 As recommended by the Webpack documentation, please name your output folder as "dist" and include your index.html inside. The script source should be "bundle.js". For the entry path within the Webview, please supply the relative path from the workspace's root folder to index.js. Please see below: 
 
-(img of entry path here)
+<kbd><img src="https://imgur.com/a/ePGq7O1"
+     style="float: left; margin-right: 10px;margin-bottom : 30px; margin-top : 10px;" /></kbd>
 
 ### Contributing and Issues
 We are always looking to improve. If there are any contributions or issues you have, please check out our documentation to submit. 
