@@ -29,8 +29,17 @@
     border: 2px solid white;
     border-radius: 10px;
     height: auto;
-    width: 200px;
+    width: 300px;
     
+}
+
+#finalBundleResults {
+    padding: 15px 15px;
+    box-shadow: 0em;
+    border: 2px solid white;
+    border-radius: 10px;
+    height: auto;
+    width: 300px;
 }
 
 #WPoptionLabel{

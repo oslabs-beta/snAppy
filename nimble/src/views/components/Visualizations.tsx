@@ -1,5 +1,6 @@
 import * as React from 'react';
 import LiquidGauges from './visuals/LiquidGauges';
+import '../../style/styles.css'
 
 interface Asset {
     name: string;
@@ -56,8 +57,11 @@ class Visualizations extends React.Component <Props, {}> {
                 <h1>{mainBundle.percentDecrease}%</h1>
                 <h4>decrease from initial bundle to optimized bundle</h4>
                 <h3>Assets and Chunks:</h3>
+                <div id='finalBundleResults'>
                 {this.props.postBundleStats.map((asset:Asset)=><div >{`${asset.name}: ${asset.size} KiB`}</div>)}
-                <button onClick={()=> this.props.exportFunc({command:'export'})}>Export</button>
+                </div>
+                <br/>
+                <button className='submitButton' onClick={()=> this.props.exportFunc({command:'export'})}>Export</button>
             </div>
         );
     }
