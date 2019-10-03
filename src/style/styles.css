@@ -1,0 +1,101 @@
+#firstFormLabel{
+    font-size: 16px;
+    color: white;
+    font-weight: 600;
+}
+
+/* #mainApp{
+    width: 100%;
+    height: 100%;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 50px;
+} */
+
+#formDiv {
+    padding: 15px 15px;
+    box-shadow: 0em;
+    border: 2px solid white;
+    border-radius: 10px;
+    height: 150px;
+    width: 400px;
+}
+
+#initialBundleResults {
+    padding: 15px 15px;
+    box-shadow: 0em;
+    border: 2px solid white;
+    border-radius: 10px;
+    height: auto;
+    width: 300px;
+    
+}
+
+#finalBundleResults {
+    padding: 15px 15px;
+    box-shadow: 0em;
+    border: 2px solid white;
+    border-radius: 10px;
+    height: auto;
+    width: 300px;
+}
+
+#WPoptionLabel{
+    color: white;
+    font-weight: 400;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.submitButton{
+    font-size: 10px;
+    outline: none;
+    color: black;
+    border-radius: 4px;
+}
+
+.submitButton :hover {
+    background-color: #66b3ff;
+    color: black;
+    font-weight: 300;
+}
+
+#logoText{
+    font-size: 32px;
+    font-family: fantasy;
+    color: white;
+}
+
+#optionsDiv{
+    display: flex;
+    height: auto;
+    width: auto;
+    padding: 10px 10px;
+}
+
+#root {
+    height: 100%;
+    width: 100%;
+}
+
+
+#snap {
+object-fit: cover;
+  border-radius: 50%;
+  height: 200px;
+  width: 200px;
+  margin: 0 auto;
+}
+ 
+#mainApp #formDiv #stats{
+    width: 100%;
+    height: 100%;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+}
+
