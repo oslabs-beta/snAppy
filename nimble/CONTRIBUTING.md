@@ -1,7 +1,7 @@
-Contributing to snAppy
+## Contributing to snAppy
 We love your input! We want to make contributing to snAppy as easy and transparent as possible, whether it's:
 
-Reporting a bug
+### Reporting a bug
 Discussing the current state of the code
 Submitting a fix
 Proposing new features
@@ -20,13 +20,13 @@ Issue that pull request!
 Any contributions you make will be under the MIT Software License
 In short, when you submit code changes, your submissions are understood to be under the same that covers the project. Feel free to contact the maintainers if that's a concern.
 
-Report bugs using Github's issues
+### Report bugs using Github's issues
 We use GitHub issues to track public bugs. Report a bug by opening a new issue; it's that easy!
 
 Write bug reports with detail, background, and sample code
 Great Bug Reports tend to have:
 
-A quick summary and/or background
+### A quick summary and/or background
 Steps to reproduce
 Be specific!
 Give sample code if you can. Include sample code that anyone can run to reproduce what you are experiencing
@@ -35,11 +35,12 @@ What actually happens
 Notes (possibly including why you think this might be happening, or stuff you tried that didn't work)
 People love thorough bug reports. I'm not even kidding.
 
-Use a Consistent Coding Style
+### Use a Consistent Coding Style
 2 spaces for indentation rather than tabs
 You can try running npm run lint for style unification
-License
+
+#### License
 By contributing, you agree that your contributions will be licensed under its MIT License.
 
-References
+#### References
 This document was adapted from the open-source contribution guidelines for Facebook's Draft
