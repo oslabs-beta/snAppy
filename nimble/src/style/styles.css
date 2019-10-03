@@ -14,14 +14,32 @@
     padding: 50px;
 } */
 
-#formDiv{
+#formDiv {
     padding: 15px 15px;
     box-shadow: 0em;
     border: 2px solid white;
     border-radius: 10px;
     height: 150px;
     width: 400px;
+}
 
+#initialBundleResults {
+    padding: 15px 15px;
+    box-shadow: 0em;
+    border: 2px solid white;
+    border-radius: 10px;
+    height: auto;
+    width: 300px;
+    
+}
+
+#finalBundleResults {
+    padding: 15px 15px;
+    box-shadow: 0em;
+    border: 2px solid white;
+    border-radius: 10px;
+    height: auto;
+    width: 300px;
 }
 
 #WPoptionLabel{
@@ -31,11 +49,17 @@
     margin-right: 10px;
 }
 
-#submitButton{
+.submitButton{
     font-size: 10px;
     outline: none;
     color: black;
     border-radius: 4px;
+}
+
+.submitButton :hover {
+    background-color: #66b3ff;
+    color: black;
+    font-weight: 300;
 }
 
 #logoText{
@@ -74,3 +98,4 @@ object-fit: cover;
     align-items: center;
     padding: 50px;
 }
+

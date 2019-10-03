@@ -151,7 +151,7 @@ export default class Form extends React.Component<Props, State> {
                         <label id='WPoptionLabel'>ts/tsx</label>
                         <br/><br/>
                     </div>
-                        <input id='submitButton'type='submit' value='Bundle!'/>
+                        <input className='submitButton'type='submit' value='Bundle!'/>
                     
                 </form>
 
