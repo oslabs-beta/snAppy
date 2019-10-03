@@ -1,51 +1,24 @@
-# nimble README
+# README
 
-This is the README for your extension "nimble". After writing up a brief description, we recommend including the following sections.
+snAppy is a VS Code extension, coupled with an interactive view to support your React front-end delivery. automates dynamic and vendor code-splitting all within your workspace.  
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+snAppy includes Webpack configuration and bundling, automated dynamic/vendor code-splitting, and exporting of webpack.config.js and bundle report files. snAppy works on top of your code base, never deleting your code and you may choose to keep/delete any changes made. 
 
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
+<gif coming soon>
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
+Turn on auto-save to allow for rebundle of your application after optimizations have been made. You may still undo any changes afterwards. 
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+Created by: Courtney Kwong, Jackie Lin, Olga Naumova, Rachel Park
 
-### 1.0.0
+### 0.5.0
 
-Initial release of ...
+Initial release of snAppy. More to come! 
 
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
 
 -----------------------------------------------------------------------------------------------------------
 
