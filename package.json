@@ -7,7 +7,7 @@
 	"engines": {
 		"vscode": "^1.38.0"
 	},
-	"icon": "./src/images/logo.png",
+	"icon": "src/images/logo.png",
 	"repository": {
 		"type": "git",
 		"directory": "https://github.com/oslabs-beta/snAppy.git"
