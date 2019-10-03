@@ -2,9 +2,14 @@
 	"name": "snappy",
 	"displayName": "snAppy",
 	"description": "Front-end Optimization",
-	"version": "0.0.1",
+	"version": "0.5.0",
+	"publisher": "snAppy",
 	"engines": {
 		"vscode": "^1.38.0"
+	},
+	"repository": {
+		"type": "git",
+		"directory": "https://github.com/oslabs-beta/snAppy.git"
 	},
 	"categories": [
 		"Other"
