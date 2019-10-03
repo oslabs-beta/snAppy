@@ -18,18 +18,12 @@ interface ComponentObject {
 [propName: string]: EachComponent
 }
 export default function traverseAndDynamicallyImport (originalEntry: string, entryPath: string) {
-    console.log('orig path(param)', originalEntry);    
-    console.log('entry path(param)', entryPath);
-        //read the file
-        // let componentPath = path.resolve(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + entryPath}`);
-        // console.log('comp path:', componentPath);
         let readURI: Uri = URI.file(entryPath);
         workspace.fs.readFile(readURI)
           .then((res: any) => {
             
                 let holdingRes = res.toString();
                 let result = parseAST(esprima.parseModule(res.toString(), { tolerant: true, range: true, loc: true, jsx: true }));
-                // console.log("this is the result obj from parseAST", result);  
                
                 interface NewResults {
                   components: ComponentObject;
@@ -37,7 +31,6 @@ export default function traverseAndDynamicallyImport (originalEntry: string, ent
                   importLineNumbers: number[]
                 }
                 let newResults: NewResults = findComponentsInFile(result.components, holdingRes, result.paths, result.importLineNumbers);
-                console.log("the newResult object is: ", newResults);
                 if (entryPath !== originalEntry && newResults.importLineNumbers.length) {
                   dynamicImportFunc(readURI,newResults.importLineNumbers, result.exportLineNumber, newResults.components);
                 }
@@ -75,15 +68,7 @@ export default function traverseAndDynamicallyImport (originalEntry: string, ent
     }
   
   function parseAST(astObj: any) {
-    console.log('entered~ astobj:', astObj);
-    // interface ImportObj {
-    //   name: string;
-    //   source: string;
-    //   path: string;
-    //   range?: number[];
-    //   line?: number;
-    // }
-    
+
     interface ResultObj {
       paths: Array<string>;
       components: ComponentObject;

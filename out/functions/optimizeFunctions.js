@@ -8,7 +8,6 @@ function dynamicImportFunc(uri, uncommentLines, exportLine, components) {
         edit.insert(uri, new vscode_1.Position(line - 1, 0), "//");
     }
     vscode_1.workspace.applyEdit(edit).then(res => {
-        console.log("edited", res);
         let dynamicInjection = createDynamicInjection(components);
         insertFunc(uri, exportLine, dynamicInjection);
     });
@@ -39,7 +38,6 @@ const createDynamicInjection = (componentObject) => {
 
   `;
     for (let val in componentObject) {
-        console.log(componentObject[val].name);
         injection += newInstance(componentObject[val].name, componentObject[val].source);
     }
     //concatenate every new instance of class invoked with each key/values to injection string
@@ -58,11 +56,8 @@ function newInstance(name, path) {
   `;
 }
 const insertFunc = (uri, line, injection) => {
-    console.log("inject", injection);
-    console.log("line", line);
     let edit = new vscode_1.WorkspaceEdit();
     edit.insert(uri, new vscode_1.Position(line - 1, 0), injection);
-    // .then(res => console.log('is it inserting?', res))
     vscode_1.workspace.applyEdit(edit).then(res => console.log("applyedit", res));
 };
 //# sourceMappingURL=optimizeFunctions.js.map

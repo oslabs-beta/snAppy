@@ -19,7 +19,6 @@ export function activate(context: ExtensionContext) {
     
     panel.webview.onDidReceiveMessage((message: any) => {
 
-      // console.log('this is the message.entry: ', message.entry);
       switch (message.command) {
         //button: config, build and get stats of app:
         case 'config':
@@ -32,7 +31,6 @@ export function activate(context: ExtensionContext) {
           
           break;
         case 'optimize':
-          // console.log('optimizing:', message.entry)
           let resolvedEntry = path.resolve(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + message.entry}`);
           ///src/client/index.js
             traverseAndDynamicallyImport(resolvedEntry, resolvedEntry);
@@ -53,7 +51,7 @@ export function activate(context: ExtensionContext) {
             });
           workspace.fs.readFile(URI.file(path.join(__dirname, 'compilation-stats.json')))
             .then( res => {
-              console.log('creating file', URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/compilation-stats.json': '/'));
+              // console.log('creating file', URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/compilation-stats.json': '/'));
               workspace.fs.writeFile(URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/snappy/compilation-stats.json': '/'), res);
             });
           // workspace.fs.copy(URI.file(`${__dirname}/compilation-stats.json`),URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/'))

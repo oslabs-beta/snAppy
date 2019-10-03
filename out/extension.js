@@ -16,7 +16,6 @@ function activate(context) {
         const panel = vscode_1.window.createWebviewPanel('snAppy', 'snAppy!', vscode_1.ViewColumn.Beside, { enableScripts: true, retainContextWhenHidden: true });
         panel.webview.html = getWebviewContent(context);
         panel.webview.onDidReceiveMessage((message) => {
-            // console.log('this is the message.entry: ', message.entry);
             switch (message.command) {
                 //button: config, build and get stats of app:
                 case 'config':
@@ -24,7 +23,6 @@ function activate(context) {
                     configs.runWriteWebpackBundle(moduleState, panel);
                     break;
                 case 'optimize':
-                    // console.log('optimizing:', message.entry)
                     let resolvedEntry = path.resolve(`${(vscode_1.workspace.workspaceFolders ? vscode_1.workspace.workspaceFolders[0].uri.path : '/') + message.entry}`);
                     ///src/client/index.js
                     traverseParseFunctions_1.default(resolvedEntry, resolvedEntry);
@@ -45,7 +43,7 @@ function activate(context) {
                     });
                     vscode_1.workspace.fs.readFile(vscode_uri_1.URI.file(path.join(__dirname, 'compilation-stats.json')))
                         .then(res => {
-                        console.log('creating file', vscode_uri_1.URI.file(vscode_1.workspace.workspaceFolders ? vscode_1.workspace.workspaceFolders[0].uri.path + '/compilation-stats.json' : '/'));
+                        // console.log('creating file', URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/compilation-stats.json': '/'));
                         vscode_1.workspace.fs.writeFile(vscode_uri_1.URI.file(vscode_1.workspace.workspaceFolders ? vscode_1.workspace.workspaceFolders[0].uri.path + '/snappy/compilation-stats.json' : '/'), res);
                     });
                 // workspace.fs.copy(URI.file(`${__dirname}/compilation-stats.json`),URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/'))

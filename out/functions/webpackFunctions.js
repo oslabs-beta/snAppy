@@ -6,11 +6,8 @@ const util = require("util");
 const path = require("path");
 const { exec } = require('child_process');
 exports.runWriteWebpackBundle = (moduleStateObj, panel) => {
-    console.log("panel", panel);
     const moduleObj = exports.createModule(moduleStateObj);
-    // console.log(workspace.workspaceFolders? workspace.workspaceFolders[0]: '/', 'message.entry:', message.entry);
     const webpackConfigObject = exports.createWebpackConfig(`${(vscode_1.workspace.workspaceFolders ? vscode_1.workspace.workspaceFolders[0].uri.path : '/') + moduleStateObj.entry}`, moduleObj);
-    console.log('this is webpackConfigObject :', webpackConfigObject);
     const writeUri = path.join(__dirname, '..', 'webpack.config.js');
     vscode_1.workspace.fs.writeFile(vscode_uri_1.URI.file(writeUri), new Uint8Array(Buffer.from(`const path = require('path');
               module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8')))
@@ -27,7 +24,6 @@ exports.runWriteWebpackBundle = (moduleStateObj, panel) => {
 // webpack config functions:
 // entry - message.entry:
 exports.createWebpackConfig = (entry, mod) => {
-    console.log("modddd", mod);
     const moduleExports = {};
     moduleExports.entry = {
         main: entry,
@@ -54,7 +50,6 @@ exports.createModule = (modules) => {
             test: /\.css$/i,
             use: ['style-loader', 'css-loader'],
         });
-        // console.log("test key value from module.css obj is", module.rules[0].test);
     }
     if (modules.jsx) {
         module.rules.push({

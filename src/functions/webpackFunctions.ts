@@ -13,11 +13,8 @@ interface ModuleState {
   tsx?: boolean
 }
 export const runWriteWebpackBundle = (moduleStateObj: ModuleState, panel: any ) => {
-    console.log("panel", panel)
           const moduleObj = createModule(moduleStateObj);
-          // console.log(workspace.workspaceFolders? workspace.workspaceFolders[0]: '/', 'message.entry:', message.entry);
           const webpackConfigObject: any = createWebpackConfig(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + moduleStateObj.entry}`, moduleObj);
-          console.log('this is webpackConfigObject :', webpackConfigObject);
           const writeUri = path.join(__dirname, '..', 'webpack.config.js');
           workspace.fs.writeFile(URI.file(writeUri), new Uint8Array(Buffer.from(
             `const path = require('path');
@@ -41,7 +38,6 @@ export const runWriteWebpackBundle = (moduleStateObj: ModuleState, panel: any ) 
 
 
 export const createWebpackConfig = (entry: string, mod: any) => {
-  console.log("modddd", mod)
     const moduleExports: any = {};
     moduleExports.entry = {
       main: entry,
@@ -70,7 +66,6 @@ export const createModule = (modules: any) => {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
       });
-      // console.log("test key value from module.css obj is", module.rules[0].test);
     }
     if (modules.jsx) {
       module.rules.push({

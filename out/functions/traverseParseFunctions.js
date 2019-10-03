@@ -6,18 +6,12 @@ const optimizeFunctions_1 = require("./optimizeFunctions");
 const esprima = require('esprima');
 const path = require('path');
 function traverseAndDynamicallyImport(originalEntry, entryPath) {
-    console.log('orig path(param)', originalEntry);
-    console.log('entry path(param)', entryPath);
-    //read the file
-    // let componentPath = path.resolve(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + entryPath}`);
-    // console.log('comp path:', componentPath);
     let readURI = vscode_uri_1.URI.file(entryPath);
     vscode_1.workspace.fs.readFile(readURI)
         .then((res) => {
         let holdingRes = res.toString();
         let result = parseAST(esprima.parseModule(res.toString(), { tolerant: true, range: true, loc: true, jsx: true }));
         let newResults = findComponentsInFile(result.components, holdingRes, result.paths, result.importLineNumbers);
-        console.log("the newResult object is: ", newResults);
         if (entryPath !== originalEntry && newResults.importLineNumbers.length) {
             optimizeFunctions_1.default(readURI, newResults.importLineNumbers, result.exportLineNumber, newResults.components);
         }
@@ -50,7 +44,6 @@ function traverseAndDynamicallyImport(originalEntry, entryPath) {
 }
 exports.default = traverseAndDynamicallyImport;
 function parseAST(astObj) {
-    console.log('entered~ astobj:', astObj);
     let resultObj = {
         paths: [],
         components: {},

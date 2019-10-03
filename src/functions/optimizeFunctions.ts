@@ -8,7 +8,6 @@ export default function dynamicImportFunc(uri: Uri, uncommentLines: number[],exp
     edit.insert(uri, new Position(line - 1, 0), "//");
   }
   workspace.applyEdit(edit).then(res => {
-    console.log("edited", res);
     let dynamicInjection = createDynamicInjection(components);
     insertFunc(uri, exportLine, dynamicInjection);
   });
@@ -47,7 +46,6 @@ const createDynamicInjection = (componentObject: ComponentObject) => {
 
   `;
   for (let val in componentObject) {
-    console.log(componentObject[val].name);
     injection += newInstance(
       componentObject[val].name,
       componentObject[val].source
@@ -70,10 +68,7 @@ function newInstance(name: string, path: string) {
 }
 
 const insertFunc = (uri: Uri, line: number, injection: string) => {
-  console.log("inject", injection);
-  console.log("line", line);
   let edit = new WorkspaceEdit();
   edit.insert(uri, new Position(line - 1, 0), injection);
-  // .then(res => console.log('is it inserting?', res))
   workspace.applyEdit(edit).then(res => console.log("applyedit", res));
 };
