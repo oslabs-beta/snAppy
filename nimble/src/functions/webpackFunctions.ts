@@ -51,6 +51,7 @@ export const createWebpackConfig = (entry: string, mod: any) => {
       filename: 'bundle.js',
       path: `${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + '/dist'}`,
     };
+
     moduleExports.resolve = {
       extensions: ['.jsx', '.js', '.ts', '.tsx', '.json'],
     };
