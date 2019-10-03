@@ -1,4 +1,5 @@
 import * as React from 'react';
+import '../../style/styles.css'
 
 interface Asset {
     name: string;
@@ -24,8 +25,12 @@ export default class Assets extends React.Component<Props,{}> {
         const {initialBundleStats} = this.props;
             return(<>
             <h4>Bundled Asset(s):  Size</h4>
+            <div id='initialBundleResults'>
             {initialBundleStats.map((asset:Asset)=><div className="initalBundle">{`${asset.name}: ${asset.size} KiB`}</div>)}
-            <button onClick = {()=> this.props.optFunc({command: 'optimize', entry: this.props.entry})}>Optimize</button>
+
+            </div>
+            <br/>
+            <button className='submitButton' onClick = {()=> this.props.optFunc({command: 'optimize', entry: this.props.entry})}>Optimize</button>
             </>);
         } 
     }
