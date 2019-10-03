@@ -17,6 +17,5 @@ Turn on auto-save to allow for rebundle of your application after optimizations 
 ### Release Notes
 
 Created by: Courtney Kwong, Jackie Lin, Olga Naumova, Rachel Park
-Version: 0.5.0
-Initial release of snAppy. More to come! 
+<br/> Version: 0.5 | Initial release of snAppy. More to come! 
 
