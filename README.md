@@ -1,4 +1,4 @@
-# README
+# snAppy
 
 snAppy is a VS Code extension coupled with an interactive view to support your React front-end delivery. It automates dynamic and vendor code-splitting all within your workspace.  
 
