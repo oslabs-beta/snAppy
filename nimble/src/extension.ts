@@ -17,38 +17,17 @@ export function activate(context: ExtensionContext) {
     const panel = window.createWebviewPanel('snAppy', 'snAppy!', ViewColumn.Beside, { enableScripts: true , retainContextWhenHidden: true});
     panel.webview.html = getWebviewContent(context);
     
-    interface Messages {
-      command: string;
-      entry?: string;
-      module?: Modules
-    }
+    panel.webview.onDidReceiveMessage((message: any) => {
 
-    interface Modules {
-      css: boolean;
-      jsx: boolean;
-      less: boolean;
-      sass: boolean;
-      tsx: boolean
-    }
-    panel.webview.onDidReceiveMessage((message: Messages) => {
-      
-      //console.log('this is the messages: ', message);
+      // console.log('this is the message.entry: ', message.entry);
       switch (message.command) {
         //button: config, build and get stats of app:
         case 'config':
-          interface ModuleState {
-            entry: string | undefined;
-            css?: boolean;
-            jsx?: boolean;
-            less?: boolean;
-            sass?: boolean;
-            tsx?: boolean
-          }
-          let moduleState: ModuleState = {
+          let moduleState: any = {
             entry: message.entry,
             ...message.module,
           };
-    
+
           configs.runWriteWebpackBundle(moduleState, panel);
           
           break;
@@ -66,11 +45,10 @@ export function activate(context: ExtensionContext) {
             break;
         case 'export':
           console.log('exporting files');
-          console.log(URI.file(`${__dirname}/compilation-stats.json`));
           workspace.fs.createDirectory((URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/snappy': '/')));
-          workspace.fs.readFile(URI.file(path.join(__dirname, 'compilation-stats.json')))
+          workspace.fs.readFile(URI.file(path.join(__dirname, 'webpack.config.js')))
             .then( res => {
-              console.log('creating file', URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/webpack.config.js': '/'));
+              // console.log('creating file', URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/webpack.config.js': '/'));
               workspace.fs.writeFile(URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/snappy/webpack.config.js': '/'), res);
             });
           workspace.fs.readFile(URI.file(path.join(__dirname, 'compilation-stats.json')))
