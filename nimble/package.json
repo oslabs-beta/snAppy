@@ -17,8 +17,8 @@
 		"commands": [
 			{
 				"command": "extension.startSnappy",
-				"title": "snAppy",
-				"category": "Start snApping"
+				"title": "Start on Current Workspace",
+				"category": "snAppy"
 			}
 		]
 	},
