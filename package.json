@@ -1,39 +1,71 @@
 {
-  "name": "cjor",
-  "version": "1.0.0",
-  "description": "Front End Optimization Production Project",
-  "main": "index.js",
-  "dependencies": {
-    "css-loader": "^3.2.0",
-    "generator-code": "^1.2.6",
-    "i": "^0.3.6",
-    "mem": "^5.1.1",
-    "npm": "^6.11.3",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "style-loader": "^1.0.0",
-    "ts-loader": "^6.1.0",
-    "utf8": "^3.0.0",
-    "vscode-uri": "^2.0.3",
-    "webpack": "^4.40.2",
-    "webpack-cli": "^3.3.8",
-    "yo": "^3.1.0"
-  },
-  "devDependencies": {
-    "@types/react": "^16.9.2",
-    "@types/react-dom": "^16.9.0"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/oslabs-beta/CJOR.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/oslabs-beta/CJOR/issues"
-  },
-  "homepage": "https://github.com/oslabs-beta/CJOR#readme"
+	"name": "snappy",
+	"displayName": "snAppy",
+	"description": "Front-end Optimization",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.38.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:extension.startSnappy"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.startSnappy",
+				"title": "Start on Current Workspace",
+				"category": "snAppy"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "npm-run-all compile:*",
+		"compile:extension": "tsc",
+		"compile:views": "webpack --mode development",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile",
+		"test": "node ./out/test/runTest.js",
+		"build": "webpack",
+		"stats": "webpack --profile --json > compilation-stats.json"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.6.0",
+		"@babel/preset-env": "^7.6.0",
+		"@babel/preset-react": "^7.0.0",
+		"@types/d3": "^5.7.2",
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^5.2.6",
+		"@types/node": "^10.12.21",
+		"@types/react": "^16.9.2",
+		"@types/react-dom": "^16.9.0",
+		"@types/vscode": "^1.38.0",
+		"babel-loader": "^8.0.6",
+		"css-loader": "^3.2.0",
+		"glob": "^7.1.4",
+		"mocha": "^6.1.4",
+		"style-loader": "^1.0.0",
+		"ts-loader": "^6.1.0",
+		"tslint": "^5.12.1",
+		"typescript": "^3.3.1",
+		"vscode-test": "^1.2.0"
+	},
+	"dependencies": {
+		"@babel/plugin-proposal-class-properties": "^7.5.5",
+		"babel-plugin-transform-class-properties": "^6.24.1",
+		"d3": "^5.12.0",
+		"esprima": "^4.0.1",
+		"npm-run-all": "^4.1.5",
+		"react": "^16.9.0",
+		"react-dom": "^16.9.0",
+		"ts-import-plugin": "^1.6.1",
+		"utf8": "^3.0.0",
+		"vscode-uri": "^2.0.3",
+		"webpack": "^4.40.2",
+		"webpack-cli": "^3.3.8"
+	}
 }
