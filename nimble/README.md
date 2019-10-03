@@ -6,7 +6,8 @@ snAppy is a VS Code extension coupled with an interactive view to support your R
 
 snAppy includes Webpack configuration and bundling, automated dynamic/vendor code-splitting, and exporting of webpack.config.js and bundle report files. snAppy works on top of your code base, never deleting your code and you may choose to keep/delete any changes made. 
 
-<gif coming soon>
+(gif/demo coming soon)
+
 ## Extension Settings
 
 Pull down the Command Palette and search: snAppy: Start on Current Workspace
