@@ -1,5 +1,5 @@
 import * as React from 'react';
-import '../../style/styles.css'
+// import '../../style/styles.css'
 
 interface Asset {
     name: string;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import '../../style/styles.css';
+// import '../../style/styles.css';
 
 interface State {
     css: boolean;
@@ -8,6 +8,7 @@ interface State {
     sass: boolean;
     tsx: boolean;
 }
+
 
 interface Props {
     runFunc: any;

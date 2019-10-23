@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const Form_1 = require("./components/Form");
-require("../style/styles.css");
+// import '../style/styles.css';
 const Assets_1 = require("./components/Assets");
 const Visualizations_1 = require("./components/Visualizations");
 class App extends React.Component {

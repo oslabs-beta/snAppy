@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
-require("../../style/styles.css");
 class Form extends React.Component {
     constructor(props) {
         super(props);
