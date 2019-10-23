@@ -1,12 +1,12 @@
 const path = require('path');
               module.exports ={ entry:
    { main:
-      '/Users/jackie/Documents/Codesmith/production-project-sept-2019/soloproject/src/client/index.js' },
+      '/Users/courtneykwong/Documents/Codesmith/Projects/soloproject/src/client/index.js' },
   mode: 'development',
   output:
    { filename: 'bundle.js',
      path:
-      '/Users/jackie/Documents/Codesmith/production-project-sept-2019/soloproject/dist' },
+      '/Users/courtneykwong/Documents/Codesmith/Projects/soloproject/dist' },
   resolve: { extensions: [ '.jsx', '.js', '.ts', '.tsx', '.json' ] },
   module:
    { rules:

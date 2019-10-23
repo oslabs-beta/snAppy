@@ -16,7 +16,14 @@
 		"Other"
 	],
 	"keywords": [
-		"front-end", "react", "optimization", "optimization tool", "front-end optimization tool", "load time optimization", "dynamic", "import"
+		"front-end",
+		"react",
+		"optimization",
+		"optimization tool",
+		"front-end optimization tool",
+		"load time optimization",
+		"dynamic",
+		"import"
 	],
 	"activationEvents": [
 		"onCommand:extension.startSnappy"
