@@ -64,10 +64,9 @@ describe('<Form/>', () => {
       };
       wrapper
         .find('form')
-        .find('input').forEach(i => {
-          i.simulate('change', fakeEvent);
-        });
-      expect(entryFunc).toBeCalled();
+        .find('input#entryInput')
+        .simulate('change', fakeEvent);
+      expect(entryFunc).toBeCalledWith(fakeEvent);
     });
 });
 
