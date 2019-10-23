@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const LiquidGauges_1 = require("./visuals/LiquidGauges");
-require("../../style/styles.css");
 class Visualizations extends React.Component {
     constructor(props) {
         super(props);

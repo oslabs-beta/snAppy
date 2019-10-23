@@ -1,5 +1,5 @@
 import * as React from 'react';
-import '../../style/styles.css';
+// import '../../style/styles.css';
 
 interface State {
     css: boolean;
@@ -8,6 +8,7 @@ interface State {
     sass: boolean;
     tsx: boolean;
 }
+
 
 interface Props {
     runFunc: any;
@@ -133,7 +134,7 @@ export default class Form extends React.Component<Props, State> {
             <div id='formDiv'>
                 <form onSubmit={this.onSubmitForm}>
                     <label id='firstFormLabel'>Entry Point: </label>
-                    <input type='text' value={this.props.entry} onChange={this.props.entryFunc}/>
+                    <input id="entryInput" type='text' value={this.props.entry} onChange={this.props.entryFunc}/>
 
                     <br/>
                     <br/>

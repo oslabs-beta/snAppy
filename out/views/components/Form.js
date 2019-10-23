@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
-require("../../style/styles.css");
 class Form extends React.Component {
     constructor(props) {
         super(props);
@@ -96,7 +95,7 @@ class Form extends React.Component {
         return (React.createElement("div", { id: 'formDiv' },
             React.createElement("form", { onSubmit: this.onSubmitForm },
                 React.createElement("label", { id: 'firstFormLabel' }, "Entry Point: "),
-                React.createElement("input", { type: 'text', value: this.props.entry, onChange: this.props.entryFunc }),
+                React.createElement("input", { id: "entryInput", type: 'text', value: this.props.entry, onChange: this.props.entryFunc }),
                 React.createElement("br", null),
                 React.createElement("br", null),
                 React.createElement("label", { id: 'firstFormLabel' }, "Modules: "),
