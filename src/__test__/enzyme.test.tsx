@@ -58,6 +58,17 @@ describe('<Form/>', () => {
         .simulate('submit', fakeEvent);
       expect(runWebpackGetStats).toHaveBeenCalled();
     });
+    it('has an onChange function', () => {
+      const fakeEvent = {
+        target: { value: 'the-value' }
+      };
+      wrapper
+        .find('form')
+        .find('input').forEach(i => {
+          i.simulate('change', fakeEvent);
+        });
+      expect(entryFunc).toBeCalled();
+    });
 });
 
 
