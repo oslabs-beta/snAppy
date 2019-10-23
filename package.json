@@ -72,9 +72,13 @@
 	},
 	"dependencies": {
 		"@babel/plugin-proposal-class-properties": "^7.5.5",
+		"@types/enzyme": "^3.10.3",
+		"@types/jest": "^24.0.19",
 		"babel-plugin-transform-class-properties": "^6.24.1",
 		"d3": "^5.12.0",
+		"enzyme": "^3.10.0",
 		"esprima": "^4.0.1",
+		"jest": "^24.9.0",
 		"npm-run-all": "^4.1.5",
 		"react": "^16.9.0",
 		"react-dom": "^16.9.0",
