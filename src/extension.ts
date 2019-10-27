@@ -34,13 +34,14 @@ export function activate(context: ExtensionContext) {
           };
           configs.runWriteWebpackBundle(moduleState, panel);
           break;
+        //onClick(Optimize button): parses file using AST to locate static imports and replacing it with dynamic imports
         case 'optimize':
           let resolvedEntry = path.resolve(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + message.entry}`);
             traverseAndDynamicallyImport(resolvedEntry, resolvedEntry);
             return exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname}, (err : Error, stdout: string)=>{
               workspace.fs.readFile(URI.file(path.join(__dirname, 'compilation-stats.json')))
                 .then(res => {
-                return  panel.webview.postMessage({command: 'post', field: res.toString()});
+                return panel.webview.postMessage({command: 'post', field: res.toString()});
                 });
             });
             break;
@@ -49,15 +50,12 @@ export function activate(context: ExtensionContext) {
           workspace.fs.createDirectory((URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/snappy': '/')));
           workspace.fs.readFile(URI.file(path.join(__dirname, 'webpack.config.js')))
             .then( res => {
-              // console.log('creating file', URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/webpack.config.js': '/'));
               workspace.fs.writeFile(URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/snappy/webpack.config.js': '/'), res);
             });
           workspace.fs.readFile(URI.file(path.join(__dirname, 'compilation-stats.json')))
             .then( res => {
-              // console.log('creating file', URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/compilation-stats.json': '/'));
               workspace.fs.writeFile(URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/snappy/compilation-stats.json': '/'), res);
             });
-          // workspace.fs.copy(URI.file(`${__dirname}/compilation-stats.json`),URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/'))
       }
     });
   });
