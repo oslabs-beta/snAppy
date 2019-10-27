@@ -1,6 +1,5 @@
 import { ExtensionContext, commands, window, ViewColumn, Uri, workspace } from 'vscode';
 import { URI } from 'vscode-uri';
-// node docs;
 const { exec } = require('child_process');
 import * as configs from "./functions/webpackFunctions";
 import traverseAndDynamicallyImport from "./functions/traverseParseFunctions";
@@ -12,32 +11,37 @@ function loadScript(context: ExtensionContext, path: string) {
 }
 
 export function activate(context: ExtensionContext) {
-  console.log('Congratulations, your extension "snAppy" is now active!');
   const startCommand = commands.registerCommand('extension.startSnappy', () => {
     const panel = window.createWebviewPanel('snAppy', 'snAppy!', ViewColumn.Beside, { enableScripts: true , retainContextWhenHidden: true});
+    //panel's html is created in function below (getWebviewContent)
     panel.webview.html = getWebviewContent(context);
-    
+    //ip to send messages/data from react frontend to node backend
     panel.webview.onDidReceiveMessage((message: any) => {
-
+      interface Module {
+        entry: string;
+        css: boolean;
+        jsx: boolean;
+        less: boolean;
+        sass: boolean;
+        tsx: boolean;
+      }
       switch (message.command) {
-        //button: config, build and get stats of app:
+        //onClick(Bundle! button): build and get stats of application:
         case 'config':
-          let moduleState: any = {
+          let moduleState: Module = {
             entry: message.entry,
             ...message.module,
           };
-
           configs.runWriteWebpackBundle(moduleState, panel);
-          
           break;
+        //onClick(Optimize button): parses file using AST to locate static imports and replacing it with dynamic imports
         case 'optimize':
           let resolvedEntry = path.resolve(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + message.entry}`);
-          ///src/client/index.js
             traverseAndDynamicallyImport(resolvedEntry, resolvedEntry);
             return exec('npx webpack --profile --json > compilation-stats.json', {cwd: __dirname}, (err : Error, stdout: string)=>{
               workspace.fs.readFile(URI.file(path.join(__dirname, 'compilation-stats.json')))
                 .then(res => {
-                return  panel.webview.postMessage({command: 'post', field: res.toString()});
+                return panel.webview.postMessage({command: 'post', field: res.toString()});
                 });
             });
             break;
@@ -46,15 +50,12 @@ export function activate(context: ExtensionContext) {
           workspace.fs.createDirectory((URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/snappy': '/')));
           workspace.fs.readFile(URI.file(path.join(__dirname, 'webpack.config.js')))
             .then( res => {
-              // console.log('creating file', URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/webpack.config.js': '/'));
               workspace.fs.writeFile(URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/snappy/webpack.config.js': '/'), res);
             });
           workspace.fs.readFile(URI.file(path.join(__dirname, 'compilation-stats.json')))
             .then( res => {
-              // console.log('creating file', URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/compilation-stats.json': '/'));
               workspace.fs.writeFile(URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path + '/snappy/compilation-stats.json': '/'), res);
             });
-          // workspace.fs.copy(URI.file(`${__dirname}/compilation-stats.json`),URI.file(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/'))
       }
     });
   });
