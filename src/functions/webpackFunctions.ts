@@ -1,7 +1,8 @@
-import { window, workspace } from "vscode";
+import { window, workspace, WebviewPanel } from "vscode";
 import { URI } from 'vscode-uri';
 import util = require('util');
 import path = require('path');
+import * as webpack from 'webpack';
 const { exec } = require('child_process');
 
 interface ModuleState {
@@ -10,11 +11,33 @@ interface ModuleState {
   jsx?: boolean;
   less?: boolean;
   sass?: boolean;
-  tsx?: boolean
+  tsx?: boolean;
 }
-export const runWriteWebpackBundle = (moduleStateObj: ModuleState, panel: any ) => {
+type Test = RegExp;
+
+interface Rules {
+  test?: Test;
+  use?: any;
+  exclude?: string;
+}
+
+interface WebpackConfig {
+  entry?: {
+    main: string;
+  };
+  mode?: string;
+  output?: {
+    filename: string;
+    path: string;
+  };
+  resolve?: {
+    extensions: string[];
+  };
+  module?: any;
+}
+export const runWriteWebpackBundle = (moduleStateObj: ModuleState, panel: WebviewPanel ) => {
           const moduleObj = createModule(moduleStateObj);
-          const webpackConfigObject: any = createWebpackConfig(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + moduleStateObj.entry}`, moduleObj);
+          const webpackConfigObject: WebpackConfig = createWebpackConfig(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + moduleStateObj.entry}`, moduleObj);
           const writeUri = path.join(__dirname, '..', 'webpack.config.js');
           workspace.fs.writeFile(URI.file(writeUri), new Uint8Array(Buffer.from(
             `const path = require('path');
@@ -37,8 +60,8 @@ export const runWriteWebpackBundle = (moduleStateObj: ModuleState, panel: any ) 
 // entry - message.entry:
 
 
-export const createWebpackConfig = (entry: string, mod: any) => {
-    const moduleExports: any = {};
+export const createWebpackConfig = (entry: string, mod: Rules) => {
+    const moduleExports: WebpackConfig = {};
     moduleExports.entry = {
       main: entry,
     };
@@ -56,7 +79,7 @@ export const createWebpackConfig = (entry: string, mod: any) => {
   };
   
   // mod: moduleState.mod
-export const createModule = (modules: any) => {
+export const createModule = (modules: ModuleState) => {
     const module: any = {};
     module.rules = [];
     if (modules.css) {
