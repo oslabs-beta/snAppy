@@ -35,18 +35,24 @@ interface WebpackConfig {
   };
   module?: any;
 }
+
+//function creates a webpack config obj based on user inputs and bundles their app;
 export const runWriteWebpackBundle = (moduleStateObj: ModuleState, panel: WebviewPanel ) => {
+          //moduleObj is the rules obj returned from reateModule and used in createWebpackConfig
           const moduleObj = createModule(moduleStateObj);
           const webpackConfigObject: WebpackConfig = createWebpackConfig(`${(workspace.workspaceFolders? workspace.workspaceFolders[0].uri.path : '/') + moduleStateObj.entry}`, moduleObj);
+          //writing a new file called 'webpack.config.js':
           const writeUri = path.join(__dirname, '..', 'webpack.config.js');
+          //writing inside the file:
           workspace.fs.writeFile(URI.file(writeUri), new Uint8Array(Buffer.from(
             `const path = require('path');
               module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8',
           )))
             .then(res => {
               window.showInformationMessage('Bundling...');
+              //run child process to execute script:
               return exec('npx webpack --profile --json > compilation-stats.json', {cwd:  path.join(__dirname, '..')}, (err : Error, stdout: string)=>{
-
+                //read the file and when complete, send message to frontend
                 workspace.fs.readFile(URI.file(path.join(__dirname, '..', 'compilation-stats.json')))
                   .then(res => {
                   return  panel.webview.postMessage({command: 'initial', field: res.toString()});
@@ -55,12 +61,7 @@ export const runWriteWebpackBundle = (moduleStateObj: ModuleState, panel: Webvie
             });
           };
 
-
-// webpack config functions:
-// entry - message.entry:
-
-
-export const createWebpackConfig = (entry: string, mod: Rules) => {
+const createWebpackConfig = (entry: string, mod: Rules) => {
     const moduleExports: WebpackConfig = {};
     moduleExports.entry = {
       main: entry,
@@ -78,8 +79,7 @@ export const createWebpackConfig = (entry: string, mod: Rules) => {
     return moduleExports;
   };
   
-  // mod: moduleState.mod
-export const createModule = (modules: ModuleState) => {
+const createModule = (modules: ModuleState) => {
     const module: any = {};
     module.rules = [];
     if (modules.css) {
