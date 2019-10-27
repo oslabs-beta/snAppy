@@ -5,15 +5,21 @@ const vscode_uri_1 = require("vscode-uri");
 const util = require("util");
 const path = require("path");
 const { exec } = require('child_process');
+//function creates a webpack config obj based on user inputs and bundles their app;
 exports.runWriteWebpackBundle = (moduleStateObj, panel) => {
-    const moduleObj = exports.createModule(moduleStateObj);
-    const webpackConfigObject = exports.createWebpackConfig(`${(vscode_1.workspace.workspaceFolders ? vscode_1.workspace.workspaceFolders[0].uri.path : '/') + moduleStateObj.entry}`, moduleObj);
+    //moduleObj is the rules obj returned from reateModule and used in createWebpackConfig
+    const moduleObj = createModule(moduleStateObj);
+    const webpackConfigObject = createWebpackConfig(`${(vscode_1.workspace.workspaceFolders ? vscode_1.workspace.workspaceFolders[0].uri.path : '/') + moduleStateObj.entry}`, moduleObj);
+    //writing a new file called 'webpack.config.js':
     const writeUri = path.join(__dirname, '..', 'webpack.config.js');
+    //writing inside the file:
     vscode_1.workspace.fs.writeFile(vscode_uri_1.URI.file(writeUri), new Uint8Array(Buffer.from(`const path = require('path');
               module.exports =${util.inspect(webpackConfigObject, { depth: null })}`, 'utf-8')))
         .then(res => {
         vscode_1.window.showInformationMessage('Bundling...');
+        //run child process to execute script:
         return exec('npx webpack --profile --json > compilation-stats.json', { cwd: path.join(__dirname, '..') }, (err, stdout) => {
+            //read the file and when complete, send message to frontend
             vscode_1.workspace.fs.readFile(vscode_uri_1.URI.file(path.join(__dirname, '..', 'compilation-stats.json')))
                 .then(res => {
                 return panel.webview.postMessage({ command: 'initial', field: res.toString() });
@@ -21,9 +27,7 @@ exports.runWriteWebpackBundle = (moduleStateObj, panel) => {
         });
     });
 };
-// webpack config functions:
-// entry - message.entry:
-exports.createWebpackConfig = (entry, mod) => {
+const createWebpackConfig = (entry, mod) => {
     const moduleExports = {};
     moduleExports.entry = {
         main: entry,
@@ -39,8 +43,7 @@ exports.createWebpackConfig = (entry, mod) => {
     moduleExports.module = mod;
     return moduleExports;
 };
-// mod: moduleState.mod
-exports.createModule = (modules) => {
+const createModule = (modules) => {
     const module = {};
     module.rules = [];
     if (modules.css) {

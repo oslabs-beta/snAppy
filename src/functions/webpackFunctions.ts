@@ -2,7 +2,6 @@ import { window, workspace, WebviewPanel } from "vscode";
 import { URI } from 'vscode-uri';
 import util = require('util');
 import path = require('path');
-import * as webpack from 'webpack';
 const { exec } = require('child_process');
 
 interface ModuleState {
