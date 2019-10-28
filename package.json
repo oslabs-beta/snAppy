@@ -16,7 +16,14 @@
 		"Other"
 	],
 	"keywords": [
-		"front-end", "react", "optimization", "optimization tool", "front-end optimization tool", "load time optimization", "dynamic", "import"
+		"front-end",
+		"react",
+		"optimization",
+		"optimization tool",
+		"front-end optimization tool",
+		"load time optimization",
+		"dynamic",
+		"import"
 	],
 	"activationEvents": [
 		"onCommand:extension.startSnappy"
@@ -38,25 +45,28 @@
 		"compile:views": "webpack --mode development",
 		"watch": "tsc -watch -p ./",
 		"pretest": "npm run compile",
-		"test": "node ./out/test/runTest.js",
+		"test": "jest --verbose",
 		"build": "webpack",
 		"stats": "webpack --profile --json > compilation-stats.json"
+	},
+	"jest": {
+		"verbose": true
 	},
 	"devDependencies": {
 		"@babel/core": "^7.6.0",
 		"@babel/preset-env": "^7.6.0",
-		"@babel/preset-react": "^7.0.0",
+		"@babel/preset-react": "^7.6.3",
 		"@types/d3": "^5.7.2",
 		"@types/glob": "^7.1.1",
-		"@types/mocha": "^5.2.6",
 		"@types/node": "^10.12.21",
 		"@types/react": "^16.9.2",
 		"@types/react-dom": "^16.9.0",
 		"@types/vscode": "^1.38.0",
 		"babel-loader": "^8.0.6",
 		"css-loader": "^3.2.0",
+		"enzyme": "^3.10.0",
+		"enzyme-adapter-react-16": "^1.15.1",
 		"glob": "^7.1.4",
-		"mocha": "^6.1.4",
 		"style-loader": "^1.0.0",
 		"ts-loader": "^6.1.0",
 		"tslint": "^5.12.1",
@@ -65,9 +75,18 @@
 	},
 	"dependencies": {
 		"@babel/plugin-proposal-class-properties": "^7.5.5",
+		"@babel/plugin-transform-runtime": "^7.6.2",
+		"@babel/preset-typescript": "^7.6.0",
+		"@babel/runtime": "^7.6.3",
+		"@types/enzyme": "^3.10.3",
+		"@types/enzyme-adapter-react-16": "^1.0.5",
+		"@types/jest": "^24.0.19",
+		"@types/webpack": "^4.39.5",
 		"babel-plugin-transform-class-properties": "^6.24.1",
 		"d3": "^5.12.0",
+		"enzyme-to-json": "^3.4.3",
 		"esprima": "^4.0.1",
+		"jest": "^24.9.0",
 		"npm-run-all": "^4.1.5",
 		"react": "^16.9.0",
 		"react-dom": "^16.9.0",

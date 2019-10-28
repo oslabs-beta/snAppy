@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Form from './components/Form';
-import '../style/styles.css';
+// import '../style/styles.css';
 import Assets from './components/Assets';
 import Visualizations from './components/Visualizations';
 // interface set for class; set type to void because function does not return a value;
@@ -64,7 +64,7 @@ export default class App extends React.Component<{},State> {
         };
         
         const exportFiles = (message: any) => {
-            console.log('sending to vscode post message with:', message)
+            console.log('sending to vscode post message with:', message);
             return vscode.postMessage(message);
         };
 

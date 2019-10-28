@@ -1,6 +1,6 @@
 import * as React from 'react';
 import LiquidGauges from './visuals/LiquidGauges';
-import '../../style/styles.css'
+// import '../../style/styles.css'
 
 interface Asset {
     name: string;
