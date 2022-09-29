@@ -83,7 +83,7 @@
 		"@types/jest": "^24.0.19",
 		"@types/webpack": "^4.39.5",
 		"babel-plugin-transform-class-properties": "^6.24.1",
-		"d3": "^5.12.0",
+		"d3": "^7.6.1",
 		"enzyme-to-json": "^3.4.3",
 		"esprima": "^4.0.1",
 		"jest": "^24.9.0",
