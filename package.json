@@ -94,6 +94,6 @@
 		"utf8": "^3.0.0",
 		"vscode-uri": "^2.0.3",
 		"webpack": "^4.40.2",
-		"webpack-cli": "^3.3.8"
+		"webpack-cli": "^3.3.12"
 	}
 }
